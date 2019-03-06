@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/06 19:42:13 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/06 20:30:39 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct			s_params
 	t_room				*start;
 	t_room				*end;
 	t_room				*start_of_list;
-	t_room				*start_of_list_of_path;
+	t_path				*start_of_list_of_path;
 	t_room				**arr; // sorted array of nodes
 }						t_params;
 
