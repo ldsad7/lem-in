@@ -1,22 +1,52 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lem_in.c                                           :+:      :+:    :+:   */
+/*   lem-in.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/06 20:02:08 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/06 20:29:28 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
+
+void	free_g_params(t_params *g_params)
+{
+	t_room		*start_of_list;
+	t_room		*tmp;
+	t_neighbour	*neighb;
+	t_neighbour	*pmt;
+
+	if (!g_params)
+		return ;
+	start_of_list = g_params->start_of_list;
+	while (start_of_list)
+	{
+		free(start_of_list->name);
+		neighb = start_of_list->neighbours;
+		while (neighb)
+		{
+			pmt = neighb;
+			neighb = neighb->next;
+			free(pmt);
+		}
+		tmp = start_of_list;
+		start_of_list = start_of_list->next;
+		free(tmp);
+	}
+	free(g_params->arr);
+	free(g_params);
+}
 
 void	check_coordinates(t_params *g_params)
 {
 	t_room		*start_of_list;
 	t_room		*tmp;
 
+	if (!g_params)
+		return ;
 	start_of_list = g_params->start_of_list;
 	while (start_of_list)
 	{
@@ -32,49 +62,117 @@ void	check_coordinates(t_params *g_params)
 	}
 }
 
+int		num_of_nghbrs(t_neighbour *neighbour)
+{
+	int		i;
+
+	i = 0;
+	while (neighbour)
+	{
+		neighbour = neighbour->next;
+		i++;
+	}
+	return (i);
+}
+
+int		sum_of_paths(t_path **paths, int flows)
+{
+	int		sum;
+	int		i;
+
+	i = 0;
+	sum = 0;
+	while (i < flows)
+	{
+		sum += paths[i]->len_seq;
+		i++;
+	}
+	return (sum);
+}
+
+void	copy(t_path ***dest, t_path **src, int flows)
+{
+	int			i;
+
+	*dest = (t_path **)malloc(sizeof(t_path *) * flows);
+	i = 0;
+	while (i < flows)
+	{
+		(*dest)[i] = (t_path *)malloc(sizeof(t_path));
+		i++;
+	}
+	i = 0;
+	while (i < flows)
+	{
+		(*dest)[i]->len_seq = src[i]->len_seq;
+		(*dest)[i]->seq = src[i]->seq;
+		i++;
+	}
+}
+
+int		ft_min(int a, int b, int c)
+{
+	if (a <= b && a <= c)
+		return (a);
+	if (b <= a && b <= c)
+		return (b);
+	return (c);
+}
+
+t_room	**lst_to_array(t_neighbour *nghbr, int len)
+{
+	int		i;
+	t_room	**res;
+
+	res = (t_room **)malloc(sizeof(*res) * len);
+	i = 0;
+	while (nghbr)
+	{
+		res[i] = nghbr->room;
+		nghbr = nghbr->next;
+		i++;
+	}
+	return (res);
+}
+
+void	print_paths(t_path **short_paths, int flows)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < flows)
+	{
+		printf("len: %d\n", short_paths[i]->len_seq);
+		j = 0;
+		while (j < short_paths[i]->len_seq)
+		{
+			printf("%s\n", short_paths[i]->seq->room->name);
+			short_paths[i]->seq = short_paths[i]->seq->next;
+			j++;
+		}
+		printf("end\n");
+		printf("-----------------\n");
+		i++;
+	}
+	return ;
+}
+
 int		main(int argc, char **argv)
 {
 	t_params	*g_params;
-	t_room		**graph;
+	t_path		*short_paths;
 
 	argc = 0;
 	argv = NULL;
 	if (!(g_params = (t_params *)malloc(sizeof(t_params))))
 		error_exit();
-	g_params_init(g_params, &fls);
-	// read_input(g_params);
-	// check_coordinates(g_params);
-	graph = (t_room **)malloc(sizeof(t_room) * 8);
-	graph[0] = new_room("start", 4, 0);
-	graph[1] = new_room("1", 4, 2);
-	graph[2] = new_room("2", 4, 4);
-	graph[3] = new_room("3", 2, 2);
-	graph[4] = new_room("4", 0, 4);
-	graph[5] = new_room("5", 8, 2);
-	graph[6] = new_room("6", 8, 4);
-	graph[7] = new_room("end", 4, 6);
-	
-	graph[0]->next = graph[1];
-	graph[0]->next->next = graph[3];
-	graph[1]->next = graph[0];
-	graph[1]->next->next = graph[2];
-	graph[1]->next->next->next = graph[5];
-	graph[2]->next = graph[1];
-	graph[2]->next->next = graph[4];
-	graph[2]->next->next->next = graph[7];
-	graph[3]->next = graph[0];
-	graph[3]->next->next = graph[4];
-	graph[4]->next = graph[3];
-	graph[4]->next->next = graph[2];
-	graph[5]->next = graph[1];
-	graph[5]->next->next = graph[6];
-	graph[6]->next = graph[5];
-	graph[6]->next->next = graph[7];
-	graph[7]->next = graph[6];
-	graph[7]->next->next = graph[2];
+	read_input(g_params);
+	check_coordinates(g_params);
+	//algorithm(g_params);
 
-	build_level_graph(graph);
-	
+	//walk_paths(short_paths, g_params);
+
 	free_g_params(g_params);
 	return (0);
 }
