@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/06 20:29:28 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/06 20:38:58 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,26 +88,6 @@ int		sum_of_paths(t_path **paths, int flows)
 		i++;
 	}
 	return (sum);
-}
-
-void	copy(t_path ***dest, t_path **src, int flows)
-{
-	int			i;
-
-	*dest = (t_path **)malloc(sizeof(t_path *) * flows);
-	i = 0;
-	while (i < flows)
-	{
-		(*dest)[i] = (t_path *)malloc(sizeof(t_path));
-		i++;
-	}
-	i = 0;
-	while (i < flows)
-	{
-		(*dest)[i]->len_seq = src[i]->len_seq;
-		(*dest)[i]->seq = src[i]->seq;
-		i++;
-	}
 }
 
 int		ft_min(int a, int b, int c)

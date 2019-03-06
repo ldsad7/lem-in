@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/06 20:30:39 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/06 20:39:33 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ struct					s_room
 	int					visited;
 };
 
+typedef struct			s_path
+{
+	int					len_seq;
+	t_neighbour			*seq;
+	struct s_path		*next;
+}						t_path;
+
 typedef struct			s_params
 {
 	int					nr_rooms;
@@ -45,13 +52,6 @@ typedef struct			s_params
 	t_path				*start_of_list_of_path;
 	t_room				**arr; // sorted array of nodes
 }						t_params;
-
-typedef struct			s_path
-{
-	int					len_seq;
-	t_neighbour			*seq;
-	struct s_path		*next;
-}						t_path;
 
 t_params				*g_params; //extern 
 enum					e_start_end	{e_start, e_end};
