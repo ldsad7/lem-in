@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 11:53:28 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/07 17:33:23 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/07 20:34:56 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,15 @@ int				bfs_count_level_for_node(int level, t_room *room)
 {
 	t_neighbour *neighbours;
 
-	
 	if (ft_strequ(room->name, g_params->end->name))
 		return (level);
 	neighbours = room->neighbours;
 	while (neighbours)
 	{
-		
 	}
 }
 
-t_level_room	*bfs_launch(t_room *room) //build_level_graph
+t_level_room	*bfs_launch(t_room *room) // build_level_graph
 {
 	// char *queue;
 	char **visited_nodes;

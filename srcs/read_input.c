@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/07 20:23:41 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/07 20:33:57 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ t_room	*room_writing(char **ln_split)
 	tmp->coord_y = num2;
 	tmp->neighbours = NULL;
 	tmp->next = NULL;
+	tmp->num_path = 0;
 	if (g_params->start_of_list)
 		tmp->next = g_params->start_of_list;
 	g_params->start_of_list = tmp;
@@ -91,9 +92,15 @@ void	start_end_writing(char **line)
 		error_exit();
 	}
 	if (start_or_end == e_start)
+	{
 		g_params->start = room_writing(line_split);
+		g_params->start->num_path = -1;
+	}
 	else
+	{
 		g_params->end = room_writing(line_split);
+		g_params->end->num_path = -1;
+	}
 	free_2d_array(line_split);
 }
 
