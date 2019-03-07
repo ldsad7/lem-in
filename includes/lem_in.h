@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/06 20:39:33 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/07 17:02:03 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 # include "../libft/includes/libft.h"
 # include <stdio.h>
 
-typedef struct			s_neighbour t_neighbour;
-typedef struct			s_room t_room;
+typedef struct s_neighbour	t_neighbour;
+typedef struct s_room		t_room;
+typedef struct s_level_room	t_level_room;
 
 struct					s_neighbour
 {
@@ -30,7 +31,7 @@ struct					s_room
 	char				*name;
 	int					coord_x;
 	int					coord_y;
-	t_room				*next;
+	t_room				*next; // needed only for input reading
 	t_neighbour			*neighbours;
 	int					visited;
 };
@@ -50,8 +51,16 @@ typedef struct			s_params
 	t_room				*end;
 	t_room				*start_of_list;
 	t_path				*start_of_list_of_path;
+	t_level_room		*start_of_list_of_level;
 	t_room				**arr; // sorted array of nodes
 }						t_params;
+
+struct					s_level_room
+{
+	int					level; // how many steps till the end node
+	t_level_room		*next;
+	t_room				*room;
+};
 
 t_params				*g_params; //extern 
 enum					e_start_end	{e_start, e_end};
@@ -67,8 +76,9 @@ void					start_end_writing(char **line, t_params *g_params);
 t_room					*find_leaf(char *name, t_params *g_params);
 char					*ft_strjoin_for_arr(char **lines, int max_len);
 void					link_writing(char **line, t_params *g_params);
-void					free_g_params(t_params *g_params);
+void					free_g_params(void);
 t_room					*new_room(char *name, int x, int y);
-t_room					**build_level_graph(t_room **graph);
+// t_room					**build_level_graph(t_room **graph);
+int						ft_min(int a, int b, int c);
 
 #endif

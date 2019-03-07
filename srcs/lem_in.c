@@ -6,17 +6,13 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2019/03/06 20:38:58 by tsimonis         ###   ########.fr       */
-=======
-/*   Updated: 2019/03/06 20:34:59 by bsprigga         ###   ########.fr       */
->>>>>>> 31bca447444295da6896c7fc48d642401fbb4e4a
+/*   Updated: 2019/03/07 14:32:37 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-void	free_g_params(t_params *g_params)
+void	free_g_params(void)
 {
 	t_room		*start_of_list;
 	t_room		*tmp;
@@ -145,7 +141,8 @@ void	print_paths(t_path **short_paths, int flows)
 int		main(int argc, char **argv)
 {
 	t_params	*g_params;
-	t_path		*short_paths;
+	t_path		*paths;
+	t_
 
 	argc = 0;
 	argv = NULL;
@@ -153,10 +150,11 @@ int		main(int argc, char **argv)
 		error_exit();
 	read_input(g_params);
 	check_coordinates(g_params);
+	
 	//algorithm(g_params);
 
-	//walk_paths(short_paths, g_params);
+	//walk_paths(paths, g_params);
 
-	free_g_params(g_params);
+	free_g_params();
 	return (0);
 }
