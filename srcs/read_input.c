@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/06 12:32:12 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/07 20:23:41 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ size_t	ft_arrlen(char **str)
 	return (i);
 }
 
-void	get_nr_ants(char **line, t_params *g_params)
+void	get_nr_ants(char **line)
 {
 	long long num;
 
-	while (get_next_line_or_exit(line, g_params) && (*line)[0] == '#'
+	while (get_next_line_or_exit(line) && (*line)[0] == '#'
 			&& !ft_strequ(*line, "##start") && !ft_strequ(*line, "##end"))
 		free(*line);
 	if (ft_isnumeric(*line))
@@ -41,7 +41,7 @@ void	get_nr_ants(char **line, t_params *g_params)
 	free(*line);
 }
 
-t_room	*room_writing(char **ln_split, t_params *g_params)
+t_room	*room_writing(char **ln_split)
 {
 	t_room	*tmp;
 	int		num1;
@@ -70,7 +70,7 @@ t_room	*room_writing(char **ln_split, t_params *g_params)
 	return (tmp);
 }
 
-void	start_end_writing(char **line, t_params *g_params)
+void	start_end_writing(char **line)
 {
 	int		start_or_end;
 	char	**line_split;
@@ -79,7 +79,7 @@ void	start_end_writing(char **line, t_params *g_params)
 	if ((!start_or_end && g_params->start) || (start_or_end && g_params->end))
 		error_exit();
 	free(*line);
-	while (get_next_line_or_exit(line, g_params) && (*line)[0] == '#' &&
+	while (get_next_line_or_exit(line) && (*line)[0] == '#' &&
 			!ft_strequ(*line, "##start") && !ft_strequ(*line, "##end"))
 		free(*line);
 	if (ft_strequ(*line, "##start") || ft_strequ(*line, "##end"))
@@ -91,13 +91,13 @@ void	start_end_writing(char **line, t_params *g_params)
 		error_exit();
 	}
 	if (start_or_end == e_start)
-		g_params->start = room_writing(line_split, g_params);
+		g_params->start = room_writing(line_split);
 	else
-		g_params->end = room_writing(line_split, g_params);
+		g_params->end = room_writing(line_split);
 	free_2d_array(line_split);
 }
 
-t_room	*find_leaf(char *name, t_params *g_params)
+t_room	*find_leaf(char *name)
 {
 	int		start;
 	int		end;
@@ -166,7 +166,7 @@ void	add_to_lst(t_room *input, t_room *output)
 	output->neighbours = neighb;
 }
 
-void	sort_list_to_arr(t_params *g_params)
+void	sort_list_to_arr(void)
 {
 	int		i;
 	int		j;
@@ -197,7 +197,7 @@ void	sort_list_to_arr(t_params *g_params)
 	}
 }
 
-void	link_writing(char **line, t_params *g_params)
+void	link_writing(char **line)
 {
 	char		**line_split;
 	char		*first_name;
@@ -206,7 +206,7 @@ void	link_writing(char **line, t_params *g_params)
 	size_t		i;
 
 	if (!(g_params->arr))
-		sort_list_to_arr(g_params);
+		sort_list_to_arr();
 	line_split = ft_strsplit(*line, '-');
 	if (!(i = 0) && ft_arrlen(line_split) < 2)
 		error_exit();
@@ -215,8 +215,8 @@ void	link_writing(char **line, t_params *g_params)
 		if (!(first_name = ft_strjoin_for_arr(line_split, i + 1)) ||
 			!(second_name = ft_strdup(*line + ft_strlen(first_name) + 1)))
 			exit(0);
-		if (++i && (tmps[0] = find_leaf(first_name, g_params))
-				&& (tmps[1] = find_leaf(second_name, g_params)))
+		if (++i && (tmps[0] = find_leaf(first_name))
+				&& (tmps[1] = find_leaf(second_name)))
 			break ;
 		free(first_name);
 		free(second_name);
@@ -230,8 +230,10 @@ void	link_writing(char **line, t_params *g_params)
 	free(second_name);
 }
 
-int		g_params_init(t_params *g_params, int (*fls)[3])
+int		g_params_init(int (*fls)[3])
 {
+	if (!(g_params = (t_params *)malloc(sizeof(t_params))))
+		exit(0);
 	g_params->nr_rooms = 0;
 	g_params->nr_ants = 0;
 	g_params->start = NULL;
@@ -250,17 +252,17 @@ int		g_params_init(t_params *g_params, int (*fls)[3])
 **	fls[2] -- was there a link?
 */
 
-void	read_input(t_params *g_params)
+void	read_input(void)
 {
 	char	*line;
 	int		nr_bytes_read;
 	char	**line_split;
 	int		fls[3];
 
-	g_params_init(g_params, &fls);
+	g_params_init(&fls);
 	line = NULL;
-	get_nr_ants(&line, g_params);
-	while ((nr_bytes_read = get_next_line_or_exit(&line, g_params)))
+	get_nr_ants(&line);
+	while ((nr_bytes_read = get_next_line_or_exit(&line)))
 	{
 		line_split = ft_strsplit(line, ' ');
 		if (line[0] == '#' && !ft_strequ(line, "##start")
@@ -268,11 +270,11 @@ void	read_input(t_params *g_params)
 			;
 		else if ((ft_strequ(line, "##start") && (fls[0] = 1))
 				|| (ft_strequ(line, "##end") && (fls[1] = 1)))
-			start_end_writing(&line, g_params);
+			start_end_writing(&line);
 		else if (ft_arrlen(line_split) == 3 && !fls[2])
-			room_writing(line_split, g_params);
+			room_writing(line_split);
 		else if (ft_arrlen(line_split) == 1 && (fls[2] = 1))
-			link_writing(&line, g_params);
+			link_writing(&line);
 		else
 			error_exit();
 		free(line);

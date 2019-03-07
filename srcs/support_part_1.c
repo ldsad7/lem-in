@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 11:40:06 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/06 15:43:33 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/07 20:15:15 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	free_2d_array(char **line)
 	free(line);
 }
 
-void	free_g_params(t_params *g_params)
+void	free_g_params(void)
 {
 	t_room		*start_of_list;
 	t_room		*tmp;
@@ -52,12 +52,12 @@ void	free_g_params(t_params *g_params)
 
 void	error_exit(void)
 {
-	free_g_params(g_params);
+	free_g_params();
 	ft_putstr("ERROR");
 	exit(0);
 }
 
-int		get_next_line_or_exit(char **line, t_params *g_params)
+int		get_next_line_or_exit(char **line)
 {
 	int nr_bytes_read;
 

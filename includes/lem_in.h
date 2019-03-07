@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/07 17:02:03 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/07 20:14:26 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define LEM_IN_H
 
 # include "../libft/includes/libft.h"
-# include <stdio.h>
+# include <stdio.h> // delete at the end
 
 typedef struct s_neighbour	t_neighbour;
 typedef struct s_room		t_room;
@@ -62,23 +62,22 @@ struct					s_level_room
 	t_room				*room;
 };
 
-t_params				*g_params; //extern 
+t_params				*g_params;
 enum					e_start_end	{e_start, e_end};
 
-void					read_input(t_params *g_params);
-int						get_next_line_or_exit(char **line, t_params *g_params);
+void					read_input(void);
+int						get_next_line_or_exit(char **line);
 void					free_2d_array(char **line);
-void					error_exit(void); //t_params *g_params
+void					error_exit(void);
 size_t					ft_arrlen(char **str);
-void					get_nr_ants(char **line, t_params *g_params);
-t_room					*room_writing(char **ln_split, t_params *g_params);
-void					start_end_writing(char **line, t_params *g_params);
-t_room					*find_leaf(char *name, t_params *g_params);
+void					get_nr_ants(char **line);
+t_room					*room_writing(char **ln_split);
+void					start_end_writing(char **line);
+t_room					*find_leaf(char *name);
 char					*ft_strjoin_for_arr(char **lines, int max_len);
-void					link_writing(char **line, t_params *g_params);
+void					link_writing(char **line);
 void					free_g_params(void);
 t_room					*new_room(char *name, int x, int y);
-// t_room					**build_level_graph(t_room **graph);
 int						ft_min(int a, int b, int c);
 
 #endif

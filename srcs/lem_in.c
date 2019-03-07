@@ -6,41 +6,13 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/07 14:32:37 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/07 20:25:20 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-void	free_g_params(void)
-{
-	t_room		*start_of_list;
-	t_room		*tmp;
-	t_neighbour	*neighb;
-	t_neighbour	*pmt;
-
-	if (!g_params)
-		return ;
-	start_of_list = g_params->start_of_list;
-	while (start_of_list)
-	{
-		free(start_of_list->name);
-		neighb = start_of_list->neighbours;
-		while (neighb)
-		{
-			pmt = neighb;
-			neighb = neighb->next;
-			free(pmt);
-		}
-		tmp = start_of_list;
-		start_of_list = start_of_list->next;
-		free(tmp);
-	}
-	free(g_params->arr);
-	free(g_params);
-}
-
-void	check_coordinates(t_params *g_params)
+void	check_coordinates(void)
 {
 	t_room		*start_of_list;
 	t_room		*tmp;
@@ -117,8 +89,8 @@ t_room	**lst_to_array(t_neighbour *nghbr, int len)
 
 void	print_paths(t_path **short_paths, int flows)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 
 	i = 0;
 	while (i < flows)
@@ -140,20 +112,12 @@ void	print_paths(t_path **short_paths, int flows)
 
 int		main(int argc, char **argv)
 {
-	t_params	*g_params;
-	t_path		*paths;
-	t_
+	//t_path		*paths;
 
 	argc = 0;
 	argv = NULL;
-	if (!(g_params = (t_params *)malloc(sizeof(t_params))))
-		error_exit();
-	read_input(g_params);
-	check_coordinates(g_params);
-	
-	//algorithm(g_params);
-
-	//walk_paths(paths, g_params);
+	read_input();
+	check_coordinates();
 
 	free_g_params();
 	return (0);

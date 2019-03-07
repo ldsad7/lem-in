@@ -6,7 +6,7 @@
 #    By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/01 17:36:37 by bsprigga          #+#    #+#              #
-#    Updated: 2019/03/03 03:10:33 by tsimonis         ###   ########.fr        #
+#    Updated: 2019/03/07 20:08:51 by tsimonis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ CC = clang
 FLAGS := -Wall -Werror -Wextra -g
 VPATH := . srcs
 
-SRCS = lem-in.c read_input.c support_part_1.c
+SRCS = lem_in.c read_input.c support_part_1.c
 
 OBJECTS = $(SRCS:.c=.o)
 
