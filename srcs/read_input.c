@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/07 20:33:57 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/08 03:35:52 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ t_room	*room_writing(char **ln_split)
 	tmp->coord_y = num2;
 	tmp->neighbours = NULL;
 	tmp->next = NULL;
+	tmp->prev = NULL;
 	tmp->num_path = 0;
 	if (g_params->start_of_list)
 		tmp->next = g_params->start_of_list;
@@ -99,7 +100,7 @@ void	start_end_writing(char **line)
 	else
 	{
 		g_params->end = room_writing(line_split);
-		g_params->end->num_path = -1;
+		g_params->end->num_path = -2;
 	}
 	free_2d_array(line_split);
 }
@@ -246,6 +247,7 @@ int		g_params_init(int (*fls)[3])
 	g_params->start = NULL;
 	g_params->end = NULL;
 	g_params->start_of_list = NULL;
+	g_params->start_of_list_of_path = NULL;
 	g_params->arr = NULL;
 	(*fls)[0] = 0;
 	(*fls)[1] = 0;

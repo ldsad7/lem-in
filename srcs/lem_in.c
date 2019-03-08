@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/07 21:17:08 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/08 06:17:13 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,24 +87,27 @@ t_room	**lst_to_array(t_neighbour *nghbr, int len)
 	return (res);
 }
 
-void	print_paths(t_path **short_paths, int flows)
+void	print_paths(void)
 {
-	int		i;
-	int		j;
+	int				i;
+	t_neighbour		*seq;
+	t_path			*paths;
 
-	i = 0;
-	while (i < flows)
+	paths = g_params->start_of_list_of_path;
+	i = 1;
+	while (paths)
 	{
-		printf("len: %d\n", short_paths[i]->len_seq);
-		j = 0;
-		while (j < short_paths[i]->len_seq)
+		printf("path №%d, num_of_path №%d:\n", i, paths->num_path);
+		printf("start\n");
+		seq = paths->seq;
+		while (seq)
 		{
-			printf("%s\n", short_paths[i]->seq->room->name);
-			short_paths[i]->seq = short_paths[i]->seq->next;
-			j++;
+			printf("%s\n", seq->room->name);
+			seq = seq->next;
 		}
 		printf("end\n");
 		printf("-----------------\n");
+		paths = paths->next;
 		i++;
 	}
 	return ;
@@ -112,13 +115,18 @@ void	print_paths(t_path **short_paths, int flows)
 
 int		main(int argc, char **argv)
 {
-	//t_path		*paths;
+	t_path		*paths;
+	int			flows;
 
 	argc = 0;
 	argv = NULL;
 	read_input();
 	check_coordinates();
-
+	flows = ft_min(g_params->nr_ants,
+			num_of_nghbrs(g_params->start->neighbours),
+			num_of_nghbrs(g_params->end->neighbours));
+	algorithm(flows, &paths);
+	print_paths();
 	free_g_params();
 	return (0);
 }

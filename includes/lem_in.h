@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/07 21:17:07 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/08 06:20:31 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,14 @@ struct						s_room
 	int						coord_x;
 	int						coord_y;
 	t_room					*next; // needed only for input reading
+	t_room					*prev; // needed for the algorithm
 	t_neighbour				*neighbours;
 	int						num_path;
 };
 
 typedef struct				s_path
 {
+	int						num_path;
 	int						len_seq;
 	t_neighbour				*seq;
 	struct s_path			*next;
@@ -86,5 +88,6 @@ void						link_writing(char **line);
 void						free_g_params(void);
 t_room						*new_room(char *name, int x, int y);
 int							ft_min(int a, int b, int c);
+void						algorithm(int flows, t_path **paths);
 
 #endif
