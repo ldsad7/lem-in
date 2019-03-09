@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/08 06:20:31 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/09 19:11:33 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 typedef struct s_neighbour	t_neighbour;
 typedef struct s_room		t_room;
+// typedef struct s_level_room	t_level_room;
 
 struct						s_neighbour
 {
@@ -34,6 +35,8 @@ struct						s_room
 	t_room					*prev; // needed for the algorithm
 	t_neighbour				*neighbours;
 	int						num_path;
+	int						visited_for_level; //flag nodes after assigning level
+	int						level;
 };
 
 typedef struct				s_path
@@ -58,18 +61,16 @@ typedef struct				s_params
 typedef struct				s_queue
 {
 	struct s_queue			*next;
-	struct s_queue			*prev;
+	// struct s_queue			*prev;
 	t_room					*room;
 }							t_queue;
 
-/*
-struct						s_level_room
-{
-	int						level; // how many steps till the end node
-	t_level_room			*next;
-	t_room					*room;
-};
-*/
+// struct						s_level_room
+// {
+// 	int						level; // how many steps till the end node
+// 	t_level_room			*next;
+// 	t_room					*room;
+// };
 
 t_params					*g_params;
 enum						e_start_end	{e_start, e_end};

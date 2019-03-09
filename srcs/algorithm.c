@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   algorithm.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/07 20:37:07 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/08 06:20:21 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/08 17:43:11 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,7 @@ int		disjoint_paths(int flows)
 		num_of_paths++;
 		tmp = tmp->next;
 	}
-	if (num_of_paths >= flows + 5)
+	if (num_of_paths >= 100)
 	{
 		fl = 0;
 		return (1);
