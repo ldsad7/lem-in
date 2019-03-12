@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/09 19:11:55 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/11 19:17:53 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,11 @@ t_room	*room_writing(char **ln_split)
 	g_params->nr_rooms++;
 	tmp->coord_x = num1;
 	tmp->coord_y = num2;
-	tmp->neighbours = NULL;
 	tmp->next = NULL;
 	tmp->prev = NULL;
-	tmp->num_path = 0;
-	tmp->visited_for_level = 0;
-	tmp->level = 0; // will be changed in level graph assignment 
+	tmp->curr_path = 0;
+	tmp->in_paths = 0;
+	tmp->neighbours = NULL;
 	if (g_params->start_of_list)
 		tmp->next = g_params->start_of_list;
 	g_params->start_of_list = tmp;
@@ -95,15 +94,9 @@ void	start_end_writing(char **line)
 		error_exit();
 	}
 	if (start_or_end == e_start)
-	{
 		g_params->start = room_writing(line_split);
-		g_params->start->num_path = -1;
-	}
 	else
-	{
 		g_params->end = room_writing(line_split);
-		g_params->end->num_path = -2;
-	}
 	free_2d_array(line_split);
 }
 
@@ -240,7 +233,7 @@ void	link_writing(char **line)
 	free(second_name);
 }
 
-int		g_params_init(int (*fls)[3])
+void	g_params_init(int (*fls)[3], char **line)
 {
 	if (!(g_params = (t_params *)malloc(sizeof(t_params))))
 		exit(0);
@@ -249,12 +242,12 @@ int		g_params_init(int (*fls)[3])
 	g_params->start = NULL;
 	g_params->end = NULL;
 	g_params->start_of_list = NULL;
-	g_params->start_of_list_of_path = NULL;
+	g_params->start_of_list_of_paths = NULL;
 	g_params->arr = NULL;
 	(*fls)[0] = 0;
 	(*fls)[1] = 0;
 	(*fls)[2] = 0;
-	return (1);
+	*line = NULL;
 }
 
 /*
@@ -270,8 +263,7 @@ void	read_input(void)
 	char	**line_split;
 	int		fls[3];
 
-	g_params_init(&fls);
-	line = NULL;
+	g_params_init(&fls, &line);
 	get_nr_ants(&line);
 	while ((nr_bytes_read = get_next_line_or_exit(&line)))
 	{

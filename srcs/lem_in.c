@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/08 06:17:13 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/11 19:24:22 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,11 @@ void	print_paths(void)
 	t_neighbour		*seq;
 	t_path			*paths;
 
-	paths = g_params->start_of_list_of_path;
+	paths = g_params->start_of_list_of_paths;
 	i = 1;
 	while (paths)
 	{
-		printf("path №%d, num_of_path №%d:\n", i, paths->num_path);
+		printf("path №%d\n", i);
 		printf("start\n");
 		seq = paths->seq;
 		while (seq)

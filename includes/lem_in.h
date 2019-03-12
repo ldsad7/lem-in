@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/09 19:11:33 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/12 11:11:28 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 
 typedef struct s_neighbour	t_neighbour;
 typedef struct s_room		t_room;
-// typedef struct s_level_room	t_level_room;
 
 struct						s_neighbour
 {
@@ -31,17 +30,16 @@ struct						s_room
 	char					*name;
 	int						coord_x;
 	int						coord_y;
-	t_room					*next; // needed only for input reading
+	t_room					*next; // needed for reading input
+	t_room					*next_elem;  // needed for the algorithm
 	t_room					*prev; // needed for the algorithm
+	int						curr_path;
+	int						in_paths;
 	t_neighbour				*neighbours;
-	int						num_path;
-	int						visited_for_level; //flag nodes after assigning level
-	int						level;
 };
 
 typedef struct				s_path
 {
-	int						num_path;
 	int						len_seq;
 	t_neighbour				*seq;
 	struct s_path			*next;
@@ -54,23 +52,16 @@ typedef struct				s_params
 	t_room					*start;
 	t_room					*end;
 	t_room					*start_of_list;
-	t_path					*start_of_list_of_path;
+	t_path					*start_of_list_of_paths;
 	t_room					**arr; // sorted array of nodes
 }							t_params;
 
 typedef struct				s_queue
 {
 	struct s_queue			*next;
-	// struct s_queue			*prev;
+	struct s_queue			*prev;
 	t_room					*room;
 }							t_queue;
-
-// struct						s_level_room
-// {
-// 	int						level; // how many steps till the end node
-// 	t_level_room			*next;
-// 	t_room					*room;
-// };
 
 t_params					*g_params;
 enum						e_start_end	{e_start, e_end};

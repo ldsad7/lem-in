@@ -6,10 +6,11 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/06 11:53:28 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/09 19:59:30 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/11 12:24:35 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/*
 #include "lem_in.h"
 
 t_room			*new_room(char *name, int x, int y)
@@ -100,3 +101,4 @@ void			build_level_graph(t_room *room)
 		level++;
 	}
 }
+*/
