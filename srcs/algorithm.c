@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   algorithm.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/12 11:46:07 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/12 14:05:40 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,17 @@ void	push_queue(t_queue **queue, t_room **room)
 	rotate_forward(queue);
 }
 
+void	flag_path(t_room **room)
+{
+	(*room)->next_elem = g_params->end;
+	while (*room && *room != g_params->start)
+	{
+		(*room)->in_paths = 1;
+		(*room)->prev_elem = (*room)->prev_path;
+		*room = (*room)->prev_path;
+	}
+}
+
 void	add_path(t_path **paths, t_room **room)
 {
 	t_path		*path;
@@ -147,7 +158,6 @@ void	add_path(t_path **paths, t_room **room)
 	(*room)->next_elem = g_params->end;
 	while (*room && *room != g_params->start)
 	{
-		(*room)->in_paths = 1;
 		path->len_seq++;
 		if (!(new = (t_neighbour *)malloc(sizeof(t_neighbour))))
 			exit(0);
@@ -159,7 +169,7 @@ void	add_path(t_path **paths, t_room **room)
 			(*room)->next_elem = path->seq->room;
 		}
 		path->seq = new;
-		*room = (*room)->prev;
+		*room = (*room)->prev_path;
 	}
 	if (!g_params->start_of_list_of_paths)
 		g_params->start_of_list_of_paths = path;
@@ -176,43 +186,45 @@ void	add_path(t_path **paths, t_room **room)
 **	fl -- was there an edge of the previous path?
 */
 
-int		bfs(int curr_path, t_path **paths)
+int		bfs(int path_nr)
 {
 	t_queue			*queue;
 	t_neighbour		*neighb;
 	int				fl;
 
-	fl = 0;
+	fl = 1;
 	queue = NULL;
-	g_params->start->curr_path = curr_path;
+	g_params->start->path_nr = path_nr;
 	push_queue(&queue, &(g_params->start));
 	while (queue)
 	{
-		neighb = queue->room->neighbours;
-		while (neighb && (neighb->room != g_params->end ||
-				(neighb->room == g_params->end && queue->room->in_paths)))
+		if (fl && queue->room->in_paths)
 		{
-			if (neighb->room->curr_path != curr_path && neighb->room != g_params->end)
-			{
-				if (fl || (!queue->room->in_paths && queue->room != g_params->start) || (neighb->room->in_paths && queue->room->next_elem != neighb->room && queue->room != g_params->start) ||
-					(queue->room == g_params->start && !neighb->room->in_paths))
-				{
-					if (queue->room->in_paths && neighb->room->in_paths)
-						fl = 1;
-					push_queue(&queue, &(neighb->room));
-					neighb->room->curr_path = curr_path;
-					if (!(queue->room->in_paths && neighb->room->in_paths))
-						neighb->room->prev = queue->room;
-				}
-			}
-			neighb = neighb->next;
+			push_queue(&queue, &(queue->room->prev_path));
+			queue->room->prev_path->path_nr = path_nr;
+			fl = 0;
 		}
-		if (neighb && neighb->room == g_params->end)
+		else
 		{
-
-			add_path(paths, &(queue->room));
-			queue_free(&queue);
-			return (1);
+			neighb = queue->room->neighbours;
+			while (neighb && (neighb->room != g_params->end ||
+			(neighb->room == g_params->end && queue->room->in_paths)))
+			{
+				if (neighb->room->path_nr != path_nr && neighb->room != g_params->end)
+				{
+					push_queue(&queue, &(neighb->room));
+					neighb->room->path_nr = path_nr;
+					if (!(neighb->room->path_nr) || !(queue->room->path_nr))
+						neighb->room->prev_path = queue->room;
+				}
+				neighb = neighb->next;
+			}
+			if (neighb && neighb->room == g_params->end)
+			{
+				flag_path(&(queue->room));
+				queue_free(&queue);
+				return (1);
+			}
 		}
 		queue_delone(&queue);
 	}
@@ -221,9 +233,20 @@ int		bfs(int curr_path, t_path **paths)
 
 void	algorithm(int flows, t_path **paths)
 {
-	int		i;
+	int			i;
+	t_neighbour *end_neighbours;
 
 	i = 1;
-	while (i <= flows && bfs(i, paths))
+	while (i <= flows && bfs(i))
 		i++;
+	end_neighbours = g_params->end->neighbours;
+	while (i > 0 && end_neighbours)
+	{
+		if (end_neighbours->room->in_paths)
+		{
+			add_path(paths, &(end_neighbours->room));
+			i--;
+		}
+		end_neighbours = end_neighbours->next;
+	}
 }

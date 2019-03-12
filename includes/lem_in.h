@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/12 11:11:28 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/12 13:24:13 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ struct						s_room
 	int						coord_y;
 	t_room					*next; // needed for reading input
 	t_room					*next_elem;  // needed for the algorithm
-	t_room					*prev; // needed for the algorithm
-	int						curr_path;
+	t_room					*prev_path; // needed for the algorithm
+	t_room					*prev_elem; // for current iteration tracking prev element for relinking
+	int						path_nr;
 	int						in_paths;
 	t_neighbour				*neighbours;
 };
