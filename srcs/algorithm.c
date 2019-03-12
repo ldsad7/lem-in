@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/12 14:05:40 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/12 15:19:59 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,8 @@ void	flag_path(t_room **room)
 	while (*room && *room != g_params->start)
 	{
 		(*room)->in_paths = 1;
+		if ((*room)->prev_path)
+			(*room)->prev_path->next_elem = *room;
 		(*room)->prev_elem = (*room)->prev_path;
 		*room = (*room)->prev_path;
 	}
@@ -210,11 +212,11 @@ int		bfs(int path_nr)
 			while (neighb && (neighb->room != g_params->end ||
 			(neighb->room == g_params->end && queue->room->in_paths)))
 			{
-				if (neighb->room->path_nr != path_nr && neighb->room != g_params->end)
+				if (neighb->room->path_nr != path_nr && neighb->room != g_params->end && !(queue->room == g_params->start && neighb->room->in_paths))
 				{
 					push_queue(&queue, &(neighb->room));
 					neighb->room->path_nr = path_nr;
-					if (!(neighb->room->path_nr) || !(queue->room->path_nr))
+					if (!(neighb->room->in_paths) || !(queue->room->in_paths))
 						neighb->room->prev_path = queue->room;
 				}
 				neighb = neighb->next;
