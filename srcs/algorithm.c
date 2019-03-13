@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/13 17:40:11 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/13 17:57:36 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,9 +175,11 @@ void	flag_path(t_room **paths_ends, int path_nr)
 			room->prev_path->next_elem = room;
 		room = room->prev_elem;
 	}
-	while (arr_len--)
+	path_nr--;
+	while (path_nr-- > 0) //arr_len--
 	{
-		room = paths_ends[arr_reflag_paths[arr_len] - 1];
+		//room = paths_ends[arr_reflag_paths[arr_len] - 1];
+		room = paths_ends[path_nr];
 		room->next_elem = g_params->end;
 		while (room && room != g_params->start)
 		{
