@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/13 17:43:08 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/13 19:17:52 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,9 +125,9 @@ int		main(int argc, char **argv)
 	flows = ft_min(g_params->nr_ants,
 			num_of_nghbrs(g_params->start->neighbours),
 			num_of_nghbrs(g_params->end->neighbours));
-	printf("%d\n", flows);
 	algorithm(flows, &paths);
-	print_paths();
+	//print_paths();
+	printf("%d\n", flows);
 	free_g_params();
 	return (0);
 }

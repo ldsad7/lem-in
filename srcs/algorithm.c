@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/13 17:57:36 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/13 19:30:48 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,9 +183,9 @@ void	flag_path(t_room **paths_ends, int path_nr)
 		room->next_elem = g_params->end;
 		while (room && room != g_params->start)
 		{
-			room->in_paths = path_nr;
+			room->in_paths = path_nr + 1;
 			room->fl = 1;
-			if (room->prev_elem->in_paths == 0 || room->prev_elem->in_paths == path_nr)
+			if (room->prev_elem->in_paths == 0 || (room->prev_elem->in_paths == path_nr + 1 && room->prev_elem == room->prev_path))
 			{
 				if (room->prev_path)
 				{
@@ -292,6 +292,7 @@ int		bfs(int path_nr, t_room ***paths_ends)
 				push_queue(&queue, &(queue->room->prev_path));
 				queue->room->prev_path->path_nr = path_nr;
 				queue->room->prev_path->fl = 0;
+				// queue->room->fl = 1;
 			}
 		}
 		else
@@ -305,6 +306,11 @@ int		bfs(int path_nr, t_room ***paths_ends)
 				{
 					push_queue(&queue, &(neighb->room));
 					neighb->room->path_nr = path_nr;
+					if (queue->room->in_paths && neighb->room->in_paths)
+					{
+						queue->room->fl = 1;
+						neighb->room->fl = 0;
+					}
 					if (!(queue->room->in_paths))
 						neighb->room->prev_elem = queue->room;
 				}
@@ -313,6 +319,7 @@ int		bfs(int path_nr, t_room ***paths_ends)
 			if (neighb && neighb->room == g_params->end)
 			{
 				(*paths_ends)[path_nr - 1] = queue->room;
+				//printf("%s\n", queue->room->name);
 				flag_path(*paths_ends, path_nr);
 				queue_free(&queue);
 				return (1);
@@ -327,12 +334,26 @@ void	algorithm(int flows, t_path **paths)
 {
 	int			i;
 	t_room		**paths_ends;
+	t_room		*room;
 
+	paths = NULL;
 	if (!(paths_ends = (t_room **)malloc(sizeof(t_room *) * flows)))
 		exit(0);
 	i = 1;
 	while (i <= flows && bfs(i, &paths_ends))
 		i++;
 	while (--i > 0)
-		add_path(paths, &(paths_ends[i - 1]));
+	{
+		//printf("%s\n", (paths_ends[i - 1])->name);
+		room = paths_ends[i - 1];
+		printf("path №%d\n", i);
+		while (room)
+		{
+			printf("%s\n", room->name);
+			room = room->prev_path;
+		}
+		printf("-------------\n");
+		//add_path(paths, &(paths_ends[i - 1]));
+	}
+	printf("%s\n", g_params->end->name);
 }
