@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/12 14:06:39 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/12 21:53:00 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ t_room	*room_writing(char **ln_split)
 	tmp->coord_x = num1;
 	tmp->coord_y = num2;
 	tmp->next = NULL;
+	tmp->next_elem = NULL;
 	tmp->prev_path = NULL;
 	tmp->prev_elem = NULL;
 	tmp->path_nr = 0;
