@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/12 22:12:47 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/13 16:55:03 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ struct						s_room
 	int						path_nr;
 	int						in_paths;
 	t_neighbour				*neighbours;
+	int						fl; // flag for obligatory direction in existing path counterwise
 };
 
 typedef struct				s_path
@@ -82,5 +83,6 @@ void						free_g_params(void);
 t_room						*new_room(char *name, int x, int y);
 int							ft_min(int a, int b, int c);
 void						algorithm(int flows, t_path **paths);
+int							num_of_nghbrs(t_neighbour *neighbour);
 
 #endif

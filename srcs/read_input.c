@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/12 21:53:00 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/13 17:20:48 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ t_room	*room_writing(char **ln_split)
 	tmp->path_nr = 0;
 	tmp->in_paths = 0;
 	tmp->neighbours = NULL;
+	tmp->fl = 1;
 	if (g_params->start_of_list)
 		tmp->next = g_params->start_of_list;
 	g_params->start_of_list = tmp;
@@ -179,7 +180,8 @@ void	sort_list_to_arr(void)
 	t_room	*start_of_list;
 
 	start_of_list = g_params->start_of_list;
-	g_params->arr = (t_room **)malloc(sizeof(t_room *) * (g_params->nr_rooms));
+	if (!(g_params->arr = (t_room **)malloc(sizeof(t_room *) * (g_params->nr_rooms))))
+		exit(0);
 	i = 0;
 	while (start_of_list)
 	{

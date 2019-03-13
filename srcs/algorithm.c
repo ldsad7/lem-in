@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/13 11:47:40 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/13 17:40:11 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,22 +134,71 @@ void	push_queue(t_queue **queue, t_room **room)
 	rotate_forward(queue);
 }
 
-void	flag_path(t_room **paths_ends, int path_nr) // t_room **room
+void	flag_path(t_room **paths_ends, int path_nr)
 {
-	t_room *room;
+	t_room	*room;
+	int		arr_reflag_paths[path_nr - 1];
+	int		arr_len;
+	int		j;
+	int		tmp;
 
-	while (--path_nr > -1 && (room = paths_ends[path_nr]))
+	arr_len = 0;
+	room = paths_ends[path_nr - 1];
+	room->next_elem = g_params->end;
+	while (room && room != g_params->start)
 	{
+		if (room->in_paths != 0)
+		{
+			j = 0;
+			while (j < arr_len)
+			{
+				if (arr_reflag_paths[j] >= room->in_paths)
+					break ;
+				j++;
+			}
+			if (arr_reflag_paths[j] != room->in_paths)
+			{
+				tmp = arr_len;
+				while (tmp > j)
+				{
+					arr_reflag_paths[tmp] = arr_reflag_paths[tmp - 1];
+					tmp--;
+				}
+				arr_reflag_paths[tmp] = room->in_paths;
+				arr_len++;
+			}
+		}
+		room->in_paths = path_nr;
+		room->fl = 1;
+		room->prev_path = room->prev_elem;
+		if (room->prev_path)
+			room->prev_path->next_elem = room;
+		room = room->prev_elem;
+	}
+	while (arr_len--)
+	{
+		room = paths_ends[arr_reflag_paths[arr_len] - 1];
 		room->next_elem = g_params->end;
 		while (room && room != g_params->start)
 		{
-			room->in_paths = 1;
-			room->prev_path = room->prev_elem;
+			room->in_paths = path_nr;
+			room->fl = 1;
+			if (room->prev_elem->in_paths == 0 || room->prev_elem->in_paths == path_nr)
+			{
+				if (room->prev_path)
+				{
+					room->prev_path->next_elem = NULL;
+					room->prev_path->in_paths = 0;
+					room->prev_path->fl = 1;
+				}
+				room->prev_path = room->prev_elem;
+			}
 			if (room->prev_path)
 				room->prev_path->next_elem = room;
-			room = room->prev_elem;
+			room = room->prev_path;
 		}
 	}
+	
 }
 
 void	print_state_of_map(void)
@@ -227,22 +276,20 @@ int		bfs(int path_nr, t_room ***paths_ends)
 {
 	t_queue			*queue;
 	t_neighbour		*neighb;
-	int				fl;
 
-	fl = 1;
 	queue = NULL;
 	g_params->start->path_nr = path_nr;
 	push_queue(&queue, &(g_params->start));
 	while (queue)
 	{
-		print_queue(queue);
-		if (fl && queue->room->in_paths)
+		//print_queue(queue);
+		if (queue->room->fl && queue->room->in_paths)
 		{
 			if (queue->room->prev_path->path_nr != path_nr)
 			{
 				push_queue(&queue, &(queue->room->prev_path));
 				queue->room->prev_path->path_nr = path_nr;
-				fl = 0;
+				queue->room->prev_path->fl = 0;
 			}
 		}
 		else
@@ -284,7 +331,6 @@ void	algorithm(int flows, t_path **paths)
 	i = 1;
 	while (i <= flows && bfs(i, &paths_ends))
 		i++;
-	//print_state_of_map();
 	while (--i > 0)
 		add_path(paths, &(paths_ends[i - 1]));
 }
