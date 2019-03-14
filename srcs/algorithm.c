@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/13 19:30:48 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/14 18:33:49 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ void	flag_path(t_room **paths_ends, int path_nr)
 	room->next_elem = g_params->end;
 	while (room && room != g_params->start)
 	{
+		
 		if (room->in_paths != 0)
 		{
 			j = 0;
@@ -168,6 +169,7 @@ void	flag_path(t_room **paths_ends, int path_nr)
 				arr_len++;
 			}
 		}
+		
 		room->in_paths = path_nr;
 		room->fl = 1;
 		room->prev_path = room->prev_elem;
@@ -284,10 +286,11 @@ int		bfs(int path_nr, t_room ***paths_ends)
 	push_queue(&queue, &(g_params->start));
 	while (queue)
 	{
-		//print_queue(queue);
+		print_queue(queue);
+		sleep(1);
 		if (queue->room->fl && queue->room->in_paths)
 		{
-			if (queue->room->prev_path->path_nr != path_nr)
+			if (queue->room->prev_path && queue->room->prev_path->path_nr != path_nr) // sega was here on big.txt before adding "queue->room->prev_path && "
 			{
 				push_queue(&queue, &(queue->room->prev_path));
 				queue->room->prev_path->path_nr = path_nr;
@@ -342,6 +345,7 @@ void	algorithm(int flows, t_path **paths)
 	i = 1;
 	while (i <= flows && bfs(i, &paths_ends))
 		i++;
+	
 	while (--i > 0)
 	{
 		//printf("%s\n", (paths_ends[i - 1])->name);
