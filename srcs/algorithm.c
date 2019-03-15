@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/14 18:33:49 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/15 11:13:59 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,8 +286,8 @@ int		bfs(int path_nr, t_room ***paths_ends)
 	push_queue(&queue, &(g_params->start));
 	while (queue)
 	{
-		print_queue(queue);
-		sleep(1);
+		// print_queue(queue);
+		// sleep(1);
 		if (queue->room->fl && queue->room->in_paths)
 		{
 			if (queue->room->prev_path && queue->room->prev_path->path_nr != path_nr) // sega was here on big.txt before adding "queue->room->prev_path && "
@@ -322,7 +322,7 @@ int		bfs(int path_nr, t_room ***paths_ends)
 			if (neighb && neighb->room == g_params->end)
 			{
 				(*paths_ends)[path_nr - 1] = queue->room;
-				//printf("%s\n", queue->room->name);
+				printf("%s\n", queue->room->name);
 				flag_path(*paths_ends, path_nr);
 				queue_free(&queue);
 				return (1);
