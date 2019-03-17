@@ -6,34 +6,35 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/14 17:43:59 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/16 20:18:08 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/lem_in.h"
 
-// !!!!not needed - info from sdremora!!!!
-// void	check_coordinates(void)
-// {
-// 	t_room		*start_of_list;
-// 	t_room		*tmp;
+/*
+void	check_coordinates(void)
+{
+ 	t_room		*start_of_list;
+ 	t_room		*tmp;
 
-// 	if (!g_params)
-// 		return ;
-// 	start_of_list = g_params->start_of_list;
-// 	while (start_of_list)
-// 	{
-// 		tmp = start_of_list->next;
-// 		while (tmp)
-// 		{
-// 			if (tmp->coord_x == start_of_list->coord_x &&
-// 				tmp->coord_y == start_of_list->coord_y)
-// 				error_exit();
-// 			tmp = tmp->next;
-// 		}
-// 		start_of_list = start_of_list->next;
-// 	}
-// }
+ 	if (!g_params)
+ 		return ;
+ 	start_of_list = g_params->start_of_list;
+ 	while (start_of_list)
+ 	{
+ 		tmp = start_of_list->next;
+ 		while (tmp)
+ 		{
+ 			if (tmp->coord_x == start_of_list->coord_x &&
+ 				tmp->coord_y == start_of_list->coord_y)
+ 				error_exit();
+ 			tmp = tmp->next;
+ 		}
+		start_of_list = start_of_list->next;
+	}
+}
+*/
 
 int		num_of_nghbrs(t_neighbour *neighbour)
 {
@@ -122,13 +123,12 @@ int		main(int argc, char **argv)
 	argc = 0;
 	argv = NULL;
 	read_input();
-	// check_coordinates();
+	//check_coordinates();
 	flows = ft_min(g_params->nr_ants,
 			num_of_nghbrs(g_params->start->neighbours),
 			num_of_nghbrs(g_params->end->neighbours));
 	algorithm(flows, &paths);
-	//print_paths();
-	printf("%d\n", flows);
+	print_paths();
 	free_g_params();
 	return (0);
 }

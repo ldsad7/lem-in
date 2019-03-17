@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/15 11:13:59 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/17 01:10:32 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,18 +137,21 @@ void	push_queue(t_queue **queue, t_room **room)
 void	flag_path(t_room **paths_ends, int path_nr)
 {
 	t_room	*room;
-	int		arr_reflag_paths[path_nr - 1];
+	int		arr_reflag_paths[path_nr];
 	int		arr_len;
 	int		j;
 	int		tmp;
 
 	arr_len = 0;
 	room = paths_ends[path_nr - 1];
-	room->next_elem = g_params->end;
+	printf("------------\n");
+	printf("%s\n", g_params->start->name);
+	printf("%s\n", g_params->end->name);
+	printf("------------\n");
 	while (room && room != g_params->start)
 	{
-		
-		if (room->in_paths != 0)
+		//printf("%s\n", room->name);
+		if (room->in_paths)
 		{
 			j = 0;
 			while (j < arr_len)
@@ -169,31 +172,40 @@ void	flag_path(t_room **paths_ends, int path_nr)
 				arr_len++;
 			}
 		}
-		
-		room->in_paths = path_nr;
-		room->fl = 1;
-		room->prev_path = room->prev_elem;
-		if (room->prev_path)
-			room->prev_path->next_elem = room;
 		room = room->prev_elem;
 	}
-	path_nr--;
-	while (path_nr-- > 0) //arr_len--
+	arr_reflag_paths[arr_len] = path_nr;
+	arr_len++;
+	j = arr_len;
+	while (arr_len-- > 0)
 	{
-		//room = paths_ends[arr_reflag_paths[arr_len] - 1];
-		room = paths_ends[path_nr];
+		tmp = arr_reflag_paths[arr_len];
+		room = paths_ends[tmp - 1];
+		while (room && room != g_params->start)
+		{
+			room->in_paths = 0;
+			room = room->prev_path;
+		}
+	}
+	arr_len = j;
+	while (arr_len-- > 0)
+	{
+		tmp = arr_reflag_paths[arr_len];
+		room = paths_ends[tmp - 1];
 		room->next_elem = g_params->end;
 		while (room && room != g_params->start)
 		{
-			room->in_paths = path_nr + 1;
+			room->in_paths = tmp;
 			room->fl = 1;
-			if (room->prev_elem->in_paths == 0 || (room->prev_elem->in_paths == path_nr + 1 && room->prev_elem == room->prev_path))
+			if (!(room->prev_elem->in_paths) && !(room->prev_path && room->prev_path == g_params->start))
 			{
 				if (room->prev_path)
 				{
-					room->prev_path->next_elem = NULL;
-					room->prev_path->in_paths = 0;
-					room->prev_path->fl = 1;
+					if (!(room->prev_path->in_paths))
+					{
+						room->prev_path->next_elem = NULL;
+						room->prev_path->in_paths = 0;
+					}
 				}
 				room->prev_path = room->prev_elem;
 			}
@@ -202,7 +214,6 @@ void	flag_path(t_room **paths_ends, int path_nr)
 			room = room->prev_path;
 		}
 	}
-	
 }
 
 void	print_state_of_map(void)
@@ -286,17 +297,12 @@ int		bfs(int path_nr, t_room ***paths_ends)
 	push_queue(&queue, &(g_params->start));
 	while (queue)
 	{
-		// print_queue(queue);
-		// sleep(1);
-		if (queue->room->fl && queue->room->in_paths)
+		//print_queue(queue);
+		if (queue->room->in_paths && queue->room->fl)
 		{
-			if (queue->room->prev_path && queue->room->prev_path->path_nr != path_nr) // sega was here on big.txt before adding "queue->room->prev_path && "
-			{
-				push_queue(&queue, &(queue->room->prev_path));
-				queue->room->prev_path->path_nr = path_nr;
-				queue->room->prev_path->fl = 0;
-				// queue->room->fl = 1;
-			}
+			push_queue(&queue, &(queue->room->prev_path));
+			queue->room->prev_path->path_nr = path_nr;
+			queue->room->prev_path->fl = 0;
 		}
 		else
 		{
@@ -305,16 +311,15 @@ int		bfs(int path_nr, t_room ***paths_ends)
 			(neighb->room == g_params->end && queue->room->in_paths)))
 			{
 				if (neighb->room->path_nr != path_nr && neighb->room != g_params->end
-					&& !(queue->room == g_params->start && neighb->room->in_paths))
+					&& !(queue->room == g_params->start && neighb->room->in_paths)
+					&& !(queue->room->in_paths && neighb->room == queue->room->next_elem))
 				{
 					push_queue(&queue, &(neighb->room));
 					neighb->room->path_nr = path_nr;
 					if (queue->room->in_paths && neighb->room->in_paths)
-					{
-						queue->room->fl = 1;
 						neighb->room->fl = 0;
-					}
-					if (!(queue->room->in_paths))
+					if (!(queue->room->in_paths) ||
+						(queue->room->in_paths && !(neighb->room->in_paths)))
 						neighb->room->prev_elem = queue->room;
 				}
 				neighb = neighb->next;
@@ -322,12 +327,12 @@ int		bfs(int path_nr, t_room ***paths_ends)
 			if (neighb && neighb->room == g_params->end)
 			{
 				(*paths_ends)[path_nr - 1] = queue->room;
-				printf("%s\n", queue->room->name);
 				flag_path(*paths_ends, path_nr);
 				queue_free(&queue);
 				return (1);
 			}
 		}
+		queue->room->fl = 1;
 		queue_delone(&queue);
 	}
 	return (0);
@@ -337,27 +342,13 @@ void	algorithm(int flows, t_path **paths)
 {
 	int			i;
 	t_room		**paths_ends;
-	t_room		*room;
 
-	paths = NULL;
+	*paths = NULL;
 	if (!(paths_ends = (t_room **)malloc(sizeof(t_room *) * flows)))
 		exit(0);
 	i = 1;
 	while (i <= flows && bfs(i, &paths_ends))
 		i++;
-	
 	while (--i > 0)
-	{
-		//printf("%s\n", (paths_ends[i - 1])->name);
-		room = paths_ends[i - 1];
-		printf("path №%d\n", i);
-		while (room)
-		{
-			printf("%s\n", room->name);
-			room = room->prev_path;
-		}
-		printf("-------------\n");
-		//add_path(paths, &(paths_ends[i - 1]));
-	}
-	printf("%s\n", g_params->end->name);
+		add_path(paths, &(paths_ends[i - 1]));
 }
