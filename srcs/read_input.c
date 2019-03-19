@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/16 23:01:23 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/17 19:57:33 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ t_room	*room_writing(char **ln_split)
 	tmp->in_paths = 0;
 	tmp->neighbours = NULL;
 	tmp->fl = 1;
+	tmp->ant_nr = 0;
 	if (g_params->start_of_list)
 		tmp->next = g_params->start_of_list;
 	g_params->start_of_list = tmp;

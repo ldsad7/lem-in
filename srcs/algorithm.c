@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/17 01:10:32 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/19 13:33:12 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,23 +134,20 @@ void	push_queue(t_queue **queue, t_room **room)
 	rotate_forward(queue);
 }
 
-void	flag_path(t_room **paths_ends, int path_nr)
+void	flag_path(t_room **paths_ends, int path_nr, t_path **paths)
 {
 	t_room	*room;
 	int		arr_reflag_paths[path_nr];
 	int		arr_len;
 	int		j;
 	int		tmp;
+	int		fl;
 
 	arr_len = 0;
 	room = paths_ends[path_nr - 1];
-	printf("------------\n");
-	printf("%s\n", g_params->start->name);
-	printf("%s\n", g_params->end->name);
-	printf("------------\n");
-	while (room && room != g_params->start)
+	fl = 0;
+	while (room != g_params->start)
 	{
-		//printf("%s\n", room->name);
 		if (room->in_paths)
 		{
 			j = 0;
@@ -172,47 +169,82 @@ void	flag_path(t_room **paths_ends, int path_nr)
 				arr_len++;
 			}
 		}
-		room = room->prev_elem;
+		if (!(room->prev_path) || fl)
+		{
+			room = room->prev_elem;
+			// fl = 0;
+		}
+		else if (!fl)
+		{
+			room = room->next_elem;
+			fl = 1;
+		}
 	}
-	arr_reflag_paths[arr_len] = path_nr;
-	arr_len++;
+	
 	j = arr_len;
 	while (arr_len-- > 0)
 	{
 		tmp = arr_reflag_paths[arr_len];
 		room = paths_ends[tmp - 1];
-		while (room && room != g_params->start)
+		while (room != g_params->start)
 		{
 			room->in_paths = 0;
 			room = room->prev_path;
 		}
 	}
 	arr_len = j;
+	arr_reflag_paths[arr_len] = path_nr;
+	arr_len++;
 	while (arr_len-- > 0)
 	{
 		tmp = arr_reflag_paths[arr_len];
 		room = paths_ends[tmp - 1];
 		room->next_elem = g_params->end;
-		while (room && room != g_params->start)
+		while (room != g_params->start)
 		{
 			room->in_paths = tmp;
 			room->fl = 1;
-			if (!(room->prev_elem->in_paths) && !(room->prev_path && room->prev_path == g_params->start))
-			{
-				if (room->prev_path)
-				{
-					if (!(room->prev_path->in_paths))
-					{
-						room->prev_path->next_elem = NULL;
-						room->prev_path->in_paths = 0;
-					}
-				}
+			if (((!(room->prev_elem->in_paths) && !(room->prev_path == g_params->start)) || tmp == path_nr))
 				room->prev_path = room->prev_elem;
-			}
-			if (room->prev_path)
-				room->prev_path->next_elem = room;
+			if (!(room->prev_path))
+				room->prev_path = room->prev_elem;
+			room->prev_path->next_elem = room;
 			room = room->prev_path;
 		}
+	}
+
+	tmp = 0;
+	j = 0;
+	while (++tmp <= path_nr)
+	{
+		if (tmp != arr_reflag_paths[j])
+		{
+			room = paths_ends[tmp - 1];
+			while (room != g_params->start)
+			{
+				room->in_paths = tmp;
+				if (room->prev_path)
+					room->prev_elem = room->prev_path;
+				room = room->prev_path;
+			}
+		}
+		else
+			j++;
+		add_path(paths, &(paths_ends[tmp - 1]));
+	}
+
+	room = g_params->start_of_list;
+	while(room)
+	{
+		if (!(room->in_paths))
+		{
+			room->prev_elem = NULL;
+			room->prev_path = NULL;
+			room->next_elem = NULL;
+			room->path_nr = 0;
+			room->fl = 1;
+		}
+		room = room->next;
 	}
 }
 
@@ -250,29 +282,29 @@ void	add_path(t_path **paths, t_room **room)
 {
 	t_path		*path;
 	t_neighbour	*new;
+	t_room		*tmp;
 
 	if (!(path = (t_path *)malloc(sizeof(t_path))))
 		exit(0);
 	path->len_seq = 1;
 	path->seq = NULL;
 	path->next = NULL;
-	(*room)->next_elem = g_params->end;
-	while (*room && *room != g_params->start)
+	//path->nr_ants_to_move = 0;
+	tmp = *room;
+	while (tmp && tmp != g_params->start)
 	{
 		path->len_seq++;
 		if (!(new = (t_neighbour *)malloc(sizeof(t_neighbour))))
 			exit(0);
-		new->room = *room;
+		new->room = tmp;
 		new->next = NULL;
 		if (path->seq)
-		{
 			new->next = path->seq;
-			(*room)->next_elem = path->seq->room;
-		}
 		path->seq = new;
-		*room = (*room)->prev_path;
+		tmp->prev_path->next_elem = tmp;
+		tmp = tmp->prev_path;
 	}
-	if (!g_params->start_of_list_of_paths)
+	if (!(g_params->start_of_list_of_paths))
 		g_params->start_of_list_of_paths = path;
 	if (*paths)
 	{
@@ -287,7 +319,7 @@ void	add_path(t_path **paths, t_room **room)
 **	fl -- was there an edge of the previous path?
 */
 
-int		bfs(int path_nr, t_room ***paths_ends)
+int		bfs(int path_nr, t_room ***paths_ends, t_path **paths)
 {
 	t_queue			*queue;
 	t_neighbour		*neighb;
@@ -295,6 +327,7 @@ int		bfs(int path_nr, t_room ***paths_ends)
 	queue = NULL;
 	g_params->start->path_nr = path_nr;
 	push_queue(&queue, &(g_params->start));
+	// printf("------\n");
 	while (queue)
 	{
 		//print_queue(queue);
@@ -310,7 +343,8 @@ int		bfs(int path_nr, t_room ***paths_ends)
 			while (neighb && (neighb->room != g_params->end ||
 			(neighb->room == g_params->end && queue->room->in_paths)))
 			{
-				if (neighb->room->path_nr != path_nr && neighb->room != g_params->end
+				if (neighb->room->path_nr != path_nr // || (neighb->room->path_nr == path_nr && neighb->room->in_paths && !neighb->room->fl)
+					&& neighb->room != g_params->end
 					&& !(queue->room == g_params->start && neighb->room->in_paths)
 					&& !(queue->room->in_paths && neighb->room == queue->room->next_elem))
 				{
@@ -327,7 +361,7 @@ int		bfs(int path_nr, t_room ***paths_ends)
 			if (neighb && neighb->room == g_params->end)
 			{
 				(*paths_ends)[path_nr - 1] = queue->room;
-				flag_path(*paths_ends, path_nr);
+				flag_path(*paths_ends, path_nr, paths);
 				queue_free(&queue);
 				return (1);
 			}
@@ -338,17 +372,107 @@ int		bfs(int path_nr, t_room ***paths_ends)
 	return (0);
 }
 
-void	algorithm(int flows, t_path **paths)
+void	free_and_relocate_start_of_list_of_paths(t_path *paths_curr_iter)
+{
+	t_path		*tmp_path;
+	t_neighbour	*tmp_neghb;
+
+	while (g_params->start_of_list_of_paths != paths_curr_iter)
+	{
+		tmp_path = g_params->start_of_list_of_paths->next;
+		while (g_params->start_of_list_of_paths->seq)
+		{
+			tmp_neghb = g_params->start_of_list_of_paths->seq->next;
+			free(g_params->start_of_list_of_paths->seq);
+			g_params->start_of_list_of_paths->seq = tmp_neghb;
+		}
+		free(g_params->start_of_list_of_paths);
+		g_params->start_of_list_of_paths = tmp_path;
+	}
+}
+
+void	free_and_relocate_end_of_list_of_paths(t_path *paths_curr_iter)
+{
+	t_path		*tmp_path;
+	t_neighbour	*tmp_neghb;
+
+	while (paths_curr_iter)
+	{
+		tmp_path = paths_curr_iter->next;
+		while (paths_curr_iter->seq)
+		{
+			tmp_neghb = paths_curr_iter->seq->next;
+			free(paths_curr_iter->seq);
+			paths_curr_iter->seq = tmp_neghb;
+		}
+		free(paths_curr_iter);
+		paths_curr_iter = tmp_path;
+	}
+}
+
+int		compare(int *min_cost, int nr_paths)
+{
+	t_path	*paths;
+	t_path	*paths_curr_iter;
+	t_path	*paths_prev_iter;
+	int		sum_paths;
+	int		curr_cost;
+	int		iter;
+
+	paths = g_params->start_of_list_of_paths;
+	sum_paths = 0;
+	iter = 0;
+	while (++iter < nr_paths)
+	{
+		paths_prev_iter = paths;
+		paths = paths->next;
+	}
+	paths_curr_iter = paths;
+	while (paths)
+	{
+		sum_paths += paths->len_seq;
+		paths = paths->next;
+	}
+	curr_cost = (g_params->nr_ants + sum_paths) / nr_paths - 1;
+	if ((g_params->nr_ants + sum_paths) % nr_paths != 0)
+		curr_cost++;
+	if (*min_cost > curr_cost)
+	{
+		*min_cost = curr_cost;
+		free_and_relocate_start_of_list_of_paths(paths_curr_iter);
+		return (1);
+	}
+	free_and_relocate_end_of_list_of_paths(paths_curr_iter);
+	paths_prev_iter->next = NULL;
+	return (0);
+}
+
+int		algorithm(int flows, t_path **paths)
 {
 	int			i;
 	t_room		**paths_ends;
+	int			min_cost;
 
+	min_cost = 0;
 	*paths = NULL;
 	if (!(paths_ends = (t_room **)malloc(sizeof(t_room *) * flows)))
 		exit(0);
 	i = 1;
-	while (i <= flows && bfs(i, &paths_ends))
+	while (i <= flows && bfs(i, &paths_ends, paths))
+	{
+		if (i > 1)
+		{
+			if (!compare(&min_cost, i))
+				break ;
+		}
+		else
+		{
+			if (!(g_params->start_of_list_of_paths))
+				error_exit();
+			min_cost = g_params->nr_ants +
+			g_params->start_of_list_of_paths->len_seq - 1;
+		}
 		i++;
-	while (--i > 0)
-		add_path(paths, &(paths_ends[i - 1]));
+	}
+	return (min_cost);
 }
