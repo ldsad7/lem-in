@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/19 13:22:01 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/20 17:11:13 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,7 +252,9 @@ void	print_paths(int nr_steps)
 	// 							/ cnt_paths - tmp->len_seq;
 	// 	tmp = tmp->next;
 	// }
+	
 	iter_ants_move(nr_steps, room_arr, nr_ants_to_move_in_paths, cnt_paths);
+	
 	// first_iter_ants_move(&nr_steps);
 	// while (nr_steps--)
 	// {
@@ -293,6 +295,8 @@ void	print_paths_(void)
 				seq->room->next_elem = seq->next->room;
 				seq->next->room->prev_path = seq->room;
 			}
+			else
+				seq->room->next_elem = g_params->end;
 			seq = seq->next;
 		}
 		// printf("end\n");
@@ -318,6 +322,7 @@ int		main(int argc, char **argv)
 			num_of_nghbrs(g_params->start->neighbours),
 			num_of_nghbrs(g_params->end->neighbours));
 	nr_steps = algorithm(flows, &paths);
+	// printf("%d\n", nr_steps);
 	print_paths_();
 	print_paths(nr_steps);
 	free_g_params();

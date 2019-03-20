@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/19 13:33:12 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/20 17:10:46 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -410,7 +410,7 @@ void	free_and_relocate_end_of_list_of_paths(t_path *paths_curr_iter)
 	}
 }
 
-int		compare(int *min_cost, int nr_paths)
+int		compare(int *min_cost, int nr_paths, int j, t_path **paths_bfs)
 {
 	t_path	*paths;
 	t_path	*paths_curr_iter;
@@ -418,11 +418,13 @@ int		compare(int *min_cost, int nr_paths)
 	int		sum_paths;
 	int		curr_cost;
 	int		iter;
+	int		cnt_paths_moved;
 
 	paths = g_params->start_of_list_of_paths;
 	sum_paths = 0;
 	iter = 0;
-	while (++iter < nr_paths)
+	cnt_paths_moved = 0;
+	while (++iter < j)
 	{
 		paths_prev_iter = paths;
 		paths = paths->next;
@@ -432,17 +434,20 @@ int		compare(int *min_cost, int nr_paths)
 	{
 		sum_paths += paths->len_seq;
 		paths = paths->next;
+		cnt_paths_moved++;
 	}
 	curr_cost = (g_params->nr_ants + sum_paths) / nr_paths - 1;
 	if ((g_params->nr_ants + sum_paths) % nr_paths != 0)
 		curr_cost++;
-	if (*min_cost > curr_cost)
+	// printf("min_cost: %d, curr_cost: %d, cnt_paths_moved: %d\n", *min_cost, curr_cost, cnt_paths_moved);
+	if (*min_cost >= curr_cost)
 	{
 		*min_cost = curr_cost;
 		free_and_relocate_start_of_list_of_paths(paths_curr_iter);
-		return (1);
+		return (cnt_paths_moved + 1);
 	}
 	free_and_relocate_end_of_list_of_paths(paths_curr_iter);
+	*paths_bfs = paths_prev_iter;
 	paths_prev_iter->next = NULL;
 	return (0);
 }
@@ -450,6 +455,8 @@ int		compare(int *min_cost, int nr_paths)
 int		algorithm(int flows, t_path **paths)
 {
 	int			i;
+	int			j;
+	int			tmp;
 	t_room		**paths_ends;
 	int			min_cost;
 
@@ -458,12 +465,14 @@ int		algorithm(int flows, t_path **paths)
 	if (!(paths_ends = (t_room **)malloc(sizeof(t_room *) * flows)))
 		exit(0);
 	i = 1;
+	j = 1;
 	while (i <= flows && bfs(i, &paths_ends, paths))
 	{
-		if (i > 1)
+		if (j > 1)
 		{
-			if (!compare(&min_cost, i))
-				break ;
+			// printf("i:%d, j:%d\n", i, j);
+			if ((tmp = compare(&min_cost, i, j, paths)) > 0)
+				j = tmp;
 		}
 		else
 		{
@@ -472,6 +481,8 @@ int		algorithm(int flows, t_path **paths)
 			min_cost = g_params->nr_ants +
 			g_params->start_of_list_of_paths->len_seq - 1;
 		}
+		if (i == 1)
+			j++;
 		i++;
 	}
 	return (min_cost);
