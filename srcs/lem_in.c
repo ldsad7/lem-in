@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/20 17:11:13 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/20 19:12:40 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -308,6 +308,42 @@ void	print_paths_(void)
 	return ;
 }
 
+void	print_paths_double(void)
+{
+	int				i;
+	t_neighbour		*seq;
+	t_path			*paths;
+
+	paths = g_params->start_of_list_of_paths;
+	i = 1;
+	while (paths)
+	{
+		// printf("%d\n", paths->len_seq);
+		printf("path №%d\n", i);
+		seq = paths->seq;
+		printf("start\n");
+		seq->room->prev_path = g_params->start;
+		while (seq)
+		{
+			printf("%s\n", seq->room->name);
+			if (seq->next)
+			{
+				seq->room->next_elem = seq->next->room;
+				seq->next->room->prev_path = seq->room;
+			}
+			else
+				seq->room->next_elem = g_params->end;
+			seq = seq->next;
+		}
+		printf("end\n");
+		printf("-----------------\n");
+		paths = paths->next;
+		i++;
+	}
+	printf("-----------------\n");
+	return ;
+}
+
 int		main(int argc, char **argv)
 {
 	t_path		*paths;
@@ -324,7 +360,8 @@ int		main(int argc, char **argv)
 	nr_steps = algorithm(flows, &paths);
 	// printf("%d\n", nr_steps);
 	print_paths_();
-	print_paths(nr_steps);
+	print_paths_double();
+	// print_paths(nr_steps);
 	free_g_params();
 	return (0);
 }
