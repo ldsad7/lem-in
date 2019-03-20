@@ -177,8 +177,6 @@ void	iter_ants_move(int nr_steps, t_room **room_arr,
 			// }
 			// else
 			// {
-			if (!(room_arr[i]))
-				printf("!!!\n");
 			tmp_room = room_arr[i];
 			print_existing_ants_movement(&tmp_room, &space_flag);
 			// }
