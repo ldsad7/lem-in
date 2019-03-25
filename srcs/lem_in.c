@@ -277,8 +277,8 @@ int		main(int argc, char **argv)
 	nr_steps = algorithm(flows, &paths);
 	// printf("%d\n", nr_steps);
 	correct_paths();
-	print_paths_double();
-	// print_paths(nr_steps);
+	// print_paths_double();
+	print_paths(nr_steps);
 	free_g_params();
 	return (0);
 }
