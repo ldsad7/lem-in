@@ -69,7 +69,6 @@ t_room	*room_writing(char **ln_split)
 	tmp->path_nr = 0;
 	tmp->in_paths = 0;
 	tmp->neighbours = NULL;
-	tmp->fl = 1;
 	tmp->ant_nr = 0;
 	if (g_params->start_of_list)
 		tmp->next = g_params->start_of_list;

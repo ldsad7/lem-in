@@ -37,7 +37,6 @@ struct						s_room
 	int						path_nr;
 	int						in_paths;
 	t_neighbour				*neighbours;
-	int						fl; // flag for obligatory direction in existing path counterwise
 	int						ant_nr;
 };
 
@@ -46,7 +45,6 @@ typedef struct				s_path
 	int						len_seq;
 	t_neighbour				*seq;
 	struct s_path			*next;
-//	int						nr_ants_to_move;
 }							t_path;
 
 typedef struct				s_params
@@ -66,6 +64,13 @@ typedef struct				s_queue
 	struct s_queue			*prev;
 	t_room					*room;
 }							t_queue;
+
+typedef struct		s_stack
+{
+	int				value;
+	struct s_stack	*prev;
+	struct s_stack	*next;
+}					t_stack;
 
 t_params					*g_params;
 enum						e_start_end	{e_start, e_end};
@@ -88,5 +93,6 @@ int							algorithm(int flows, t_path **paths);
 int							num_of_nghbrs(t_neighbour *neighbour);
 void						add_path(t_path **paths_prev_iter, t_room **room);
 void						print_paths_(void);
+void	print_paths_double(void);
 
 #endif

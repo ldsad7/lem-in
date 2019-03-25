@@ -12,6 +12,38 @@
 
 #include "../includes/lem_in.h"
 
+/*
+void	print_state_of_map(void)
+{
+	t_room	*start;
+
+	start = g_params->start_of_list;
+	printf("----------------------------------\n");
+	while (start)
+	{
+		printf("------\n");
+		printf("room: %s\n", start->name);
+		if (start->next_elem)
+			printf("next_elem: %s\n", start->next_elem->name);
+		else
+			printf("next_elem: null\n");
+		if (start->prev_path)
+			printf("prev_path: %s\n", start->prev_path->name);
+		else
+			printf("prev_path: null\n");
+		if (start->prev_elem)
+			printf("prev_elem: %s\n", start->prev_elem->name);
+		else
+			printf("prev_elem: null\n");
+		printf("path_nr: %d\n", start->path_nr);
+		printf("in_paths: %d\n", start->in_paths);
+		printf("------\n");
+		start = start->next;
+	}
+	printf("----------------------------------\n");
+}
+*/
+
 void	print_queue(t_queue *queue)
 {
 	t_queue		*start;
@@ -35,6 +67,30 @@ void	print_queue(t_queue *queue)
 		queue = queue->prev;
 	}
 	printf("\n");
+}
+
+void	ft_stackdelone(t_stack **top)
+{
+	t_stack	*prev;
+	t_stack	*next;
+
+	if (!(*top))
+		return ;
+	prev = (*top)->prev;
+	next = (*top)->next;
+	free(*top);
+	if (prev == next && prev)
+	{
+		prev->prev = NULL;
+		prev->next = NULL;
+		*top = prev;
+		return ;
+	}
+	if (prev)
+		prev->next = next;
+	if (next)
+		next->prev = prev;
+	*top = prev;
 }
 
 void	queue_delone(t_queue **queue)
@@ -63,10 +119,28 @@ void	queue_delone(t_queue **queue)
 	*queue = prev;
 }
 
+void	ft_stackdel(t_stack **top)
+{
+	while (*top)
+		ft_stackdelone(top);
+}
+
 void	queue_free(t_queue **queue)
 {
 	while (*queue)
 		queue_delone(queue);
+}
+
+t_stack	*ft_stacknew(int value, t_stack *prev, t_stack *next)
+{
+	t_stack	*new;
+
+	if (!(new = (t_stack *)malloc(sizeof(*new))))
+		return (NULL);
+	new->value = value;
+	new->prev = prev;
+	new->next = next;
+	return (new);
 }
 
 t_queue	*queue_new(t_room **room, t_queue **prev, t_queue **next)
@@ -87,6 +161,20 @@ t_queue	*queue_new(t_room **room, t_queue **prev, t_queue **next)
 	return (new);
 }
 
+int		ft_lstlen(t_stack *top)
+{
+	t_stack	*tmp;
+	int		i;
+
+	if (!top)
+		return (0);
+	i = 1;
+	tmp = top->prev;
+	while (tmp && tmp != top && ++i)
+		tmp = tmp->prev;
+	return (i);
+}
+
 int		queue_len(t_queue *queue)
 {
 	t_queue		*tmp;
@@ -101,10 +189,43 @@ int		queue_len(t_queue *queue)
 	return (i);
 }
 
+int		rotate_forward_stack(t_stack **top)
+{
+	if (!(*top) || !((*top)->next))
+		return (1);
+	*top = (*top)->prev;
+	return (1);
+}
+
 void	rotate_forward(t_queue **queue)
 {
 	if (*queue && (*queue)->prev)
 		*queue = (*queue)->prev;
+}
+
+void	push_stack(t_stack **stack, int value)
+{
+	t_stack		*tmp;
+	t_stack		*pmt;
+
+	if (*stack && (*stack)->next)
+	{
+		pmt = *stack;
+		tmp = (*stack)->next;
+		*stack = ft_stacknew(value, pmt, tmp);
+		tmp->prev = *stack;
+		pmt->next = *stack;
+	}
+	else if (*stack)
+	{
+		tmp = *stack;
+		*stack = ft_stacknew(value, tmp, tmp);
+		tmp->next = *stack;
+		tmp->prev = *stack;
+	}
+	else
+		*stack = ft_stacknew(value, NULL, NULL);
+	rotate_forward_stack(stack);
 }
 
 void	push_queue(t_queue **queue, t_room **room)
@@ -137,107 +258,55 @@ void	push_queue(t_queue **queue, t_room **room)
 void	flag_path(t_room **paths_ends, int path_nr, t_path **paths)
 {
 	t_room	*room;
-	int		arr_reflag_paths[path_nr];
-	int		arr_len;
-	int		j;
-	int		tmp;
 	int		fl;
+	int		tmp;
+	int		prev_path;
+	int		top_path_nr;
 
-	arr_len = 0;
+	top_path_nr = path_nr;
+	prev_path = 0;
 	room = paths_ends[path_nr - 1];
-	fl = 0;
-	printf("----------\n");
+	room->next_elem = g_params->end;
 	while (room != g_params->start)
 	{
 		if (room->in_paths)
+			prev_path = room->in_paths;
+		room->in_paths = path_nr;
+		if (!(room->prev_path))
+			room->prev_path = room->prev_elem;
+		room->prev_path->next_elem = room;
+		room = room->prev_path;
+	}
+	while (prev_path)
+	{
+		tmp = 0;
+		fl = 0;
+		room = paths_ends[prev_path - 1];
+		while (room != g_params->start)
 		{
-			j = 0;
-			while (j < arr_len)
+			if (room->in_paths != prev_path)
+				tmp = room->in_paths;
+			room->in_paths = prev_path;
+			if (fl && !(room->prev_path))
+				room->prev_path = room->prev_elem;
+			if (!fl && room->prev_path->in_paths == path_nr)
 			{
-				if (arr_reflag_paths[j] >= room->in_paths)
-					break ;
-				j++;
-			}
-			if (arr_reflag_paths[j] != room->in_paths)
-			{
-				tmp = arr_len;
-				while (tmp > j)
+				while (room->prev_elem == room->prev_path)
 				{
-					arr_reflag_paths[tmp] = arr_reflag_paths[tmp - 1];
-					tmp--;
+					room->in_paths = 0;
+					room = room->next_elem;
 				}
-				arr_reflag_paths[tmp] = room->in_paths;
-				printf("%d\n", room->in_paths);
-				arr_len++;
+				fl = 1;
+				room->prev_path = room->prev_elem;
 			}
-		}
-		
-		if (!(room->prev_path) || fl || room->next_elem == g_params->end)
-		{
-			room = room->prev_elem;
-			// fl = 0;
-		}
-		else if (!fl)
-		{
-			room = room->next_elem;
-			fl = 1;
-		}
-	}
-	printf("----------\n");
-	j = arr_len;
-	while (arr_len-- > 0)
-	{
-		tmp = arr_reflag_paths[arr_len];
-		room = paths_ends[tmp - 1];
-		while (room != g_params->start)
-		{
-			room->in_paths = 0;
 			room = room->prev_path;
 		}
+		path_nr = prev_path;
+		prev_path = tmp;
 	}
-	arr_len = j;
-	arr_reflag_paths[arr_len] = path_nr;
-	arr_len++;
-	while (arr_len-- > 0) 
-	{
-		tmp = arr_reflag_paths[arr_len];
-		room = paths_ends[tmp - 1];
-		room->next_elem = g_params->end;
-		if (tmp == 2)
-			printf("!!!\n");
-		while (room != g_params->start)
-		{
-			room->in_paths = tmp;
-			room->fl = 1;
-			if (((!(room->prev_elem->in_paths) && !(room->prev_path == g_params->start)) || tmp == path_nr))
-				room->prev_path = room->prev_elem;
-			if (!(room->prev_path))
-				room->prev_path = room->prev_elem;
-			room->prev_path->next_elem = room;
-			room = room->prev_path;
-		}
-	}
-
 	tmp = 0;
-	j = 0;
-	while (++tmp <= path_nr)
-	{
-		if (tmp != arr_reflag_paths[j])
-		{
-			room = paths_ends[tmp - 1];
-			while (room != g_params->start)
-			{
-				room->in_paths = tmp;
-				if (room->prev_path)
-					room->prev_elem = room->prev_path;
-				room = room->prev_path;
-			}
-		}
-		else
-			j++;
+	while (tmp++ < top_path_nr)
 		add_path(paths, &(paths_ends[tmp - 1]));
-	}
-
 	room = g_params->start_of_list;
 	while(room)
 	{
@@ -247,40 +316,9 @@ void	flag_path(t_room **paths_ends, int path_nr, t_path **paths)
 			room->prev_path = NULL;
 			room->next_elem = NULL;
 			room->path_nr = 0;
-			room->fl = 1;
 		}
 		room = room->next;
 	}
-}
-
-void	print_state_of_map(void)
-{
-	t_room	*start;
-
-	start = g_params->start_of_list;
-	printf("----------------------------------\n");
-	while (start)
-	{
-		printf("------\n");
-		printf("room: %s\n", start->name);
-		if (start->next_elem)
-			printf("next_elem: %s\n", start->next_elem->name);
-		else
-			printf("next_elem: null\n");
-		if (start->prev_path)
-			printf("prev_path: %s\n", start->prev_path->name);
-		else
-			printf("prev_path: null\n");
-		if (start->prev_elem)
-			printf("prev_elem: %s\n", start->prev_elem->name);
-		else
-			printf("prev_elem: null\n");
-		printf("path_nr: %d\n", start->path_nr);
-		printf("in_paths: %d\n", start->in_paths);
-		printf("------\n");
-		start = start->next;
-	}
-	printf("----------------------------------\n");
 }
 
 void	add_path(t_path **paths, t_room **room)
@@ -294,7 +332,6 @@ void	add_path(t_path **paths, t_room **room)
 	path->len_seq = 1;
 	path->seq = NULL;
 	path->next = NULL;
-	//path->nr_ants_to_move = 0;
 	tmp = *room;
 	while (tmp && tmp != g_params->start)
 	{
@@ -320,46 +357,46 @@ void	add_path(t_path **paths, t_room **room)
 		*paths = path;
 }
 
-/*
-**	fl -- was there an edge of the previous path?
-*/
+// fls -- was there an edge of the previous path?
 
 int		bfs(int path_nr, t_room ***paths_ends, t_path **paths)
 {
 	t_queue			*queue;
+	t_stack			*fls;
 	t_neighbour		*neighb;
-	// t_room			*room;
 
 	queue = NULL;
-	g_params->start->path_nr = path_nr;
+	fls = NULL;
 	push_queue(&queue, &(g_params->start));
-	// printf("------\n");
+	push_stack(&fls, 0);
 	while (queue)
 	{
-		//print_queue(queue);
-		if (queue->room->in_paths && queue->room->fl)
+		if (queue->room->in_paths && fls->value)
 		{
 			push_queue(&queue, &(queue->room->prev_path));
+			push_stack(&fls, 0);
 			queue->room->prev_path->path_nr = path_nr;
-			queue->room->prev_path->fl = 0;
 		}
 		else
 		{
 			neighb = queue->room->neighbours;
 			while (neighb && (neighb->room != g_params->end ||
-			(neighb->room == g_params->end && queue->room->in_paths)))
+							(neighb->room == g_params->end && queue->room->in_paths)))
 			{
-				if (neighb->room->path_nr != path_nr // || (neighb->room->path_nr == path_nr && neighb->room->in_paths && !neighb->room->fl)
-					&& neighb->room != g_params->end
+				if ((neighb->room->path_nr != path_nr
+					|| (neighb->room->path_nr == path_nr && queue->room->in_paths && neighb->room == queue->room->prev_path))
+					&& neighb->room != g_params->end && neighb->room != g_params->start
 					&& !(queue->room == g_params->start && neighb->room->in_paths)
 					&& !(queue->room->in_paths && neighb->room == queue->room->next_elem))
 				{
 					push_queue(&queue, &(neighb->room));
 					neighb->room->path_nr = path_nr;
-					if (queue->room->in_paths && neighb->room->in_paths)
-						neighb->room->fl = 0;
+					if (queue->room->in_paths == neighb->room->in_paths || !(neighb->room->in_paths))
+						push_stack(&fls, 0);
+					else
+						push_stack(&fls, 1);
 					if (!(queue->room->in_paths) ||
-						(queue->room->in_paths && (!(neighb->room->in_paths) || queue->room->in_paths != neighb->room->in_paths)))
+						(queue->room->in_paths && queue->room->in_paths != neighb->room->in_paths))
 						neighb->room->prev_elem = queue->room;
 				}
 				neighb = neighb->next;
@@ -367,24 +404,14 @@ int		bfs(int path_nr, t_room ***paths_ends, t_path **paths)
 			if (neighb && neighb->room == g_params->end)
 			{
 				(*paths_ends)[path_nr - 1] = queue->room;
-				// if (path_nr == 5)
-				// {
-				// 	room = (*paths_ends)[1];
-				// 	printf("-------\n");
-				// 	// printf("%d\n", path_nr);
-				// 	while (room)
-				// 	{
-				// 		printf("%s\n", room->name);
-				// 		room = room->prev_path;
-				// 	}
-				// }
 				flag_path(*paths_ends, path_nr, paths);
 				queue_free(&queue);
+				ft_stackdel(&fls);
 				return (1);
 			}
 		}
-		queue->room->fl = 1;
 		queue_delone(&queue);
+		ft_stackdelone(&fls);
 	}
 	return (0);
 }
@@ -456,7 +483,6 @@ int		compare(int *min_cost, int nr_paths, int j, t_path **paths_bfs)
 	curr_cost = (g_params->nr_ants + sum_paths) / nr_paths - 1;
 	if ((g_params->nr_ants + sum_paths) % nr_paths != 0)
 		curr_cost++;
-	// printf("min_cost: %d, curr_cost: %d, cnt_paths_moved: %d\n", *min_cost, curr_cost, cnt_paths_moved);
 	if (*min_cost >= curr_cost)
 	{
 		*min_cost = curr_cost;
@@ -474,8 +500,8 @@ int		algorithm(int flows, t_path **paths)
 	int			i;
 	int			j;
 	int			tmp;
-	t_room		**paths_ends;
 	int			min_cost;
+	t_room		**paths_ends;
 
 	min_cost = 0;
 	*paths = NULL;
@@ -487,7 +513,6 @@ int		algorithm(int flows, t_path **paths)
 	{
 		if (j > 1)
 		{
-			// printf("i:%d, j:%d\n", i, j);
 			if ((tmp = compare(&min_cost, i, j, paths)) > 0)
 				j = tmp;
 		}

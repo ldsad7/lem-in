@@ -89,28 +89,6 @@ t_room	**lst_to_array(t_neighbour *nghbr, int len)
 	return (res);
 }
 
-// void	first_iter_ants_move(int *nr_steps)
-// {
-// 	t_path	*tmp;
-// 	int		space_flag;
-
-// 	space_flag = 0;
-// 	nr_steps--;
-// 	tmp = g_params->start_of_list_of_paths;
-// 	while (tmp)
-// 	{
-// 		tmp->seq->room->ant_nr = g_params->nr_ants;
-// 		if (space_flag)
-// 			write(1, " ", 1);
-// 		else
-// 			space_flag = 1;
-// 		ft_printf("L%i-%s", g_params->nr_ants, tmp->seq->room->name);
-// 		g_params->nr_ants--;
-// 		tmp = tmp->next;
-// 	}
-// 	write(1, "\n", 1);
-// }
-
 void	new_ants_move_in_path(int i, t_room *room, int *space_flag,
 								int **nr_ants_to_move_in_paths)
 {
@@ -127,7 +105,7 @@ void	new_ants_move_in_path(int i, t_room *room, int *space_flag,
 	}
 }
 
-void	print_existing_ants_movement(t_room **room, int *space_flag) //t_room *prev_iter_room, 
+void	print_existing_ants_movement(t_room **room, int *space_flag)
 {
 	if ((*room)->next_elem == g_params->end && (*room)->ant_nr)
 	{
@@ -138,22 +116,17 @@ void	print_existing_ants_movement(t_room **room, int *space_flag) //t_room *prev
 		ft_printf("L%i-%s", (*room)->ant_nr, (*room)->next_elem->name);
 		(*room)->ant_nr = 0;
 	}
-	// else
-		while ((*room)->prev_path != g_params->start && (*room)->prev_path->ant_nr)
-		{
-			// if ((*room)->ant_nr) //&& tmp->seq->next->room != g_params->end
-			// {
-			(*room)->ant_nr = (*room)->prev_path->ant_nr;
-			(*room)->prev_path->ant_nr = 0;
-			if (*space_flag)
-				write(1, " ", 1);
-			else
-				*space_flag = 1;
-			ft_printf("L%i-%s", (*room)->ant_nr, (*room)->name);
-			// }
-			(*room) = (*room)->prev_path;
-		}
-
+	while ((*room)->prev_path != g_params->start && (*room)->prev_path->ant_nr)
+	{
+		(*room)->ant_nr = (*room)->prev_path->ant_nr;
+		(*room)->prev_path->ant_nr = 0;
+		if (*space_flag)
+			write(1, " ", 1);
+		else
+			*space_flag = 1;
+		ft_printf("L%i-%s", (*room)->ant_nr, (*room)->name);
+		(*room) = (*room)->prev_path;
+	}
 }
 
 void	iter_ants_move(int nr_steps, t_room **room_arr,
@@ -163,37 +136,14 @@ void	iter_ants_move(int nr_steps, t_room **room_arr,
 	int			i;
 	int			space_flag;
 
-
 	while (nr_steps--)
 	{
 		space_flag = 0;
 		i = 0;
 		while (i < cnt_paths)
 		{
-			// if (room_arr[i] == g_params->end)
-			// {
-			// 	print_existing_ants_movement(&(room_arr[i]), tmp_room, &space_flag);
-			// 	//tmp_room = room_arr[i];
-			// }
-			// else
-			// {
 			tmp_room = room_arr[i];
 			print_existing_ants_movement(&tmp_room, &space_flag);
-			// }
-			// while (tmp_room->prev_path != g_params->start)
-			// {
-			// 	if (tmp_room->ant_nr) //&& tmp->seq->next->room != g_params->end
-			// 	{
-			// 		tmp_room->next->ant_nr = tmp_room->ant_nr;
-			// 		if (space_flag)
-			// 			write(1, " ", 1);
-			// 		else
-			// 			space_flag = 1;
-			// 		ft_printf("L%i-%s", tmp_room->ant_nr, tmp_room->name);
-			// 		tmp_room->ant_nr = 0;
-			// 	}
-			// 	tmp_room = tmp_room->prev_path;
-			// }
 			new_ants_move_in_path(i, tmp_room, &space_flag, &nr_ants_to_move_in_paths);
 			if (room_arr[i]->next_elem != g_params->end)
 				room_arr[i] = room_arr[i]->next_elem;
@@ -201,7 +151,6 @@ void	iter_ants_move(int nr_steps, t_room **room_arr,
 		}
 		write(1, "\n", 1);
 	}
-	// ft_printf("%i\n", g_params->nr_ants);
 }
 
 void	rooms_arr_setup(t_room ***room_arr, int **nr_ants_to_move_in_paths,
@@ -220,7 +169,6 @@ void	rooms_arr_setup(t_room ***room_arr, int **nr_ants_to_move_in_paths,
 	{
 		(*nr_ants_to_move_in_paths)[i] = (g_params->nr_ants + sum_paths)
 									/ cnt_paths - tmp->len_seq + ((g_params->nr_ants + sum_paths) / cnt_paths != 0);
-		// ft_printf("i = %i num ants = %i\n", i, (*nr_ants_to_move_in_paths)[i]);
 		(*room_arr)[i] = tmp->seq->room;
 		tmp = tmp->next;
 		++i;
@@ -245,34 +193,10 @@ void	print_paths(int nr_steps)
 		tmp = tmp->next;
 	}
 	rooms_arr_setup(&room_arr, &nr_ants_to_move_in_paths, cnt_paths, sum_paths);
-	// tmp = g_params->start_of_list_of_paths;
-	// while (tmp)
-	// {
-	// 	tmp->nr_ants_to_move = (g_params->nr_ants + sum_paths)
-	// 							/ cnt_paths - tmp->len_seq;
-	// 	tmp = tmp->next;
-	// }
-	
 	iter_ants_move(nr_steps, room_arr, nr_ants_to_move_in_paths, cnt_paths);
-	
-	// first_iter_ants_move(&nr_steps);
-	// while (nr_steps--)
-	// {
-	// 	tmp = g_params->start_of_list_of_paths;
-	// 	while (tmp)
-	// 	{
-	// 		tmp_seq = tmp->seq;
-	// 		if (tmp_seq->room->ant_nr) //&& tmp->seq->next->room != g_params->end
-	// 		{
-	// 			tmp_seq->next->room->ant_nr = tmp_seq->room->ant_nr;
-
-	// 		}
-	// 		tmp = tmp->next;
-	// 	}
-	// }
 }
 
-void	print_paths_(void)
+void	correct_paths(void)
 {
 	int				i;
 	t_neighbour		*seq;
@@ -282,14 +206,10 @@ void	print_paths_(void)
 	i = 1;
 	while (paths)
 	{
-		// printf("%d\n", paths->len_seq);
-		// printf("path №%d\n", i);
 		seq = paths->seq;
-		// printf("start\n");
 		seq->room->prev_path = g_params->start;
 		while (seq)
 		{
-			// printf("%s\n", seq->room->name);
 			if (seq->next)
 			{
 				seq->room->next_elem = seq->next->room;
@@ -299,12 +219,9 @@ void	print_paths_(void)
 				seq->room->next_elem = g_params->end;
 			seq = seq->next;
 		}
-		// printf("end\n");
-		// printf("-----------------\n");
 		paths = paths->next;
 		i++;
 	}
-	// printf("-----------------\n");
 	return ;
 }
 
@@ -340,7 +257,7 @@ void	print_paths_double(void)
 		paths = paths->next;
 		i++;
 	}
-	printf("-----------------\n");
+	// printf("-----------------\n");
 	return ;
 }
 
@@ -353,13 +270,13 @@ int		main(int argc, char **argv)
 	argc = 0;
 	argv = NULL;
 	read_input();
-	//check_coordinates();
+	// check_coordinates();
 	flows = ft_min(g_params->nr_ants,
 			num_of_nghbrs(g_params->start->neighbours),
 			num_of_nghbrs(g_params->end->neighbours));
 	nr_steps = algorithm(flows, &paths);
 	// printf("%d\n", nr_steps);
-	print_paths_();
+	correct_paths();
 	print_paths_double();
 	// print_paths(nr_steps);
 	free_g_params();
