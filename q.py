@@ -2,7 +2,7 @@ import os
 import subprocess
 
 def main():
-    for file in 'bigs.txt   bigs12.txt bigs15.txt bigs18.txt bigs20.txt bigs23.txt bigs26.txt bigs29.txt bigs31.txt bigs34.txt bigs37.txt bigs4.txt  bigs6.txt  bigs9.txt bigs10.txt bigs13.txt bigs16.txt bigs19.txt bigs21.txt bigs24.txt bigs27.txt bigs3.txt  bigs32.txt bigs35.txt bigs38.txt bigs40.txt bigs7.txt  bigsup.txt bigs11.txt bigs14.txt bigs17.txt bigs2.txt  bigs22.txt bigs25.txt bigs28.txt bigs30.txt bigs33.txt bigs36.txt bigs39.txt bigs5.txt  bigs8.txt'.split():
+    for file in 'ten1.txt        ten1000ants.txt ten3.txt        ten5.txt        ten7.txt        ten9.txt        tenants.txtC ten10.txt       ten2.txt        ten4.txt        ten6.txt        ten8.txt        tenants.txt'.split():
         print(file)
         with open(os.path.join('lem-in-checker', file), 'r', encoding='utf-8') as f:
             fl = 0
