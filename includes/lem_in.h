@@ -75,14 +75,14 @@ typedef struct				s_stack
 t_params					*g_params;
 enum						e_start_end	{e_start, e_end};
 
-void						read_input(void);
+void						read_input(int fd);
 int							get_next_line_or_exit(char **line);
 void						free_2d_array(char **line);
 void						error_exit(void);
 size_t						ft_arrlen(char **str);
-void						get_nr_ants(char **line);
+void						get_nr_ants(char **line, int fd);
 t_room						*room_writing(char **ln_split);
-void						start_end_writing(char **line);
+void						start_end_writing(char **line, int fd);
 t_room						*find_leaf(char *name);
 char						*ft_strjoin_for_arr(char **lines, int max_len);
 void						link_writing(char **line);
@@ -94,5 +94,6 @@ int							num_of_nghbrs(t_neighbour *neighbour);
 void						add_path(t_path **paths_prev_iter, t_room **room);
 void						print_paths_(void);
 void						print_paths_double(void);
+void						free_and_relocate_start_of_list_of_paths(t_path *paths_curr_iter);
 
 #endif

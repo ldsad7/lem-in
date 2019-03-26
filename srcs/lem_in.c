@@ -212,6 +212,8 @@ void	print_paths(int nr_steps)
 	}
 	rooms_arr_setup(&room_arr, &nr_ants_to_move_in_paths, cnt_paths, sum_paths);
 	iter_ants_move(nr_steps, room_arr, nr_ants_to_move_in_paths, cnt_paths);
+	free(nr_ants_to_move_in_paths);
+	free(room_arr);
 }
 
 void	correct_paths(void)
@@ -224,7 +226,7 @@ void	correct_paths(void)
 	{
 		if (!(seq = paths->seq))
 		{
-			g_params->start->next_elem = g_params->end; //!!!
+			g_params->start->next_elem = g_params->end;
 			paths = paths->next;
 			continue ;
 		}
@@ -298,10 +300,14 @@ int		main(int argc, char **argv)
 	t_path		*paths;
 	int			flows;
 	int			nr_steps;
+	int			fd;
+	char		*line;
 
 	argc = 0;
 	argv = NULL;
-	read_input();
+	if ((fd = open("tmp.txt", O_WRONLY|O_CREAT, 0777)) < 0)
+		exit(0);
+	read_input(fd);
 	// check_coordinates();
 	flows = ft_min(g_params->nr_ants,
 			num_of_nghbrs(g_params->start->neighbours),
@@ -310,6 +316,17 @@ int		main(int argc, char **argv)
 	// printf("%d\n", nr_steps);
 	correct_paths();
 	// print_paths_double();
+	line = NULL;
+	close(fd);
+	if ((fd = open("tmp.txt", O_RDONLY)) < 0)
+		exit(0);
+	while (get_next_line(fd, &line) > 0)
+	{
+		ft_printf("%s\n", line);
+		free(line);
+	}
+	ft_printf("\n");
+	close(fd);
 	print_paths(nr_steps);
 	free_g_params();
 	return (0);

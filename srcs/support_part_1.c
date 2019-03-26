@@ -29,8 +29,6 @@ void	free_g_params(void)
 	t_neighbour	*neighb;
 	t_neighbour	*pmt;
 
-	if (!g_params)
-		return ;
 	start_of_list = g_params->start_of_list;
 	while (start_of_list)
 	{
@@ -46,6 +44,7 @@ void	free_g_params(void)
 		start_of_list = start_of_list->next;
 		free(tmp);
 	}
+	free_and_relocate_start_of_list_of_paths(NULL);
 	free(g_params->arr);
 	free(g_params);
 }

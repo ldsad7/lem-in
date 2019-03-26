@@ -391,7 +391,7 @@ int		bfs(int path_nr, t_room ***paths_ends, t_path **paths)
 				{
 					push_queue(&queue, &(neighb->room));
 					neighb->room->path_nr = path_nr;
-					if (queue->room->in_paths == neighb->room->in_paths) //  || !(neighb->room->in_paths)
+					if (queue->room->in_paths == neighb->room->in_paths)
 						push_stack(&fls, 0);
 					else
 						push_stack(&fls, 1);
@@ -522,7 +522,7 @@ int		algorithm(int flows, t_path **paths)
 			i++;
 			j++;
 			min_cost = g_params->nr_ants +
-			g_params->start_of_list_of_paths->len_seq - 1;
+					g_params->start_of_list_of_paths->len_seq - 1;
 			if (prev != neighb)
 				prev->next = neighb->next;
 			else
@@ -551,5 +551,6 @@ int		algorithm(int flows, t_path **paths)
 			j++;
 		i++;
 	}
+	free(paths_ends);
 	return (min_cost);
 }

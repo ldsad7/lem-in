@@ -22,13 +22,17 @@ size_t	ft_arrlen(char **str)
 	return (i);
 }
 
-void	get_nr_ants(char **line)
+void	get_nr_ants(char **line, int fd)
 {
 	long long num;
 
 	while (get_next_line_or_exit(line) && (*line)[0] == '#'
 			&& !ft_strequ(*line, "##start") && !ft_strequ(*line, "##end"))
+	{
+		write(fd, *line, ft_strlen(*line));
+		write(fd, "\n", 1);
 		free(*line);
+	}
 	if (ft_isnumeric(*line))
 	{
 		if ((num = ft_atoi_long(*line)) <= 2147483647 && num >= -2147483648)
@@ -38,6 +42,8 @@ void	get_nr_ants(char **line)
 	}
 	else
 		error_exit();
+	write(fd, *line, ft_strlen(*line));
+	write(fd, "\n", 1);
 	free(*line);
 }
 
@@ -76,7 +82,7 @@ t_room	*room_writing(char **ln_split)
 	return (tmp);
 }
 
-void	start_end_writing(char **line)
+void	start_end_writing(char **line, int fd)
 {
 	int		start_or_end;
 	char	**line_split;
@@ -87,7 +93,13 @@ void	start_end_writing(char **line)
 	free(*line);
 	while (get_next_line_or_exit(line) && (*line)[0] == '#' &&
 			!ft_strequ(*line, "##start") && !ft_strequ(*line, "##end"))
+	{
+		write(fd, *line, ft_strlen(*line));
+		write(fd, "\n", 1);
 		free(*line);
+	}
+	write(fd, *line, ft_strlen(*line));
+	write(fd, "\n", 1);
 	if (ft_strequ(*line, "##start") || ft_strequ(*line, "##end"))
 		error_exit();
 	line_split = ft_strsplit(*line, ' ');
@@ -260,7 +272,7 @@ void	g_params_init(int (*fls)[3], char **line)
 **	fls[2] -- was there a link?
 */
 
-void	read_input(void)
+void	read_input(int fd)
 {
 	char	*line;
 	int		nr_bytes_read;
@@ -268,16 +280,18 @@ void	read_input(void)
 	int		fls[3];
 
 	g_params_init(&fls, &line);
-	get_nr_ants(&line);
+	get_nr_ants(&line, fd);
 	while ((nr_bytes_read = get_next_line_or_exit(&line)))
 	{
+		write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
 		line_split = ft_strsplit(line, ' ');
 		if (line[0] == '#' && !ft_strequ(line, "##start")
 				&& !ft_strequ(line, "##end"))
 			;
 		else if ((ft_strequ(line, "##start") && (fls[0] = 1))
 				|| (ft_strequ(line, "##end") && (fls[1] = 1)))
-			start_end_writing(&line);
+			start_end_writing(&line, fd);
 		else if (ft_arrlen(line_split) == 3 && !fls[2])
 			room_writing(line_split);
 		else if (ft_arrlen(line_split) == 1 && (fls[2] = 1))
