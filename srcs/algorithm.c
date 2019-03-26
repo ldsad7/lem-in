@@ -269,7 +269,7 @@ void	flag_path(t_room **paths_ends, int path_nr, t_path **paths)
 	room->next_elem = g_params->end;
 	while (room != g_params->start)
 	{
-		if (room->in_paths)
+		if (room->in_paths && !prev_path)
 			prev_path = room->in_paths;
 		room->in_paths = path_nr;
 		if (!(room->prev_path))
@@ -284,7 +284,7 @@ void	flag_path(t_room **paths_ends, int path_nr, t_path **paths)
 		room = paths_ends[prev_path - 1];
 		while (room != g_params->start)
 		{
-			if (room->in_paths != prev_path)
+			if (room->in_paths != prev_path && !tmp)
 				tmp = room->in_paths;
 			room->in_paths = prev_path;
 			if (fl && !(room->prev_path))
@@ -308,7 +308,7 @@ void	flag_path(t_room **paths_ends, int path_nr, t_path **paths)
 	while (tmp++ < top_path_nr)
 		add_path(paths, &(paths_ends[tmp - 1]));
 	room = g_params->start_of_list;
-	while(room)
+	while (room)
 	{
 		if (!(room->in_paths))
 		{
@@ -391,7 +391,7 @@ int		bfs(int path_nr, t_room ***paths_ends, t_path **paths)
 				{
 					push_queue(&queue, &(neighb->room));
 					neighb->room->path_nr = path_nr;
-					if (queue->room->in_paths == neighb->room->in_paths || !(neighb->room->in_paths))
+					if (queue->room->in_paths == neighb->room->in_paths) //  || !(neighb->room->in_paths)
 						push_stack(&fls, 0);
 					else
 						push_stack(&fls, 1);

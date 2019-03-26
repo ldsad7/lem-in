@@ -65,12 +65,12 @@ typedef struct				s_queue
 	t_room					*room;
 }							t_queue;
 
-typedef struct		s_stack
+typedef struct				s_stack
 {
-	int				value;
-	struct s_stack	*prev;
-	struct s_stack	*next;
-}					t_stack;
+	int						value;
+	struct s_stack			*prev;
+	struct s_stack			*next;
+}							t_stack;
 
 t_params					*g_params;
 enum						e_start_end	{e_start, e_end};
@@ -93,6 +93,6 @@ int							algorithm(int flows, t_path **paths);
 int							num_of_nghbrs(t_neighbour *neighbour);
 void						add_path(t_path **paths_prev_iter, t_room **room);
 void						print_paths_(void);
-void	print_paths_double(void);
+void						print_paths_double(void);
 
 #endif
