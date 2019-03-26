@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/20 19:34:43 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/26 18:37:58 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -502,6 +502,8 @@ int		algorithm(int flows, t_path **paths)
 	int			tmp;
 	int			min_cost;
 	t_room		**paths_ends;
+	t_neighbour	*neighb;
+	t_neighbour	*prev;
 
 	min_cost = 0;
 	*paths = NULL;
@@ -509,6 +511,28 @@ int		algorithm(int flows, t_path **paths)
 		exit(0);
 	i = 1;
 	j = 1;
+	neighb = g_params->start->neighbours;
+	prev = neighb;
+	while (neighb)
+	{
+		if (neighb->room == g_params->end)
+		{
+			paths_ends[0] = g_params->start;
+			flag_path(paths_ends, 1, paths);
+			i++;
+			j++;
+			min_cost = g_params->nr_ants +
+			g_params->start_of_list_of_paths->len_seq - 1;
+			if (prev != neighb)
+				prev->next = neighb->next;
+			else
+				g_params->start->neighbours = neighb->next;
+			free(neighb);
+			break ;
+		}
+		prev = neighb;
+		neighb = neighb->next;
+	}
 	while (i <= flows && bfs(i, &paths_ends, paths))
 	{
 		if (j > 1)

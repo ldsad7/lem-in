@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/20 19:12:40 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/26 18:18:50 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,12 @@ int	new_ants_move_in_path(int i, t_room *room, int *space_flag,
 	{
 		room->ant_nr = g_params->nr_ants;
 		g_params->nr_ants--;
-		if (*space_flag)
+		if (*space_flag && room != g_params->start)
 			fl += write(1, " ", 1);
-		else
+		else if (!(*space_flag))
 			*space_flag = 1;
-		fl += ft_printf("L%i-%s", room->ant_nr, room->name);
+		if (room != g_params->start)
+			fl += ft_printf("L%i-%s", room->ant_nr, room->name);
 		(*nr_ants_to_move_in_paths)[i]--;
 	}
 	return (fl);
@@ -123,7 +124,7 @@ int	print_existing_ants_movement(t_room **room, int *space_flag)
 		fl += ft_printf("L%i-%s", (*room)->ant_nr, (*room)->next_elem->name);
 		(*room)->ant_nr = 0;
 	}
-	while ((*room)->prev_path != g_params->start && (*room)->prev_path->ant_nr)
+	while ((*room)->prev_path != g_params->start && (*room)->prev_path && (*room)->prev_path->ant_nr)
 	{
 		(*room)->ant_nr = (*room)->prev_path->ant_nr;
 		(*room)->prev_path->ant_nr = 0;
@@ -145,7 +146,7 @@ void	iter_ants_move(int nr_steps, t_room **room_arr,
 	int			fl;
 	int			space_flag;
 
-	nr_steps++;
+	nr_steps += 1;
 	while (nr_steps--)
 	{
 		space_flag = 0;
@@ -154,6 +155,8 @@ void	iter_ants_move(int nr_steps, t_room **room_arr,
 		while (i < cnt_paths)
 		{
 			tmp_room = room_arr[i];
+			if (tmp_room == g_params->start)
+				tmp_room->ant_nr = g_params->nr_ants;
 			fl += print_existing_ants_movement(&tmp_room, &space_flag);
 			fl += new_ants_move_in_path(i, tmp_room, &space_flag, &nr_ants_to_move_in_paths);
 			if (room_arr[i]->next_elem != g_params->end)
@@ -180,8 +183,11 @@ void	rooms_arr_setup(t_room ***room_arr, int **nr_ants_to_move_in_paths,
 	while (tmp)
 	{
 		(*nr_ants_to_move_in_paths)[i] = (g_params->nr_ants + sum_paths)
-									/ cnt_paths - tmp->len_seq + ((g_params->nr_ants + sum_paths) / cnt_paths != 0);
-		(*room_arr)[i] = tmp->seq->room;
+									/ cnt_paths - tmp->len_seq + ((g_params->nr_ants + sum_paths) % cnt_paths != 0);
+		if (!(tmp->seq))
+			(*room_arr)[i] = g_params->start;
+		else
+			(*room_arr)[i] = tmp->seq->room;
 		tmp = tmp->next;
 		++i;
 	}
@@ -210,16 +216,20 @@ void	print_paths(int nr_steps)
 
 void	correct_paths(void)
 {
-	int				i;
 	t_neighbour		*seq;
 	t_path			*paths;
 
 	paths = g_params->start_of_list_of_paths;
-	i = 1;
 	while (paths)
 	{
-		seq = paths->seq;
-		seq->room->prev_path = g_params->start;
+		if (!(seq = paths->seq))
+		{
+			g_params->start->next_elem = g_params->end; //!!!
+			paths = paths->next;
+			continue ;
+		}
+		else
+			seq->room->prev_path = g_params->start;
 		while (seq)
 		{
 			if (seq->next)
@@ -232,7 +242,6 @@ void	correct_paths(void)
 			seq = seq->next;
 		}
 		paths = paths->next;
-		i++;
 	}
 	return ;
 }
@@ -249,7 +258,18 @@ void	print_paths_double(void)
 	{
 		// printf("%d\n", paths->len_seq);
 		// printf("path №%d\n", i);
-		seq = paths->seq;
+		
+		//seq = paths->seq;
+		if (!(seq = paths->seq))
+		{
+			g_params->start->next_elem = g_params->end; //!!!
+			paths = paths->next;
+			printf("start\n");
+			printf("end\n");
+			continue ;
+		}
+		else
+			seq->room->prev_path = g_params->start;
 		printf("start\n");
 		seq->room->prev_path = g_params->start;
 		while (seq)
@@ -289,8 +309,8 @@ int		main(int argc, char **argv)
 	nr_steps = algorithm(flows, &paths);
 	// printf("%d\n", nr_steps);
 	correct_paths();
-	print_paths_double();
-	// print_paths(nr_steps);
+	// print_paths_double();
+	print_paths(nr_steps);
 	free_g_params();
 	return (0);
 }
