@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/27 14:40:55 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/27 18:50:05 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,14 @@ typedef struct				s_stack
 	struct s_stack			*next;
 }							t_stack;
 
+typedef struct				s_cost_params
+{
+	int						path_nr;
+	int						num_paths_in_resulting_group;
+	int						num_paths_in_curr_group;
+	int						min_cost;
+}							t_cost_params;
+
 t_params					*g_params;
 enum						e_start_end	{e_start, e_end};
 
@@ -88,8 +96,9 @@ char						*ft_strjoin_for_arr(char **lines, int max_len);
 void						link_writing(char **line);
 void						free_g_params(void);
 t_room						*new_room(char *name, int x, int y);
-int							algorithm(int flows, t_path **paths);
-void						add_path(t_path **paths_prev_iter, t_room **room);
+// int							algorithm(int flows);
+t_cost_params				*algorithm(int flows);
+// void						add_path(t_path **paths_prev_iter, t_room **room);
 void						print_paths_(void);
 void						print_paths_double(void);
 void						free_and_relocate_start_of_list_of_paths(t_path
@@ -98,5 +107,27 @@ void						sort_list_to_arr(void);
 void						g_params_init(int (*fls)[3], char **line);
 void						write_line(char *line, int fd);
 void						print_paths(int nr_steps);
+t_stack						*ft_stacknew(int value, t_stack *prev,
+													t_stack *next);
+void						ft_stackdelone(t_stack **top);
+void						ft_stackdel(t_stack **top);
+void						push_stack(t_stack **stack, int value);
+void						rotate_forward_stack(t_stack **top);
+void						rotate_forward_queue(t_queue **queue);
+t_queue						*queue_new(t_room **room, t_queue **prev,
+													t_queue **next);
+void						queue_delone(t_queue **queue);
+void						queue_free(t_queue **queue);
+void						push_queue(t_queue **queue, t_room **room);
+void						rotate_forward_queue(t_queue **queue);
+t_cost_params				*cost_params_setup(void);
+void						flag_path(t_room **paths_ends, int path_nr,
+										t_path **paths);
+void						add_path(t_path **paths, t_room **room);
+int							bfs(int path_nr, t_room ***paths_ends,
+								t_path **paths);
+int							compare(t_cost_params *cost_params,
+									t_path **paths_bfs);
+
 
 #endif

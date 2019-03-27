@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/27 14:51:16 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/27 18:42:27 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,11 +185,11 @@ static int	ft_min(int a, int b, int c)
 
 int			main(int argc, char **argv)
 {
-	t_path		*paths;
-	int			flows;
-	int			nr_steps;
-	int			fd;
-	char		*line;
+	int				flows;
+	int				nr_steps;
+	int				fd;
+	char			*line;
+	t_cost_params	*cost_params;
 
 	argc = 0;
 	argv = NULL;
@@ -200,7 +200,9 @@ int			main(int argc, char **argv)
 	flows = ft_min(g_params->nr_ants,
 			num_of_nghbrs(g_params->start->neighbours),
 			num_of_nghbrs(g_params->end->neighbours));
-	nr_steps = algorithm(flows, &paths);
+	cost_params = algorithm(flows);
+	nr_steps = cost_params->min_cost;
+	free(cost_params);
 	// printf("%d\n", nr_steps);
 	correct_paths();
 	// print_paths_double();

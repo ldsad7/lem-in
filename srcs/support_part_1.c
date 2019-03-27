@@ -6,11 +6,11 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 11:40:06 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/11 19:21:22 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/27 16:52:52 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/lem_in.h"
+#include "lem_in.h"
 
 void	free_2d_array(char **line)
 {
@@ -63,4 +63,17 @@ int		get_next_line_or_exit(char **line)
 	if ((nr_bytes_read = get_next_line(0, line)) < 0)
 		error_exit();
 	return (nr_bytes_read);
+}
+
+t_cost_params	*cost_params_setup(void)
+{
+	t_cost_params *tmp;
+
+	if (!(tmp = (t_cost_params *)malloc(sizeof(t_cost_params))))
+		error_exit();
+	tmp->min_cost = 0;
+	tmp->path_nr = 1;
+	tmp->num_paths_in_resulting_group = 1;
+	tmp->num_paths_in_curr_group = 0;
+	return (tmp);
 }
