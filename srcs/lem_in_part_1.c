@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/27 18:42:27 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/27 20:47:17 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,18 +203,14 @@ int			main(int argc, char **argv)
 	cost_params = algorithm(flows);
 	nr_steps = cost_params->min_cost;
 	free(cost_params);
-	// printf("%d\n", nr_steps);
 	correct_paths();
 	// print_paths_double();
 	line = NULL;
 	close(fd);
 	if ((fd = open("tmp.txt", O_RDONLY)) < 0)
 		exit(0);
-	while (get_next_line(fd, &line) > 0)
-	{
-		ft_printf("%s\n", line);
+	while (get_next_line(fd, &line) > 0 && ft_printf("%s\n", line))
 		free(line);
-	}
 	ft_printf("\n");
 	close(fd);
 	print_paths(nr_steps);

@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/27 18:50:05 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/27 20:19:10 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,6 @@ int							bfs(int path_nr, t_room ***paths_ends,
 								t_path **paths);
 int							compare(t_cost_params *cost_params,
 									t_path **paths_bfs);
-
+void						add_path(t_path **paths, t_room **room);
 
 #endif
