@@ -6,11 +6,11 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/11 11:31:45 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/03 03:09:18 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/27 12:04:24 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "libft.h"
 
 int		list_init(t_list **lst, t_list **init, t_list **prev, int fd)
 {

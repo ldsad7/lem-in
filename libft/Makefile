@@ -6,7 +6,7 @@
 #    By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/22 13:16:43 by bsprigga          #+#    #+#              #
-#    Updated: 2019/03/03 00:36:32 by tsimonis         ###   ########.fr        #
+#    Updated: 2019/03/27 12:05:10 by bsprigga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -86,7 +86,8 @@ SRCS_OTHER = 		ft_abs.c \
 					ft_isinf.c \
 					ft_isnan.c \
 					ft_swap.c \
-					ft_log2.c 
+					ft_log2.c \
+					ft_arrlen.c 
 
 SRCS_LST =			ft_lstnew.c \
 					ft_lstdelone.c \

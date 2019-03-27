@@ -6,14 +6,14 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/18 13:54:02 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/27 14:40:55 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEM_IN_H
 # define LEM_IN_H
 
-# include "../libft/includes/libft.h"
+# include "libft.h"
 # include <stdio.h> // delete after
 
 typedef struct s_neighbour	t_neighbour;
@@ -88,12 +88,15 @@ char						*ft_strjoin_for_arr(char **lines, int max_len);
 void						link_writing(char **line);
 void						free_g_params(void);
 t_room						*new_room(char *name, int x, int y);
-int							ft_min(int a, int b, int c);
 int							algorithm(int flows, t_path **paths);
-int							num_of_nghbrs(t_neighbour *neighbour);
 void						add_path(t_path **paths_prev_iter, t_room **room);
 void						print_paths_(void);
 void						print_paths_double(void);
-void						free_and_relocate_start_of_list_of_paths(t_path *paths_curr_iter);
+void						free_and_relocate_start_of_list_of_paths(t_path
+															*paths_curr_iter);
+void						sort_list_to_arr(void);
+void						g_params_init(int (*fls)[3], char **line);
+void						write_line(char *line, int fd);
+void						print_paths(int nr_steps);
 
 #endif
