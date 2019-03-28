@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/27 14:08:59 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/28 15:48:48 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	link_writing_main_loop(char *line, char **line_split)
 		free(second_name);
 	}
 	if (!(tmps[0]) || !(tmps[1]) || !first_name || !second_name)
-		error_exit();
+		error_exit(e_invalid_link); // need to rework on check_data_sufficiency
 	add_to_lst(tmps[1], tmps[0]);
 	add_to_lst(tmps[0], tmps[1]);
 	free_2d_array(line_split);
@@ -61,9 +61,18 @@ void		link_writing(char **line)
 	if (!(g_params->arr))
 		sort_list_to_arr();
 	line_split = ft_strsplit(*line, '-');
-	if (ft_arrlen(line_split) < 2)
-		error_exit();
+	if (ft_arrlen(line_split) < 2) // why < ? not !=
+		error_exit(e_invalid_link); // need to rework on check_data_sufficiency
 	link_writing_main_loop(*line, line_split);
+}
+
+void		check_data_sufficiency(void)
+{
+	if (!(g_params->nr_ants))
+		error_exit(e_no_ants_value);
+	else if (!(g_params->start) || !(g_params->end))
+		error_exit(e_no_start_end_node);
+
 }
 
 /*
@@ -86,7 +95,8 @@ static void	read_input_loop_conditions(int *fls, char *line,
 	else if (ft_arrlen(line_split) == 1 && (fls[2] = 1))
 		link_writing(&line);
 	else
-		error_exit();
+		//error_exit();
+		check_data_sufficiency();
 }
 
 void		read_input(int fd)
@@ -107,6 +117,10 @@ void		read_input(int fd)
 		free_2d_array(line_split);
 	}
 	free(line);
-	if (!fls[0] || !fls[1] || !fls[2])
-		error_exit();
+	if (!fls[0] || !fls[1])
+		// error_exit();
+		check_data_sufficiency();
+	if (!fls[2])
+		error_exit(e_invalid_link);
+		
 }

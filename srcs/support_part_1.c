@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 11:40:06 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/27 16:52:52 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/28 15:46:59 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,28 @@ void	free_g_params(void)
 	free(g_params);
 }
 
-void	error_exit(void)
+void	error_exit(int value)
 {
-	free_g_params();
-	ft_putstr("ERROR");
+	//free_g_params();
+	if (value == e_no_ants_value)
+		ft_putstr("ERROR: no ants value");
+	else if (value == e_ants_value_bigger_int)
+		ft_putstr("ERROR: ants' value bigger than int");
+	else if (value == e_no_start_end_node)
+		ft_putstr("ERROR: no start or end node");
+	else if (value == e_room_starts_with_L)
+		ft_putstr("ERROR: room starts with \"L\"");
+	else if (value == e_invalid_coordinates)
+		ft_putstr("ERROR: node has invalid coordinates");
+	else if (value == e_invalid_link)
+		ft_putstr("ERROR: invalid or no links in input file");
+	else if (value == e_invalid_node)
+		ft_putstr("ERROR: invalid or no nodes in input file");
+	else if (value == e_cannot_read_file)
+		ft_putstr("ERROR: cannot read from file");
+
+	else
+		ft_putstr("ERROR");
 	exit(0);
 }
 
@@ -61,7 +79,7 @@ int		get_next_line_or_exit(char **line)
 	int nr_bytes_read;
 
 	if ((nr_bytes_read = get_next_line(0, line)) < 0)
-		error_exit();
+		error_exit(e_cannot_read_file);
 	return (nr_bytes_read);
 }
 
@@ -70,7 +88,7 @@ t_cost_params	*cost_params_setup(void)
 	t_cost_params *tmp;
 
 	if (!(tmp = (t_cost_params *)malloc(sizeof(t_cost_params))))
-		error_exit();
+		exit(0);
 	tmp->min_cost = 0;
 	tmp->path_nr = 1;
 	tmp->num_paths_in_resulting_group = 1;

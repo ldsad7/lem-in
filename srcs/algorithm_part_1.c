@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   algorithm_part_1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/28 05:12:08 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/28 15:18:05 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ static void	algorithm_bfs_loop(t_cost_params *cost_params, t_room **paths_ends,
 		else
 		{
 			if (!(g_params->start_of_list_of_paths))
-				error_exit();
+				error_exit(e_invalid_link);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!change!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			cost_params->min_cost = g_params->nr_ants +
 			g_params->start_of_list_of_paths->len_seq - 1;
 		}

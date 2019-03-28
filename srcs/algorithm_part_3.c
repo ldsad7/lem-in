@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   algorithm_part_3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/28 05:15:55 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/28 15:22:45 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@ static void	bfs_loop_else(t_neighbour **neighb, t_queue *queue,
 	((*neighb)->room == g_params->end && queue->room->in_paths)))
 	{
 		if (((*neighb)->room->path_nr != path_nr
-			|| ((*neighb)->room->path_nr == path_nr && queue->room->in_paths &&
-			(*neighb)->room == queue->room->prev_path))
-			&& (*neighb)->room != g_params->end && (*neighb)->room != g_params->start
+			|| ((*neighb)->room->path_nr == path_nr && queue->room->in_paths
+			&& (*neighb)->room == queue->room->prev_path))
+			&& (*neighb)->room != g_params->end
+			&& (*neighb)->room != g_params->start
 			&& !(queue->room == g_params->start && (*neighb)->room->in_paths)
-			&& !(queue->room->in_paths && (*neighb)->room == queue->room->next_elem))
+			&& !(queue->room->in_paths
+			&& (*neighb)->room == queue->room->next_elem))
 		{
 			push_queue(&queue, &((*neighb)->room));
 			(*neighb)->room->path_nr = path_nr;

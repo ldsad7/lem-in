@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/28 05:11:21 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/28 15:45:41 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,16 @@ typedef struct				s_cost_params
 
 t_params					*g_params;
 enum						e_start_end	{e_start, e_end};
+enum						e_errors	{e_no_ants_value,
+							e_ants_value_bigger_int, e_no_start_end_node,
+							e_room_starts_with_L, e_invalid_coordinates,
+							e_invalid_node, e_invalid_link,
+							e_cannot_read_file};
 
 void						read_input(int fd);
 int							get_next_line_or_exit(char **line);
 void						free_2d_array(char **line);
-void						error_exit(void);
+void						error_exit(int value);
 size_t						ft_arrlen(char **str);
 void						get_nr_ants(char **line, int fd);
 t_room						*room_writing(char **ln_split);
