@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi_long.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/04 17:41:56 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/02 19:20:45 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/29 00:22:37 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ long long	ft_atoi_long(const char *str)
 	while (*str >= '0' && *str <= '9')
 	{
 		res = res * 10 + (*str - '0');
+		if (res > 2147483647)
+			break ;
 		str++;
 	}
 	return (res * is_negative);

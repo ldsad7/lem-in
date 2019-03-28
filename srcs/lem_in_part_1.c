@@ -6,28 +6,28 @@
 /*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/28 22:31:41 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/28 23:01:53 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	check_coordinates(void)
+void		check_coordinates(void)
 {
- 	t_room		*start_of_list;
- 	t_room		*tmp;
+	t_room		*start_of_list;
+	t_room		*tmp;
 
- 	start_of_list = g_params->start_of_list;
- 	while (start_of_list)
- 	{
- 		tmp = start_of_list->next;
- 		while (tmp)
- 		{
- 			if (tmp->coord_x == start_of_list->coord_x &&
- 				tmp->coord_y == start_of_list->coord_y)
- 				error_exit(e_two_nodes_have_the_same_coordinates);
- 			tmp = tmp->next;
- 		}
+	start_of_list = g_params->start_of_list;
+	while (start_of_list)
+	{
+		tmp = start_of_list->next;
+		while (tmp)
+		{
+			if (tmp->coord_x == start_of_list->coord_x &&
+				tmp->coord_y == start_of_list->coord_y)
+				error_exit(e_two_nodes_have_the_same_coordinates);
+			tmp = tmp->next;
+		}
 		start_of_list = start_of_list->next;
 	}
 }
@@ -66,38 +66,6 @@ void		correct_paths(void)
 		correct_paths_seq_loop(seq);
 		paths = paths->next;
 	}
-}
-
-static int	num_of_nghbrs(t_neighbour *neighbour)
-{
-	int		i;
-
-	i = 0;
-	while (neighbour)
-	{
-		neighbour = neighbour->next;
-		i++;
-	}
-	return (i);
-}
-
-static int	ft_min(int a, int b, int c)
-{
-	if (a <= b && a <= c)
-		return (a);
-	if (b <= a && b <= c)
-		return (b);
-	return (c);
-}
-
-void		recursive_print_and_free(t_list **input)
-{
-	if (!(*input))
-		return;
-	recursive_print_and_free(&((*input)->next));
-	ft_printf("%s\n", (*input)->content);
-	free((*input)->content);
-	free(*input);
 }
 
 int			main(int argc, char **argv)

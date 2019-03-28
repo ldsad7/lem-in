@@ -6,7 +6,7 @@
 /*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/28 22:24:09 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/29 00:27:32 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void		check_data_sufficiency(void)
 		error_exit(e_no_ants_value);
 	else if (!(g_params->start) || !(g_params->end))
 		error_exit(e_no_start_end_node);
-
 }
 
 /*
@@ -103,19 +102,17 @@ static int	read_input_loop_conditions(int *fls, char *line,
 	else if (ft_arrlen(line_split) == 1 && (fls[2] = 1))
 		stop_reading = link_writing(&line);
 	else
-	{	//error_exit();
+	{
 		check_data_sufficiency();
 		stop_reading = 1;
 	}
 	ft_lstadd(input, ft_lstnew(line, 0));
-	// free(line);
 	return (stop_reading);
 }
 
 void		read_input(t_list **input)
 {
 	char	*line;
-	int		nr_bytes_read;
 	char	**line_split;
 	int		fls[3];
 	int		stop_reading;
@@ -123,14 +120,13 @@ void		read_input(t_list **input)
 	stop_reading = 0;
 	g_params_init(&fls, &line);
 	get_nr_ants(&line, input);
-	while ((nr_bytes_read = get_next_line_or_exit(&line)) && !stop_reading)
+	while (get_next_line_or_exit(&line) > 0 && !stop_reading)
 	{
 		line_split = ft_strsplit(line, ' ');
 		stop_reading = read_input_loop_conditions(fls, line, line_split, input);
 		free_2d_array(line_split);
 	}
 	ft_lstadd(input, ft_lstnew(line, 0));
-	// free(line);
 	if (!fls[0] || !fls[1])
 		// error_exit();
 		check_data_sufficiency();

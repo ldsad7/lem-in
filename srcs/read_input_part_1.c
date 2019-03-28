@@ -6,7 +6,7 @@
 /*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/28 22:23:20 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/29 00:51:08 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,23 @@ void			get_nr_ants(char **line, t_list **input)
 {
 	long long num;
 
-	while (get_next_line_or_exit(line) && (*line)[0] == '#'
+	while (get_next_line_or_exit(line) > 0 && (*line)[0] == '#'
 			&& !ft_strequ(*line, "##start") && !ft_strequ(*line, "##end"))
-	{
 		ft_lstadd(input, ft_lstnew(*line, 0));
-		// free(*line);
-	}
 	if (ft_isnumeric(*line))
 	{
-		if ((num = ft_atoi_long(*line)) <= 2147483647 && num >= -2147483648)
+		if ((num = ft_atoi_long(*line)) <= 2147483647 && num >= 0)
 			g_params->nr_ants = num;
+		else if (num < 0)
+			error_exit(e_ants_value_less_than_zero);
 		else
 			error_exit(e_ants_value_bigger_int);
 	}
-	else
+	else if (!ft_strlen(*line))
 		error_exit(e_no_ants_value);
+	else
+		error_exit(e_incorrect_ants_value);
 	ft_lstadd(input, ft_lstnew(*line, 0));
-	// free(*line);
 }
 
 static t_room	*tmp_room_setup(t_room *tmp, int num1, int num2)
@@ -86,21 +86,22 @@ void			start_end_writing(char **line, t_list **input)
 	char	**line_split;
 
 	start_or_end = ft_strequ(*line, "##start") ? e_start : e_end;
-	if ((!start_or_end && g_params->start) || (start_or_end && g_params->end))
-		error_exit(e_no_start_end_node);
+	if (!start_or_end && g_params->start)
+		error_exit(e_repeating_start_node);
+	if (start_or_end && g_params->end)
+		error_exit(e_repeating_end_node);
 	ft_lstadd(input, ft_lstnew(*line, 0));
-	// free(*line);
 	while (get_next_line_or_exit(line) && (*line)[0] == '#' &&
 			!ft_strequ(*line, "##start") && !ft_strequ(*line, "##end"))
-	{
 		ft_lstadd(input, ft_lstnew(*line, 0));
-		// free(*line);
-	}
-	if (ft_strequ(*line, "##start") || ft_strequ(*line, "##end"))
-		error_exit(e_no_start_end_node);
+	if (ft_strequ(*line, "##start"))
+		error_exit(e_repeating_start_node);
+	if (ft_strequ(*line, "##end"))
+		error_exit(e_repeating_end_node);
 	line_split = ft_strsplit(*line, ' ');
 	if (ft_arrlen(line_split) != 3)
-		error_exit(e_invalid_node);
+		error_exit((start_or_end == 0) * e_invalid_start_node
+					+ (start_or_end == 1) * e_invalid_end_node);
 	if (start_or_end == e_start)
 		g_params->start = room_writing(line_split);
 	else
