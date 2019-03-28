@@ -6,7 +6,7 @@
 #    By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/01 17:36:37 by bsprigga          #+#    #+#              #
-#    Updated: 2019/03/27 20:19:19 by bsprigga         ###   ########.fr        #
+#    Updated: 2019/03/28 20:41:57 by tsimonis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,6 @@ SRCS =	lem_in_part_1.c \
 		algorithm_part_3.c \
 		algorithm_part_4.c \
 		algorithm_part_5.c \
-		graph_creation.c 
 
 OBJECTS = $(SRCS:.c=.o)
 

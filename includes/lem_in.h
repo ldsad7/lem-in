@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/28 16:21:55 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/28 21:52:01 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ struct						s_room
 	char					*name;
 	int						coord_x;
 	int						coord_y;
-	t_room					*next; // needed for reading input
-	t_room					*next_elem; // needed for the algorithm
-	t_room					*prev_path; // needed for the algorithm
-	t_room					*prev_elem; // for current iteration tracking prev element for relinking
+	t_room					*next;
+	t_room					*next_elem;
+	t_room					*prev_path;
+	t_room					*prev_elem;
 	int						path_nr;
 	int						in_paths;
 	t_neighbour				*neighbours;
@@ -55,7 +55,7 @@ typedef struct				s_params
 	t_room					*end;
 	t_room					*start_of_list;
 	t_path					*start_of_list_of_paths;
-	t_room					**arr; // sorted array of nodes
+	t_room					**arr;
 }							t_params;
 
 typedef struct				s_queue
@@ -81,41 +81,33 @@ typedef struct				s_cost_params
 }							t_cost_params;
 
 t_params					*g_params;
-enum						e_start_end	{e_start, e_end};
-enum						e_errors	{e_no_ants_value,
-							e_ants_value_bigger_int, e_no_start_end_node,
-							e_room_starts_with_L, e_invalid_coordinates,
-							e_invalid_node, e_invalid_link,
-							e_cannot_read_file};
+enum						e_start_end {e_start, e_end};
+enum						e_errors {e_no_ants_value, e_ants_value_bigger_int, e_no_start_end_node, e_room_starts_with_L, e_invalid_coordinates, e_invalid_node, e_invalid_link, e_cannot_read_file, e_two_nodes_have_the_same_coordinates};
 
-void						read_input(int fd);
+void						read_input();
 int							get_next_line_or_exit(char **line);
 void						free_2d_array(char **line);
 void						error_exit(int value);
 size_t						ft_arrlen(char **str);
-void						get_nr_ants(char **line, int fd);
+void						get_nr_ants(char **line, t_list **input);
 t_room						*room_writing(char **ln_split);
-void						start_end_writing(char **line, int fd);
+void						start_end_writing(char **line, t_list **input);
 t_room						*find_leaf(char *name);
 char						*ft_strjoin_for_arr(char **lines, int max_len);
-// int							link_writing(char **line);
 void						free_g_params(void);
 t_room						*new_room(char *name, int x, int y);
-// int							algorithm(int flows);
 t_cost_params				*algorithm(int flows);
-// void						add_path(t_path **paths_prev_iter, t_room **room);
 void						print_paths_(void);
 void						print_paths_double(void);
 void						free_and_relocate_start_of_list_of_paths(t_path
-															*paths_curr_iter);
+														*paths_curr_iter);
 void						sort_list_to_arr(void);
 void						g_params_init(int (*fls)[3], char **line);
-void						write_line(char *line, int fd);
 void						print_paths(int nr_steps);
 t_stack						*ft_stacknew(int value, t_stack *prev,
 													t_stack *next);
 void						ft_stackdelone(t_stack **top);
-void						ft_stackdel(t_stack **top);
+int							ft_stackdel(t_stack **top);
 void						push_stack(t_stack **stack, int value);
 void						rotate_forward_stack(t_stack **top);
 void						rotate_forward_queue(t_queue **queue);

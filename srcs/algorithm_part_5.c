@@ -6,13 +6,13 @@
 /*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/28 05:11:16 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/28 20:38:45 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-static void add_path_main_loop(t_room **room, t_path **path)
+static void	add_path_main_loop(t_room **room, t_path **path)
 {
 	t_room		*tmp;
 	t_neighbour	*new;

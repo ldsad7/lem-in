@@ -6,13 +6,14 @@
 /*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/28 05:13:01 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/28 20:20:40 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void		free_and_relocate_start_of_list_of_paths(t_path *paths_curr_iter)
+void			free_and_relocate_start_of_list_of_paths(
+													t_path *paths_curr_iter)
 {
 	t_path		*tmp_path;
 	t_neighbour	*tmp_neghb;
@@ -31,7 +32,7 @@ void		free_and_relocate_start_of_list_of_paths(t_path *paths_curr_iter)
 	}
 }
 
-static void	free_and_relocate_end_of_list_of_paths(t_path *paths_curr_iter)
+static void		free_and_relocate_end_of_list_of_paths(t_path *paths_curr_iter)
 {
 	t_path		*tmp_path;
 	t_neighbour	*tmp_neghb;
@@ -50,7 +51,7 @@ static void	free_and_relocate_end_of_list_of_paths(t_path *paths_curr_iter)
 	}
 }
 
-static t_path *get_curr_iter_paths(t_path **paths_prev_iter,
+static t_path	*get_curr_iter_paths(t_path **paths_prev_iter,
 									t_cost_params *cost_params)
 {
 	int		iter;
@@ -66,31 +67,33 @@ static t_path *get_curr_iter_paths(t_path **paths_prev_iter,
 	return (paths);
 }
 
-static void	get_sum_paths_and_num_paths_in_group(t_path *paths, int *sum_paths,
-												int *num_paths_in_group)
+static void		get_sum_paths_and_num_paths_in_group(t_path paths,
+								int *sum_paths, int *num_paths_in_group)
 {
-	while (paths)
+	t_path	*path;
+
+	path = &paths;
+	while (path)
 	{
-		*sum_paths += paths->len_seq;
-		paths = paths->next;
+		*sum_paths += path->len_seq;
+		path = path->next;
 		(*num_paths_in_group)++;
 	}
 }
 
-int			compare(t_cost_params *cost_params, t_path **paths_bfs)
+int				compare(t_cost_params *cost_params, t_path **paths_bfs)
 {
 	t_path	*paths_curr_iter;
 	t_path	*paths_prev_iter;
-	t_path	*path;
 	int		sum_paths;
 	int		curr_cost;
 	int		num_paths_in_group;
 
 	sum_paths = 0;
 	num_paths_in_group = 0;
-	path = get_curr_iter_paths(&paths_prev_iter, cost_params);
-	paths_curr_iter = path;
-	get_sum_paths_and_num_paths_in_group(path, &sum_paths, &num_paths_in_group);
+	paths_curr_iter = get_curr_iter_paths(&paths_prev_iter, cost_params);
+	get_sum_paths_and_num_paths_in_group(*paths_curr_iter, &sum_paths,
+											&num_paths_in_group);
 	curr_cost = (g_params->nr_ants + sum_paths) / cost_params->path_nr - 1;
 	if ((g_params->nr_ants + sum_paths) % cost_params->path_nr != 0)
 		curr_cost++;
@@ -105,44 +108,3 @@ int			compare(t_cost_params *cost_params, t_path **paths_bfs)
 	paths_prev_iter->next = NULL;
 	return (0);
 }
-
-// int			compare(t_cost_params *cost_params, t_path **paths_bfs)
-// {
-// 	t_path	*paths;
-// 	t_path	*paths_curr_iter;
-// 	t_path	*paths_prev_iter;
-// 	int		sum_paths;
-// 	int		curr_cost;
-// 	int		iter;
-// 	int		num_paths_in_group;
-
-// 	paths = g_params->start_of_list_of_paths;
-// 	sum_paths = 0;
-// 	iter = 0;
-// 	num_paths_in_group = 0;
-// 	while (++iter < cost_params->num_paths_in_resulting_group)
-// 	{
-// 		paths_prev_iter = paths;
-// 		paths = paths->next;
-// 	}
-// 	paths_curr_iter = paths;
-// 	while (paths)
-// 	{
-// 		sum_paths += paths->len_seq;
-// 		paths = paths->next;
-// 		num_paths_in_group++;
-// 	}
-// 	curr_cost = (g_params->nr_ants + sum_paths) / cost_params->path_nr - 1;
-// 	if ((g_params->nr_ants + sum_paths) % cost_params->path_nr != 0)
-// 		curr_cost++;
-// 	if (cost_params->min_cost >= curr_cost)
-// 	{
-// 		cost_params->min_cost = curr_cost;
-// 		free_and_relocate_start_of_list_of_paths(paths_curr_iter);
-// 		return (num_paths_in_group + 1);
-// 	}
-// 	free_and_relocate_end_of_list_of_paths(paths_curr_iter);
-// 	*paths_bfs = paths_prev_iter;
-// 	paths_prev_iter->next = NULL;
-// 	return (0);
-// }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_input_part_3.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/28 16:22:22 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/28 22:24:09 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void		check_data_sufficiency(void)
 */
 
 static int	read_input_loop_conditions(int *fls, char *line,
-										char **line_split, int fd)
+									char **line_split, t_list **input)
 {
 	int		stop_reading;
 
@@ -97,8 +97,8 @@ static int	read_input_loop_conditions(int *fls, char *line,
 		;
 	else if ((ft_strequ(line, "##start") && (fls[0] = 1))
 			|| (ft_strequ(line, "##end") && (fls[1] = 1)))
-		start_end_writing(&line, fd);
-	else if (ft_arrlen(line_split) == 3 && !fls[2])
+		start_end_writing(&line, input);
+	else if (ft_arrlen(line_split) == 3 && !(fls[2]))
 		room_writing(line_split);
 	else if (ft_arrlen(line_split) == 1 && (fls[2] = 1))
 		stop_reading = link_writing(&line);
@@ -107,10 +107,12 @@ static int	read_input_loop_conditions(int *fls, char *line,
 		check_data_sufficiency();
 		stop_reading = 1;
 	}
+	ft_lstadd(input, ft_lstnew(line, 0));
+	// free(line);
 	return (stop_reading);
 }
 
-void		read_input(int fd)
+void		read_input(t_list **input)
 {
 	char	*line;
 	int		nr_bytes_read;
@@ -120,16 +122,15 @@ void		read_input(int fd)
 
 	stop_reading = 0;
 	g_params_init(&fls, &line);
-	get_nr_ants(&line, fd);
+	get_nr_ants(&line, input);
 	while ((nr_bytes_read = get_next_line_or_exit(&line)) && !stop_reading)
 	{
-		write_line(line, fd);
 		line_split = ft_strsplit(line, ' ');
-		stop_reading = read_input_loop_conditions(fls, line, line_split, fd);
-		free(line);
+		stop_reading = read_input_loop_conditions(fls, line, line_split, input);
 		free_2d_array(line_split);
 	}
-	free(line);
+	ft_lstadd(input, ft_lstnew(line, 0));
+	// free(line);
 	if (!fls[0] || !fls[1])
 		// error_exit();
 		check_data_sufficiency();

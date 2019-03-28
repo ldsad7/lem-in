@@ -3,103 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   algorithm_part_1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/28 15:18:05 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/28 21:45:07 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-/*
-void	print_state_of_map(void)
-{
-	t_room	*start;
-
-	start = g_params->start_of_list;
-	printf("----------------------------------\n");
-	while (start)
-	{
-		printf("------\n");
-		printf("room: %s\n", start->name);
-		if (start->next_elem)
-			printf("next_elem: %s\n", start->next_elem->name);
-		else
-			printf("next_elem: null\n");
-		if (start->prev_path)
-			printf("prev_path: %s\n", start->prev_path->name);
-		else
-			printf("prev_path: null\n");
-		if (start->prev_elem)
-			printf("prev_elem: %s\n", start->prev_elem->name);
-		else
-			printf("prev_elem: null\n");
-		printf("path_nr: %d\n", start->path_nr);
-		printf("in_paths: %d\n", start->in_paths);
-		printf("------\n");
-		start = start->next;
-	}
-	printf("----------------------------------\n");
-}
-*/
-
-// void	print_queue(t_queue *queue)
-// {
-// 	t_queue		*start;
-
-// 	if (!queue)
-// 	{
-// 		printf("\n");
-// 		return ;
-// 	}
-// 	start = queue;
-// 	printf("%s, ", start->room->name);
-// 	if (!queue->prev)
-// 	{
-// 		printf("\n");
-// 		return ;
-// 	}
-// 	queue = queue->prev;
-// 	while (queue != start)
-// 	{
-// 		printf("%s, ", queue->room->name);
-// 		queue = queue->prev;
-// 	}
-// 	printf("\n");
-// }
-
-
-
-// int		ft_lstlen(t_stack *top)
-// {
-// 	t_stack	*tmp;
-// 	int		i;
-
-// 	if (!top)
-// 		return (0);
-// 	i = 1;
-// 	tmp = top->prev;
-// 	while (tmp && tmp != top && ++i)
-// 		tmp = tmp->prev;
-// 	return (i);
-// }
-
-// int		queue_len(t_queue *queue)
-// {
-// 	t_queue		*tmp;
-// 	int			i;
-
-// 	if (!queue)
-// 		return (0);
-// 	tmp = queue->prev;
-// 	i = 1;
-// 	while (tmp && tmp != queue && ++i)
-// 		tmp = tmp->prev;
-// 	return (i);
-// }
-
-static void	algorithm_neighb_loop(t_cost_params *cost_params,
+static void		algorithm_neighb_loop(t_cost_params *cost_params,
 								t_room **paths_ends, t_path **paths)
 {
 	t_neighbour	*neighb;
@@ -129,8 +42,8 @@ static void	algorithm_neighb_loop(t_cost_params *cost_params,
 	}
 }
 
-static void	algorithm_bfs_loop(t_cost_params *cost_params, t_room **paths_ends,
-								t_path **paths, int flows)
+static void		algorithm_bfs_loop(t_cost_params *cost_params,
+							t_room **paths_ends, t_path **paths, int flows)
 {
 	while (cost_params->path_nr <= flows && bfs(cost_params->path_nr,
 	&paths_ends, paths))
@@ -145,7 +58,7 @@ static void	algorithm_bfs_loop(t_cost_params *cost_params, t_room **paths_ends,
 		else
 		{
 			if (!(g_params->start_of_list_of_paths))
-				error_exit(e_invalid_link);//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!change!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				error_exit(e_invalid_link);
 			cost_params->min_cost = g_params->nr_ants +
 			g_params->start_of_list_of_paths->len_seq - 1;
 		}

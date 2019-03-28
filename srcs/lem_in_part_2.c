@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in_part_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/27 14:36:55 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/28 20:46:48 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,6 @@ static void	iter_ants_move(int nr_steps, t_room **room_arr,
 	int			fl;
 	int			space_flag;
 
-	nr_steps += 1;
 	while (nr_steps--)
 	{
 		space_flag = 0;
@@ -82,7 +81,8 @@ static void	iter_ants_move(int nr_steps, t_room **room_arr,
 			if (tmp_room == g_params->start)
 				tmp_room->ant_nr = g_params->nr_ants;
 			fl += print_existing_ants_movement(&tmp_room, &space_flag);
-			fl += new_ants_move_in_path(i, tmp_room, &space_flag, &nr_ants_to_move_in_paths);
+			fl += new_ants_move_in_path(i, tmp_room, &space_flag,
+											&nr_ants_to_move_in_paths);
 			if (room_arr[i]->next_elem != g_params->end)
 				room_arr[i] = room_arr[i]->next_elem;
 			i++;
@@ -107,7 +107,8 @@ static void	rooms_arr_setup(t_room ***room_arr, int **nr_ants_to_move_in_paths,
 	while (tmp)
 	{
 		(*nr_ants_to_move_in_paths)[i] = (g_params->nr_ants + sum_paths)
-		/ cnt_paths - tmp->len_seq + ((g_params->nr_ants + sum_paths) % cnt_paths != 0);
+		/ cnt_paths - tmp->len_seq +
+							((g_params->nr_ants + sum_paths) % cnt_paths != 0);
 		if (!(tmp->seq))
 			(*room_arr)[i] = g_params->start;
 		else
@@ -135,7 +136,7 @@ void		print_paths(int nr_steps)
 		tmp = tmp->next;
 	}
 	rooms_arr_setup(&room_arr, &nr_ants_to_move_in_paths, cnt_paths, sum_paths);
-	iter_ants_move(nr_steps, room_arr, nr_ants_to_move_in_paths, cnt_paths);
+	iter_ants_move(nr_steps + 1, room_arr, nr_ants_to_move_in_paths, cnt_paths);
 	free(nr_ants_to_move_in_paths);
 	free(room_arr);
 }

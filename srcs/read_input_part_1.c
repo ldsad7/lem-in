@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_input_part_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/28 16:09:24 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/28 22:23:20 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,15 @@
 **	first while is for skipping comments before ants_nr value
 */
 
-void			get_nr_ants(char **line, int fd)
+void			get_nr_ants(char **line, t_list **input)
 {
 	long long num;
 
 	while (get_next_line_or_exit(line) && (*line)[0] == '#'
 			&& !ft_strequ(*line, "##start") && !ft_strequ(*line, "##end"))
 	{
-		write(fd, *line, ft_strlen(*line));
-		write(fd, "\n", 1);
-		free(*line);
+		ft_lstadd(input, ft_lstnew(*line, 0));
+		// free(*line);
 	}
 	if (ft_isnumeric(*line))
 	{
@@ -36,9 +35,8 @@ void			get_nr_ants(char **line, int fd)
 	}
 	else
 		error_exit(e_no_ants_value);
-	write(fd, *line, ft_strlen(*line));
-	write(fd, "\n", 1);
-	free(*line);
+	ft_lstadd(input, ft_lstnew(*line, 0));
+	// free(*line);
 }
 
 static t_room	*tmp_room_setup(t_room *tmp, int num1, int num2)
@@ -82,13 +80,7 @@ t_room			*room_writing(char **ln_split)
 	return (tmp);
 }
 
-void			write_line(char *line, int fd)
-{
-	write(fd, line, ft_strlen(line));
-	write(fd, "\n", 1);
-}
-
-void			start_end_writing(char **line, int fd)
+void			start_end_writing(char **line, t_list **input)
 {
 	int		start_or_end;
 	char	**line_split;
@@ -96,18 +88,17 @@ void			start_end_writing(char **line, int fd)
 	start_or_end = ft_strequ(*line, "##start") ? e_start : e_end;
 	if ((!start_or_end && g_params->start) || (start_or_end && g_params->end))
 		error_exit(e_no_start_end_node);
-	free(*line);
+	ft_lstadd(input, ft_lstnew(*line, 0));
+	// free(*line);
 	while (get_next_line_or_exit(line) && (*line)[0] == '#' &&
 			!ft_strequ(*line, "##start") && !ft_strequ(*line, "##end"))
 	{
-		write_line(*line, fd);
-		free(*line);
+		ft_lstadd(input, ft_lstnew(*line, 0));
+		// free(*line);
 	}
-	write_line(*line, fd);
 	if (ft_strequ(*line, "##start") || ft_strequ(*line, "##end"))
 		error_exit(e_no_start_end_node);
 	line_split = ft_strsplit(*line, ' ');
-	//free(*line); // ???!!!needed here? - gives free error - pointer being freed not allocated
 	if (ft_arrlen(line_split) != 3)
 		error_exit(e_invalid_node);
 	if (start_or_end == e_start)

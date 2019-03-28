@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   algorithm_part_3.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/28 15:22:45 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/28 20:37:47 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,14 @@ static void	bfs_loop_else(t_neighbour **neighb, t_queue *queue,
 	}
 }
 
-// fls -- was there an edge of the previous path?
+static int	call_flag_path_and_return(t_room ***paths_ends, t_queue *queue,
+										int path_nr, t_path **paths)
+{
+	(*paths_ends)[path_nr - 1] = queue->room;
+	flag_path(*paths_ends, path_nr, paths);
+	queue_free(&queue);
+	return (1);
+}
 
 int			bfs(int path_nr, t_room ***paths_ends, t_path **paths)
 {
@@ -70,13 +77,8 @@ int			bfs(int path_nr, t_room ***paths_ends, t_path **paths)
 			neighb = queue->room->neighbours;
 			bfs_loop_else(&neighb, queue, fls, path_nr);
 			if (neighb && neighb->room == g_params->end)
-			{
-				(*paths_ends)[path_nr - 1] = queue->room;
-				flag_path(*paths_ends, path_nr, paths);
-				queue_free(&queue);
-				ft_stackdel(&fls);
-				return (1);
-			}
+				return (ft_stackdel(&fls) *
+				call_flag_path_and_return(paths_ends, queue, path_nr, paths));
 		}
 		queue_delone(&queue);
 		ft_stackdelone(&fls);

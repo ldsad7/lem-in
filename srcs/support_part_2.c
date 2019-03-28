@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   support_part_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 11:40:06 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/27 15:17:50 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/28 20:28:35 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,11 @@ void	ft_stackdelone(t_stack **top)
 	*top = prev;
 }
 
-void	ft_stackdel(t_stack **top)
+int		ft_stackdel(t_stack **top)
 {
 	while (*top)
 		ft_stackdelone(top);
+	return (1);
 }
 
 void	push_stack(t_stack **stack, int value)
