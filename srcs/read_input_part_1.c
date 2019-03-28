@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/28 15:46:24 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/28 16:09:24 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_room			*room_writing(char **ln_split)
 	if (!ft_isnumeric(ln_split[1]) || !ft_isnumeric(ln_split[2])
 	|| (num1 = ft_atoi_long(ln_split[1])) > 2147483647 || num1 < -2147483648
 	|| (num2 = ft_atoi_long(ln_split[2])) > 2147483647 || num2 < -2147483648)
-		error_exit(e_invalid_coordinates); // need to rework on check_data_sufficiency
+		error_exit(e_invalid_coordinates);
 	g_params->nr_rooms++;
 	tmp = tmp_room_setup(tmp, num1, num2);
 	if (g_params->start_of_list)

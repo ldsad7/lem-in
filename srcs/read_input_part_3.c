@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/28 15:48:48 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/28 16:22:22 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	add_to_lst(t_room *input, t_room *output)
 	output->neighbours = neighb;
 }
 
-static void	link_writing_main_loop(char *line, char **line_split)
+static int	link_writing_main_loop(char *line, char **line_split)
 {
 	char	*first_name;
 	char	*second_name;
@@ -46,15 +46,17 @@ static void	link_writing_main_loop(char *line, char **line_split)
 		free(second_name);
 	}
 	if (!(tmps[0]) || !(tmps[1]) || !first_name || !second_name)
-		error_exit(e_invalid_link); // need to rework on check_data_sufficiency
+		//error_exit(e_invalid_link); // need to rework on check_data_sufficiency
+		return (1);
 	add_to_lst(tmps[1], tmps[0]);
 	add_to_lst(tmps[0], tmps[1]);
 	free_2d_array(line_split);
 	free(first_name);
 	free(second_name);
+	return (0);
 }
 
-void		link_writing(char **line)
+int			link_writing(char **line)
 {
 	char		**line_split;
 
@@ -62,8 +64,11 @@ void		link_writing(char **line)
 		sort_list_to_arr();
 	line_split = ft_strsplit(*line, '-');
 	if (ft_arrlen(line_split) < 2) // why < ? not !=
-		error_exit(e_invalid_link); // need to rework on check_data_sufficiency
-	link_writing_main_loop(*line, line_split);
+		//error_exit(e_invalid_link); // need to rework on check_data_sufficiency
+		return (1);
+	if (link_writing_main_loop(*line, line_split))
+		return (1);
+	return (0);
 }
 
 void		check_data_sufficiency(void)
@@ -81,9 +86,12 @@ void		check_data_sufficiency(void)
 **	fls[2] -- was there a link?
 */
 
-static void	read_input_loop_conditions(int *fls, char *line,
+static int	read_input_loop_conditions(int *fls, char *line,
 										char **line_split, int fd)
 {
+	int		stop_reading;
+
+	stop_reading = 0;
 	if (line[0] == '#' && !ft_strequ(line, "##start")
 			&& !ft_strequ(line, "##end"))
 		;
@@ -93,10 +101,13 @@ static void	read_input_loop_conditions(int *fls, char *line,
 	else if (ft_arrlen(line_split) == 3 && !fls[2])
 		room_writing(line_split);
 	else if (ft_arrlen(line_split) == 1 && (fls[2] = 1))
-		link_writing(&line);
+		stop_reading = link_writing(&line);
 	else
-		//error_exit();
+	{	//error_exit();
 		check_data_sufficiency();
+		stop_reading = 1;
+	}
+	return (stop_reading);
 }
 
 void		read_input(int fd)
@@ -105,14 +116,16 @@ void		read_input(int fd)
 	int		nr_bytes_read;
 	char	**line_split;
 	int		fls[3];
+	int		stop_reading;
 
+	stop_reading = 0;
 	g_params_init(&fls, &line);
 	get_nr_ants(&line, fd);
-	while ((nr_bytes_read = get_next_line_or_exit(&line)))
+	while ((nr_bytes_read = get_next_line_or_exit(&line)) && !stop_reading)
 	{
 		write_line(line, fd);
 		line_split = ft_strsplit(line, ' ');
-		read_input_loop_conditions(fls, line, line_split, fd);
+		stop_reading = read_input_loop_conditions(fls, line, line_split, fd);
 		free(line);
 		free_2d_array(line_split);
 	}

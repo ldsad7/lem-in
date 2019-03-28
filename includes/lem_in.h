@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/28 15:45:41 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/28 16:21:55 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_room						*room_writing(char **ln_split);
 void						start_end_writing(char **line, int fd);
 t_room						*find_leaf(char *name);
 char						*ft_strjoin_for_arr(char **lines, int max_len);
-void						link_writing(char **line);
+// int							link_writing(char **line);
 void						free_g_params(void);
 t_room						*new_room(char *name, int x, int y);
 // int							algorithm(int flows);
