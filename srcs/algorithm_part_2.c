@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   algorithm_part_2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/27 18:47:29 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/28 05:13:01 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,16 @@ int			compare(t_cost_params *cost_params, t_path **paths_bfs)
 {
 	t_path	*paths_curr_iter;
 	t_path	*paths_prev_iter;
+	t_path	*path;
 	int		sum_paths;
 	int		curr_cost;
 	int		num_paths_in_group;
 
 	sum_paths = 0;
 	num_paths_in_group = 0;
-	paths_curr_iter = get_curr_iter_paths(&paths_prev_iter, cost_params);
-	get_sum_paths_and_num_paths_in_group(paths_curr_iter, &sum_paths, &num_paths_in_group);
+	path = get_curr_iter_paths(&paths_prev_iter, cost_params);
+	paths_curr_iter = path;
+	get_sum_paths_and_num_paths_in_group(path, &sum_paths, &num_paths_in_group);
 	curr_cost = (g_params->nr_ants + sum_paths) / cost_params->path_nr - 1;
 	if ((g_params->nr_ants + sum_paths) % cost_params->path_nr != 0)
 		curr_cost++;

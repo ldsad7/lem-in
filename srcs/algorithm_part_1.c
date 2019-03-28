@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   algorithm_part_1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/27 18:47:26 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/28 05:12:08 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,16 +159,12 @@ t_cost_params	*algorithm(int flows)
 {
 	t_cost_params	*cost_params;
 	t_room			**paths_ends;
-	t_neighbour		*neighb;
-	t_neighbour		*prev;
 	t_path			*paths;
 
 	cost_params = cost_params_setup();
 	paths = NULL;
 	if (!(paths_ends = (t_room **)malloc(sizeof(t_room *) * flows)))
 		exit(0);
-	neighb = g_params->start->neighbours;
-	prev = neighb;
 	algorithm_neighb_loop(cost_params, paths_ends, &paths);
 	algorithm_bfs_loop(cost_params, paths_ends, &paths, flows);
 	free(paths_ends);

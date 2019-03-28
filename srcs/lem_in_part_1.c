@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in_part_1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/27 20:47:17 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/28 04:25:17 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,9 +209,9 @@ int			main(int argc, char **argv)
 	close(fd);
 	if ((fd = open("tmp.txt", O_RDONLY)) < 0)
 		exit(0);
-	while (get_next_line(fd, &line) > 0 && ft_printf("%s\n", line))
-		free(line);
-	ft_printf("\n");
+	// while (get_next_line(fd, &line) > 0 && ft_printf("%s\n", line))
+	// 	free(line);
+	// ft_printf("\n");
 	close(fd);
 	print_paths(nr_steps);
 	free_g_params();
