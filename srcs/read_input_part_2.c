@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_input_part_2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/27 12:56:29 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/29 02:54:40 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ char		*ft_strjoin_for_arr(char **lines, int max_len)
 		len += ft_strlen(lines[i]);
 		i++;
 	}
+	len += i - 1;
 	if (!(res = (char *)malloc(sizeof(*res) * (len + 1))))
 		return (NULL);
 	len = 0;
@@ -62,6 +63,8 @@ char		*ft_strjoin_for_arr(char **lines, int max_len)
 		while (lines[i][j])
 			res[len++] = lines[i][j++];
 		i++;
+		if (lines[i] && lines[i + max_len])
+			res[len++] = '-';
 	}
 	res[len] = '\0';
 	return (res);
@@ -115,6 +118,7 @@ void		g_params_init(int (*fls)[3], char **line)
 	g_params->start_of_list = NULL;
 	g_params->start_of_list_of_paths = NULL;
 	g_params->arr = NULL;
+	g_params->read_lines = 1;
 	(*fls)[0] = 0;
 	(*fls)[1] = 0;
 	(*fls)[2] = 0;

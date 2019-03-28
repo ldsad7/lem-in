@@ -6,7 +6,7 @@
 /*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 00:27:32 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/29 02:56:27 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ int			link_writing(char **line)
 	if (!(g_params->arr))
 		sort_list_to_arr();
 	line_split = ft_strsplit(*line, '-');
-	if (ft_arrlen(line_split) < 2) // why < ? not !=
-		//error_exit(e_invalid_link); // need to rework on check_data_sufficiency
+	if (ft_arrlen(line_split) < 2) // why < ? not != because we want to parse a-b-c-d-...
+		// error_exit(e_invalid_link); // need to rework on check_data_sufficiency
 		return (1);
 	if (link_writing_main_loop(*line, line_split))
 		return (1);
@@ -75,8 +75,10 @@ void		check_data_sufficiency(void)
 {
 	if (!(g_params->nr_ants))
 		error_exit(e_no_ants_value);
-	else if (!(g_params->start) || !(g_params->end))
-		error_exit(e_no_start_end_node);
+	else if (!(g_params->start))
+		error_exit(e_no_start_node);
+	else if (!(g_params->end))
+		error_exit(e_no_end_node);
 }
 
 /*
@@ -107,6 +109,7 @@ static int	read_input_loop_conditions(int *fls, char *line,
 		stop_reading = 1;
 	}
 	ft_lstadd(input, ft_lstnew(line, 0));
+	g_params->read_lines++;
 	return (stop_reading);
 }
 
@@ -127,8 +130,8 @@ void		read_input(t_list **input)
 		free_2d_array(line_split);
 	}
 	ft_lstadd(input, ft_lstnew(line, 0));
+	g_params->read_lines++;
 	if (!fls[0] || !fls[1])
-		// error_exit();
 		check_data_sufficiency();
 	if (!fls[2])
 		error_exit(e_invalid_link);

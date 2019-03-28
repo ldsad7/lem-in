@@ -6,7 +6,7 @@
 /*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 00:51:08 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/29 02:29:45 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ void			get_nr_ants(char **line, t_list **input)
 
 	while (get_next_line_or_exit(line) > 0 && (*line)[0] == '#'
 			&& !ft_strequ(*line, "##start") && !ft_strequ(*line, "##end"))
+	{
+		g_params->read_lines++;
 		ft_lstadd(input, ft_lstnew(*line, 0));
+	}
 	if (ft_isnumeric(*line))
 	{
 		if ((num = ft_atoi_long(*line)) <= 2147483647 && num >= 0)
@@ -37,6 +40,7 @@ void			get_nr_ants(char **line, t_list **input)
 	else
 		error_exit(e_incorrect_ants_value);
 	ft_lstadd(input, ft_lstnew(*line, 0));
+	g_params->read_lines++;
 }
 
 static t_room	*tmp_room_setup(t_room *tmp, int num1, int num2)
@@ -91,9 +95,13 @@ void			start_end_writing(char **line, t_list **input)
 	if (start_or_end && g_params->end)
 		error_exit(e_repeating_end_node);
 	ft_lstadd(input, ft_lstnew(*line, 0));
+	g_params->read_lines++;
 	while (get_next_line_or_exit(line) && (*line)[0] == '#' &&
 			!ft_strequ(*line, "##start") && !ft_strequ(*line, "##end"))
+	{
 		ft_lstadd(input, ft_lstnew(*line, 0));
+		g_params->read_lines++;
+	}
 	if (ft_strequ(*line, "##start"))
 		error_exit(e_repeating_start_node);
 	if (ft_strequ(*line, "##end"))
