@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 18:59:05 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/29 21:21:44 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,27 @@ void		g_params_init(int (*fls)[3], char **line)
 	(*fls)[1] = 0;
 	(*fls)[2] = 0;
 	*line = NULL;
+}
+
+/*
+**	we take tmp as g_params->start_of_list->next because in loop we don't
+**	want to compare this same node with itself. Nodes are added to the left,
+**	so we skip node that we're comparing to others.
+*/
+
+void		check_coordinates_and_name(t_room *current_room)
+{
+	t_room		*tmp;
+
+	tmp = g_params->start_of_list->next;
+
+	while (tmp)
+	{
+		if (!(ft_strcmp(tmp->name, current_room->name)))
+			error_exit(e_duplicate_node);
+		else if (tmp->coord_x == current_room->coord_x &&
+		tmp->coord_y == current_room->coord_y)
+			error_exit(e_two_nodes_have_the_same_coordinates);
+		tmp = tmp->next;
+	}
 }
