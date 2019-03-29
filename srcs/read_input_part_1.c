@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 13:58:33 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/29 15:53:15 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,8 +104,6 @@ void			start_end_writing(char **line, t_list **input)
 		error_exit(e_repeating_start_node);
 	if (start_or_end && g_params->end)
 		error_exit(e_repeating_end_node);
-	ft_lstadd(input, ft_lstnew(*line, 0));
-	g_params->read_lines++;
 	start_end_writing_input_saving(line, input);
 	if (ft_strequ(*line, "##start"))
 		error_exit(e_repeating_start_node);
@@ -119,5 +117,7 @@ void			start_end_writing(char **line, t_list **input)
 		g_params->start = room_writing(line_split);
 	else
 		g_params->end = room_writing(line_split);
+	ft_lstadd(input, ft_lstnew(*line, 0));
+	g_params->read_lines++;
 	free_2d_array(line_split);
 }

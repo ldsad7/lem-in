@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 14:58:31 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/29 16:04:27 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,13 @@ static int	link_writing_main_loop(char *line, char **line_split)
 		free(first_name);
 		free(second_name);
 	}
+	free_2d_array(line_split);
+	free(first_name);
+	free(second_name);
 	if (!(tmps[0]) || !(tmps[1]) || !first_name || !second_name)
 		return (1);
 	add_to_lst(tmps[1], tmps[0]);
 	add_to_lst(tmps[0], tmps[1]);
-	free_2d_array(line_split);
-	free(first_name);
-	free(second_name);
 	return (0);
 }
 
@@ -63,8 +63,10 @@ int			link_writing(char **line)
 		sort_list_to_arr();
 	line_split = ft_strsplit(*line, '-');
 	if (ft_arrlen(line_split) < 2) // why < ? not != because we want to parse a-b-c-d-...
-		// error_exit(e_invalid_link); // need to rework on check_data_sufficiency
+	{
+		free_2d_array(line_split);
 		return (1);
+	}
 	if (link_writing_main_loop(*line, line_split))
 		return (1);
 	return (0);

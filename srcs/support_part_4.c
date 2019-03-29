@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 22:42:34 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/29 14:29:00 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/29 15:54:57 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	error_exit_additional_errors(int value)
 	else if (value == e_invalid_end_node)
 		ft_printf("ERROR at line №%d: end node is invalid\n", g_params->read_lines);
 	else if (value == e_no_possible_flow)
-		ft_printf("ERROR: No possible flow exists");
+		ft_printf("ERROR: No possible flow exists\n");
 	else
 		ft_printf("ERROR at line №%d\n", g_params->read_lines);
 }
