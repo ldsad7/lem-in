@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 11:40:06 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 12:13:15 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/29 18:48:31 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,13 @@ t_cost_params	*cost_params_setup(void)
 	tmp->num_paths_in_resulting_group = 1;
 	tmp->num_paths_in_curr_group = 0;
 	return (tmp);
+}
+
+int				ft_min(int a, int b, int c)
+{
+	if (a <= b && a <= c)
+		return (a);
+	if (b <= a && b <= c)
+		return (b);
+	return (c);
 }

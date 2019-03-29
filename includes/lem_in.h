@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 14:27:26 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/29 19:43:09 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define LEM_IN_H
 
 # include "libft.h"
-# include <stdio.h> // delete after
 
 typedef struct s_neighbour	t_neighbour;
 typedef struct s_room		t_room;
@@ -83,10 +82,27 @@ typedef struct				s_cost_params
 
 t_params					*g_params;
 enum						e_start_end {e_start, e_end};
-enum						e_errors {e_no_ants_value, e_incorrect_ants_value, e_ants_value_less_or_equal_than_zero, e_ants_value_bigger_int, e_room_starts_with_L,
-										e_invalid_coordinates, e_invalid_node, e_invalid_link, e_cannot_read_file, e_invalid_start_node, e_invalid_end_node,
-										e_two_nodes_have_the_same_coordinates, e_repeating_start_node, e_repeating_end_node, e_no_start_node, e_no_end_node,
-										e_no_possible_flow};
+enum						e_errors
+{
+	e_no_ants_value,
+	e_incorrect_ants_value,
+	e_ants_value_less_or_equal_than_zero,
+	e_ants_value_bigger_int,
+	e_room_starts_with_L,
+	e_invalid_coordinates,
+	e_invalid_node,
+	e_invalid_link,
+	e_cannot_read_file,
+	e_invalid_start_node,
+	e_invalid_end_node,
+	e_two_nodes_have_the_same_coordinates,
+	e_repeating_start_node,
+	e_repeating_end_node,
+	e_no_start_node,
+	e_no_end_node,
+	e_no_possible_flow,
+	e_duplicate_node
+};
 
 void						read_input(t_list **input);
 int							get_next_line_or_exit(char **line);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_input_part_3.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 16:10:11 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/29 19:32:33 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int			link_writing(char **line)
 	if (!(g_params->arr))
 		sort_list_to_arr();
 	line_split = ft_strsplit(*line, '-');
-	if (ft_arrlen(line_split) < 2) // why < ? not != because we want to parse a-b-c-d-...
+	if (ft_arrlen(line_split) < 2)
 	{
 		free_2d_array(line_split);
 		return (1);
@@ -94,7 +94,7 @@ static int	read_input_loop_conditions(int *fls, char *line,
 		start_end_writing(&line, input);
 	else if (ft_arrlen(line_split) == 3 && !(fls[2]))
 		room_writing(line_split);
-	else if (ft_arrlen(line_split) == 1)
+	else if (ft_arrlen(line_split) == 1 && ft_strlen(line_split[0]))
 	{
 		if ((stop_reading = link_writing(&line)) == 0)
 			fls[2] = 1;
@@ -123,10 +123,10 @@ void		read_input(t_list **input)
 		stop_reading = read_input_loop_conditions(fls, line, line_split, input);
 		free_2d_array(line_split);
 	}
-	ft_lstadd(input, ft_lstnew(line, 0));
-	g_params->read_lines++;
 	if (!fls[0] || !fls[1])
 		check_data_sufficiency();
 	if (!fls[2])
 		error_exit(e_invalid_link);
+	ft_lstadd(input, ft_lstnew(line, 0));
+	g_params->read_lines++;
 }

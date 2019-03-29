@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 15:53:15 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/29 19:07:08 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void			get_nr_ants(char **line, t_list **input)
 	else
 		error_exit(e_incorrect_ants_value);
 	ft_lstadd(input, ft_lstnew(*line, 0));
-	g_params->read_lines++;
+	//g_params->read_lines++;
 }
 
 static t_room	*tmp_room_setup(t_room *tmp, int num1, int num2)
