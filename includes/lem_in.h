@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 02:43:31 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/29 14:27:26 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,10 @@ typedef struct				s_cost_params
 
 t_params					*g_params;
 enum						e_start_end {e_start, e_end};
-enum						e_errors {e_no_ants_value, e_incorrect_ants_value, e_ants_value_less_than_zero, e_ants_value_bigger_int, e_room_starts_with_L,
+enum						e_errors {e_no_ants_value, e_incorrect_ants_value, e_ants_value_less_or_equal_than_zero, e_ants_value_bigger_int, e_room_starts_with_L,
 										e_invalid_coordinates, e_invalid_node, e_invalid_link, e_cannot_read_file, e_invalid_start_node, e_invalid_end_node,
-										e_two_nodes_have_the_same_coordinates, e_repeating_start_node, e_repeating_end_node, e_no_start_node, e_no_end_node};
+										e_two_nodes_have_the_same_coordinates, e_repeating_start_node, e_repeating_end_node, e_no_start_node, e_no_end_node,
+										e_no_possible_flow};
 
 void						read_input(t_list **input);
 int							get_next_line_or_exit(char **line);
@@ -132,5 +133,6 @@ void						add_path(t_path **paths, t_room **room);
 void						recursive_print_and_free(t_list **input);
 int							ft_min(int a, int b, int c);
 int							num_of_nghbrs(t_neighbour *neighbour);
+void						check_data_sufficiency(void);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   algorithm_part_1.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/28 21:45:07 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/29 15:07:46 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ t_cost_params	*algorithm(int flows)
 		exit(0);
 	algorithm_neighb_loop(cost_params, paths_ends, &paths);
 	algorithm_bfs_loop(cost_params, paths_ends, &paths, flows);
+	if (!paths)
+		error_exit(e_no_possible_flow);
 	free(paths_ends);
 	return (cost_params);
 }

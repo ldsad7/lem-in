@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_input_part_2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 02:54:40 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/29 12:34:50 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,19 @@ t_room		*find_leaf(char *name)
 	return (NULL);
 }
 
+static int	arr_len_calc(char **lines, int max_len, int *i)
+{
+	int len;
+
+	len = 0;
+	while (lines[*i] && lines[*i + max_len])
+	{
+		len += ft_strlen(lines[*i]);
+		(*i)++;
+	}
+	return (len);
+}
+
 char		*ft_strjoin_for_arr(char **lines, int max_len)
 {
 	int		i;
@@ -45,13 +58,8 @@ char		*ft_strjoin_for_arr(char **lines, int max_len)
 	int		len;
 	char	*res;
 
-	len = 0;
 	i = 0;
-	while (lines[i] && lines[i + max_len])
-	{
-		len += ft_strlen(lines[i]);
-		i++;
-	}
+	len = arr_len_calc(lines, max_len, &i);
 	len += i - 1;
 	if (!(res = (char *)malloc(sizeof(*res) * (len + 1))))
 		return (NULL);
@@ -68,43 +76,6 @@ char		*ft_strjoin_for_arr(char **lines, int max_len)
 	}
 	res[len] = '\0';
 	return (res);
-}
-
-static void	sort_list_to_arr_main_loop(int i, t_room *start_of_list)
-{
-	int		j;
-	int		tmp;
-
-	while (start_of_list)
-	{
-		j = 0;
-		while (j < i)
-		{
-			if (ft_strcmp(g_params->arr[j]->name, start_of_list->name) > 0)
-				break ;
-			j++;
-		}
-		tmp = i;
-		while (tmp > j)
-		{
-			g_params->arr[tmp] = g_params->arr[tmp - 1];
-			tmp--;
-		}
-		g_params->arr[tmp] = start_of_list;
-		start_of_list = start_of_list->next;
-		i++;
-	}
-}
-
-void		sort_list_to_arr(void)
-{
-	int		i;
-
-	if (!(g_params->arr = (t_room **)malloc(sizeof(t_room *) *
-										(g_params->nr_rooms))))
-		exit(0);
-	i = 0;
-	sort_list_to_arr_main_loop(i, g_params->start_of_list);
 }
 
 void		g_params_init(int (*fls)[3], char **line)

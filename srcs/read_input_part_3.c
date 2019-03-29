@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_input_part_3.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 02:56:27 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/29 14:58:31 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ static int	link_writing_main_loop(char *line, char **line_split)
 		free(second_name);
 	}
 	if (!(tmps[0]) || !(tmps[1]) || !first_name || !second_name)
-		//error_exit(e_invalid_link); // need to rework on check_data_sufficiency
 		return (1);
 	add_to_lst(tmps[1], tmps[0]);
 	add_to_lst(tmps[0], tmps[1]);
@@ -71,16 +70,6 @@ int			link_writing(char **line)
 	return (0);
 }
 
-void		check_data_sufficiency(void)
-{
-	if (!(g_params->nr_ants))
-		error_exit(e_no_ants_value);
-	else if (!(g_params->start))
-		error_exit(e_no_start_node);
-	else if (!(g_params->end))
-		error_exit(e_no_end_node);
-}
-
 /*
 **	fls[0] -- was there a start?
 **	fls[1] -- was there an end?
@@ -93,6 +82,8 @@ static int	read_input_loop_conditions(int *fls, char *line,
 	int		stop_reading;
 
 	stop_reading = 0;
+	g_params->read_lines++;
+	ft_lstadd(input, ft_lstnew(line, 0));
 	if (line[0] == '#' && !ft_strequ(line, "##start")
 			&& !ft_strequ(line, "##end"))
 		;
@@ -101,15 +92,16 @@ static int	read_input_loop_conditions(int *fls, char *line,
 		start_end_writing(&line, input);
 	else if (ft_arrlen(line_split) == 3 && !(fls[2]))
 		room_writing(line_split);
-	else if (ft_arrlen(line_split) == 1 && (fls[2] = 1))
-		stop_reading = link_writing(&line);
+	else if (ft_arrlen(line_split) == 1)
+	{
+		if ((stop_reading = link_writing(&line)) == 0)
+			fls[2] = 1;
+	}
 	else
 	{
 		check_data_sufficiency();
 		stop_reading = 1;
 	}
-	ft_lstadd(input, ft_lstnew(line, 0));
-	g_params->read_lines++;
 	return (stop_reading);
 }
 
@@ -135,5 +127,4 @@ void		read_input(t_list **input)
 		check_data_sufficiency();
 	if (!fls[2])
 		error_exit(e_invalid_link);
-		
 }

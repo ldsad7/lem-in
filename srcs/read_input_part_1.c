@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_input_part_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 02:29:45 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/29 13:58:33 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ void			get_nr_ants(char **line, t_list **input)
 	}
 	if (ft_isnumeric(*line))
 	{
-		if ((num = ft_atoi_long(*line)) <= 2147483647 && num >= 0)
+		if ((num = ft_atoi_long(*line)) <= 2147483647 && num > 0)
 			g_params->nr_ants = num;
 		else if (num < 0)
-			error_exit(e_ants_value_less_than_zero);
+			error_exit(e_ants_value_less_or_equal_than_zero);
 		else
 			error_exit(e_ants_value_bigger_int);
 	}
@@ -84,6 +84,16 @@ t_room			*room_writing(char **ln_split)
 	return (tmp);
 }
 
+static void		start_end_writing_input_saving(char **line, t_list **input)
+{
+	while (get_next_line_or_exit(line) && (*line)[0] == '#' &&
+			!ft_strequ(*line, "##start") && !ft_strequ(*line, "##end"))
+	{
+		ft_lstadd(input, ft_lstnew(*line, 0));
+		g_params->read_lines++;
+	}
+}
+
 void			start_end_writing(char **line, t_list **input)
 {
 	int		start_or_end;
@@ -96,12 +106,7 @@ void			start_end_writing(char **line, t_list **input)
 		error_exit(e_repeating_end_node);
 	ft_lstadd(input, ft_lstnew(*line, 0));
 	g_params->read_lines++;
-	while (get_next_line_or_exit(line) && (*line)[0] == '#' &&
-			!ft_strequ(*line, "##start") && !ft_strequ(*line, "##end"))
-	{
-		ft_lstadd(input, ft_lstnew(*line, 0));
-		g_params->read_lines++;
-	}
+	start_end_writing_input_saving(line, input);
 	if (ft_strequ(*line, "##start"))
 		error_exit(e_repeating_start_node);
 	if (ft_strequ(*line, "##end"))
