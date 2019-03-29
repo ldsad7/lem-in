@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 19:43:09 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/29 20:33:53 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,5 +150,6 @@ void						recursive_print_and_free(t_list **input);
 int							ft_min(int a, int b, int c);
 int							num_of_nghbrs(t_neighbour *neighbour);
 void						check_data_sufficiency(void);
+void						check_coordinates_and_name(t_room *room);
 
 #endif

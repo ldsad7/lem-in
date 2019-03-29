@@ -6,33 +6,33 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 19:55:12 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/29 20:30:37 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void		check_coordinates_and_name(void)
-{
-	t_room		*start_of_list;
-	t_room		*tmp;
+// void		check_coordinates_and_name(void)
+// {
+// 	t_room		*start_of_list;
+// 	t_room		*tmp;
 
-	start_of_list = g_params->start_of_list;
-	while (start_of_list)
-	{
-		tmp = start_of_list->next;
-		while (tmp)
-		{
-			if (!(ft_strcmp(tmp->name, start_of_list->name)))
-				error_exit(e_duplicate_node);
-			else if (tmp->coord_x == start_of_list->coord_x &&
-			tmp->coord_y == start_of_list->coord_y)
-				error_exit(e_two_nodes_have_the_same_coordinates);
-			tmp = tmp->next;
-		}
-		start_of_list = start_of_list->next;
-	}
-}
+// 	start_of_list = g_params->start_of_list;
+// 	while (start_of_list)
+// 	{
+// 		tmp = start_of_list->next;
+// 		while (tmp)
+// 		{
+// 			if (!(ft_strcmp(tmp->name, start_of_list->name)))
+// 				error_exit(e_duplicate_node);
+// 			else if (tmp->coord_x == start_of_list->coord_x &&
+// 			tmp->coord_y == start_of_list->coord_y)
+// 				error_exit(e_two_nodes_have_the_same_coordinates);
+// 			tmp = tmp->next;
+// 		}
+// 		start_of_list = start_of_list->next;
+// 	}
+// }
 
 static void	correct_paths_seq_loop(t_neighbour *seq)
 {
@@ -81,7 +81,7 @@ int			main(int argc, char **argv)
 	argv = NULL;
 	input = NULL;
 	read_input(&input);
-	check_coordinates_and_name();
+	// check_coordinates_and_name();
 	flows = ft_min(g_params->nr_ants,
 			num_of_nghbrs(g_params->start->neighbours),
 			num_of_nghbrs(g_params->end->neighbours));

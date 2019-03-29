@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 19:32:33 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/29 21:10:51 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,29 @@ int			link_writing(char **line)
 }
 
 /*
+**	we take tmp as g_params->start_of_list->next because in loop we don't
+**	want to compare this same node with itself. Nodes are added to the left,
+**	so we skip node that we're comparing to others.
+*/
+
+void		check_coordinates_and_name(t_room *current_room)
+{
+	t_room		*tmp;
+
+	tmp = g_params->start_of_list->next;
+
+	while (tmp)
+	{
+		if (!(ft_strcmp(tmp->name, current_room->name)))
+			error_exit(e_duplicate_node);
+		else if (tmp->coord_x == current_room->coord_x &&
+		tmp->coord_y == current_room->coord_y)
+			error_exit(e_two_nodes_have_the_same_coordinates);
+		tmp = tmp->next;
+	}
+}
+
+/*
 **	fls[0] -- was there a start?
 **	fls[1] -- was there an end?
 **	fls[2] -- was there a link?
@@ -82,6 +105,7 @@ static int	read_input_loop_conditions(int *fls, char *line,
 									char **line_split, t_list **input)
 {
 	int		stop_reading;
+	t_room	*room;
 
 	stop_reading = 0;
 	g_params->read_lines++;
@@ -93,17 +117,17 @@ static int	read_input_loop_conditions(int *fls, char *line,
 			|| (ft_strequ(line, "##end") && (fls[1] = 1)))
 		start_end_writing(&line, input);
 	else if (ft_arrlen(line_split) == 3 && !(fls[2]))
-		room_writing(line_split);
+	{
+		room = room_writing(line_split);
+		check_coordinates_and_name(room);
+	}
 	else if (ft_arrlen(line_split) == 1 && ft_strlen(line_split[0]))
 	{
 		if ((stop_reading = link_writing(&line)) == 0)
 			fls[2] = 1;
 	}
 	else
-	{
-		check_data_sufficiency();
 		stop_reading = 1;
-	}
 	return (stop_reading);
 }
 
@@ -123,6 +147,8 @@ void		read_input(t_list **input)
 		stop_reading = read_input_loop_conditions(fls, line, line_split, input);
 		free_2d_array(line_split);
 	}
+	if (stop_reading)
+		ft_putstr("WARNING: File was read not completely!\n");
 	if (!fls[0] || !fls[1])
 		check_data_sufficiency();
 	if (!fls[2])
