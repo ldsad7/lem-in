@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_input_part_3.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 16:04:27 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/29 16:10:11 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ static int	link_writing_main_loop(char *line, char **line_split)
 		free(second_name);
 	}
 	free_2d_array(line_split);
-	free(first_name);
-	free(second_name);
 	if (!(tmps[0]) || !(tmps[1]) || !first_name || !second_name)
 		return (1);
 	add_to_lst(tmps[1], tmps[0]);
 	add_to_lst(tmps[0], tmps[1]);
+	free(first_name);
+	free(second_name);
 	return (0);
 }
 

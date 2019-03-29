@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   support_part_4.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 22:42:34 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/29 15:54:57 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/29 16:19:19 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ static void	error_exit_additional_errors(int value)
 		ft_printf("ERROR: No possible flow exists\n");
 	else
 		ft_printf("ERROR at line №%d\n", g_params->read_lines);
+	free_g_params();
 }
 
 void		error_exit(int value)
 {
-	free_g_params();
 	if (value == e_no_ants_value)
 		ft_printf("ERROR at line №%d: no ants value\n", g_params->read_lines);
 	else if (value == e_incorrect_ants_value)
