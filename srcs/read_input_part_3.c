@@ -3,27 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   read_input_part_3.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/31 03:51:38 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/31 15:13:43 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void		add_to_lst(t_room *input, t_room *output)
+static void	free_null_first_and_second_name(
+char *first_name, char *second_name)
 {
-	t_neighbour	*neighb;
-
-	if (!(neighb = (t_neighbour *)malloc(sizeof(*neighb))))
-		exit(0);
-	neighb->room = input;
-	if (output->neighbours)
-		neighb->next = output->neighbours;
-	else
-		neighb->next = NULL;
-	output->neighbours = neighb;
+	free(first_name);
+	free(second_name);
+	first_name = NULL;
+	second_name = NULL;
 }
 
 static int	link_writing_main_loop(char *line, char **line_split)
@@ -38,18 +33,18 @@ static int	link_writing_main_loop(char *line, char **line_split)
 	{
 		if (!(first_name = ft_strjoin_for_arr(line_split, i + 1)) ||
 			!(second_name = ft_strdup(line + ft_strlen(first_name) + 1)))
-			exit(0);
+			perror_exit("malloc");
 		if ((tmps[0] = find_leaf(first_name))
 			&& (tmps[1] = find_leaf(second_name)))
+		{
+			free_null_first_and_second_name(first_name, second_name);
 			break ;
-		free(first_name);
-		free(second_name);
+		}
+		free_null_first_and_second_name(first_name, second_name);
 	}
 	free_2d_array(line_split);
 	if (!(tmps[0]) || !(tmps[1]) || !ft_strcmp(first_name, second_name))
-		return (free_and_return_one(first_name, second_name));
-	free(first_name);
-	free(second_name);
+		return (1);
 	if (check_link(tmps))
 		return (1);
 	return (0);

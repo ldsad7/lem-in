@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_input_part_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/31 04:29:23 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/31 13:41:49 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ t_room			*room_writing(char **ln_split)
 	num1 = 0;
 	num2 = 0;
 	if (!(tmp = (t_room *)malloc(sizeof(t_room))))
-		exit(0);
+		perror_exit("malloc");
 	if (!(tmp->name = ft_strdup(ln_split[0])))
-		exit(0);
+		perror_exit("malloc");
 	if (tmp->name[0] == 'L')
 		error_exit(e_room_starts_with_L);
 	if (!ft_isnumeric(ln_split[1]) || !ft_isnumeric(ln_split[2])

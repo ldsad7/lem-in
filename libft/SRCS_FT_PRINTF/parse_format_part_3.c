@@ -6,15 +6,15 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 18:49:10 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/02/13 15:16:26 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/31 13:55:08 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	apply_colors2(char *format, int j, int ord)
+static void	apply_colors2(char *format, int j, int ord, int fd)
 {
-	write_ordinary_symbols(format, ord);
+	write_ordinary_symbols(format, ord, fd);
 	if (ft_strstr(ft_strsub(format, 0, j + 1), "{red}"))
 		write(1, BC_RED, ft_strlen(BC_RED));
 	else if (ft_strstr(ft_strsub(format, 0, j + 1), "{green}"))
@@ -35,7 +35,7 @@ static void	apply_colors2(char *format, int j, int ord)
 		write(1, BC_DEFAULT, ft_strlen(BC_DEFAULT));
 }
 
-static int	apply_colors(char *format, int j, int ord)
+static int	apply_colors(char *format, int j, int ord, int fd)
 {
 	if (ft_strstr(ft_strsub(format, 0, j + 1), "{red}") ||
 	ft_strstr(ft_strsub(format, 0, j + 1), "{green}") ||
@@ -47,15 +47,15 @@ static int	apply_colors(char *format, int j, int ord)
 	ft_strstr(ft_strsub(format, 0, j + 1), "{gray}") ||
 	ft_strstr(ft_strsub(format, 0, j + 1), "{def}"))
 	{
-		apply_colors2(format, j, ord);
+		apply_colors2(format, j, ord, fd);
 		return (1);
 	}
 	return (0);
 }
 
-static void	apply_bg_colors2(char *format, int j, int ord)
+static void	apply_bg_colors2(char *format, int j, int ord, int fd)
 {
-	write_ordinary_symbols(format, ord);
+	write_ordinary_symbols(format, ord, fd);
 	if (ft_strstr(ft_strsub(format, 0, j + 1), "{BG_RED}"))
 		write(1, BC_BG_RED, ft_strlen(BC_RED));
 	else if (ft_strstr(ft_strsub(format, 0, j + 1), "{BG_BLACK}"))
@@ -76,7 +76,7 @@ static void	apply_bg_colors2(char *format, int j, int ord)
 		write(1, BC_DEFAULT, ft_strlen(BC_DEFAULT));
 }
 
-static int	apply_bg_colors(char *format, int j, int ord)
+static int	apply_bg_colors(char *format, int j, int ord, int fd)
 {
 	if (ft_strstr(ft_strsub(format, 0, j + 1), "{BG_RED}") ||
 	ft_strstr(ft_strsub(format, 0, j + 1), "{BG_BLACK}") ||
@@ -88,13 +88,13 @@ static int	apply_bg_colors(char *format, int j, int ord)
 	ft_strstr(ft_strsub(format, 0, j + 1), "{BG_GRAY}") ||
 	ft_strstr(ft_strsub(format, 0, j + 1), "{BG_DEF}"))
 	{
-		apply_bg_colors2(format, j, ord);
+		apply_bg_colors2(format, j, ord, fd);
 		return (1);
 	}
 	return (0);
 }
 
-char		*parse_colors(char *format, int ord)
+char		*parse_colors(char *format, int ord, int fd)
 {
 	int j;
 	int found_close_bracket;
@@ -109,11 +109,11 @@ char		*parse_colors(char *format, int ord)
 		}
 	if (found_close_bracket)
 	{
-		if (apply_colors(format, j, ord))
+		if (apply_colors(format, j, ord, fd))
 			return (format + j + 1);
-		if (apply_bg_colors(format, j, ord))
+		if (apply_bg_colors(format, j, ord, fd))
 			return (format + j + 1);
-		if (apply_text_edit(format, j, ord))
+		if (apply_text_edit(format, j, ord, fd))
 			return (format + j + 1);
 	}
 	return (format);

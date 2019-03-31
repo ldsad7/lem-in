@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/22 13:01:05 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/03 03:07:41 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/31 14:00:21 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,8 @@ extern t_format		*g_f;
 extern int			g_count;
 
 int					ft_printf(const char *format, ...);
-void				parse_print_format(char *format, int i);
+int					ft_fprintf(int fd, const char *format, ...);
+void				parse_print_format(char *format, int i, int fd);
 int					parse_precision(const char *format_i);
 int					parse_width(const char *format_i);
 int					parse_size(const char *format_i);
@@ -187,10 +188,10 @@ char				*make_string_from_char(char c);
 int					wint_size(wint_t c);
 int					check_exclusion_symbol(wint_t c);
 int					check_exclusion_symbols(wchar_t *str);
-char				*check_colors(char *format, int *i);
-void				write_ordinary_symbols(char *format, int i);
-char				*parse_colors(char *format, int ord);
-int					apply_text_edit(char *format, int j, int ord);
+char				*check_colors(char *format, int *i, int fd);
+void				write_ordinary_symbols(char *format, int i, int fd);
+char				*parse_colors(char *format, int ord, int fd);
+int					apply_text_edit(char *format, int j, int ord, int fd);
 
 /*
 **			Цвет текста:

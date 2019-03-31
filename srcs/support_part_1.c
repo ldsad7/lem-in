@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 11:40:06 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 18:48:31 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/31 13:43:25 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_cost_params	*cost_params_setup(void)
 	t_cost_params *tmp;
 
 	if (!(tmp = (t_cost_params *)malloc(sizeof(t_cost_params))))
-		exit(0);
+		perror_exit("malloc");
 	tmp->min_cost = 0;
 	tmp->path_nr = 1;
 	tmp->num_paths_in_resulting_group = 1;

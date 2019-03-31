@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/31 02:48:48 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/31 13:38:49 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LEM_IN_H
 
 # include "libft.h"
+# include <stdio.h>
 
 typedef struct s_neighbour	t_neighbour;
 typedef struct s_room		t_room;
@@ -156,5 +157,6 @@ int							free_and_return_one(char *first_name,
 void						free_and_print_warning(char *line);
 void						add_to_lst(t_room *input, t_room *output);
 int							check_link(t_room *tmps[2]);
+void						perror_exit(char *error_message);
 
 #endif

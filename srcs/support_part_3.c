@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 11:40:06 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/27 15:18:12 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/31 13:44:07 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ t_queue	*queue_new(t_room **room, t_queue **prev, t_queue **next)
 	t_queue	*new;
 
 	if (!(new = (t_queue *)malloc(sizeof(*new))))
-		exit(0);
+		perror_exit("malloc");
 	new->room = *room;
 	if (prev)
 		new->prev = *prev;

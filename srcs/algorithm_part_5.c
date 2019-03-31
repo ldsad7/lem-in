@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   algorithm_part_5.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/11 12:25:31 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/28 20:38:45 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/31 13:40:37 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void		add_path(t_path **paths, t_room **room)
 	t_path		*path;
 
 	if (!(path = (t_path *)malloc(sizeof(t_path))))
-		exit(0);
+		perror_exit("malloc");
 	path->len_seq = 1;
 	path->seq = NULL;
 	path->next = NULL;

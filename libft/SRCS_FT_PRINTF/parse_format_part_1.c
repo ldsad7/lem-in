@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 18:49:10 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/02/13 15:16:15 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/31 13:59:40 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,13 @@ static void	parsing_loop(char **format)
 	make_str();
 }
 
-void		write_ordinary_symbols(char *format, int i)
+void		write_ordinary_symbols(char *format, int i, int fd)
 {
 	if (i > 0)
 	{
 		g_f->str = ft_strsub(format, 0, i);
 		g_count += i;
-		write(1, g_f->str, ft_strlen(g_f->str));
+		write(fd, g_f->str, ft_strlen(g_f->str));
 		free(g_f->str);
 		g_f->str = NULL;
 	}
@@ -83,13 +83,13 @@ static void	f_null_c_len(void)
 	write(1, g_f->str, g_f->null_c_len);
 }
 
-void		parse_print_format(char *format, int i)
+void		parse_print_format(char *format, int i, int fd)
 {
 	while (*(format + i))
 	{
 		if (*(format + i) == '%')
 		{
-			write_ordinary_symbols(format, i);
+			write_ordinary_symbols(format, i, fd);
 			format += i + 1;
 			i = -1;
 			parsing_loop(&format);
@@ -98,7 +98,7 @@ void		parse_print_format(char *format, int i)
 			if (g_f->null_c_len == -1)
 			{
 				g_count += ft_strlen(g_f->str);
-				write(1, g_f->str, ft_strlen(g_f->str));
+				write(fd, g_f->str, ft_strlen(g_f->str));
 			}
 			else
 				f_null_c_len();
@@ -106,8 +106,8 @@ void		parse_print_format(char *format, int i)
 			g_f = g_f_new();
 		}
 		else
-			format = check_colors(format, &i);
+			format = check_colors(format, &i, fd);
 		i++;
 	}
-	write_ordinary_symbols(format, i);
+	write_ordinary_symbols(format, i, fd);
 }

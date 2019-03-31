@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_input_part_2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/31 04:28:28 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/31 13:42:08 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char		*ft_strjoin_for_arr(char **lines, int max_len)
 void		g_params_init(int (*fls)[3], char **line)
 {
 	if (!(g_params = (t_params *)malloc(sizeof(t_params))))
-		exit(0);
+		perror_exit("malloc");
 	g_params->nr_rooms = 0;
 	g_params->nr_ants = 0;
 	g_params->start = NULL;

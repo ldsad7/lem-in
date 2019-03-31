@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   support_part_5.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 02:05:57 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/31 04:30:35 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/31 13:38:23 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,10 @@ int			check_link(t_room *tmps[2])
 	add_to_lst(tmps[1], tmps[0]);
 	add_to_lst(tmps[0], tmps[1]);
 	return (0);
+}
+
+void		perror_exit(char *error_message)
+{
+	perror(error_message);
+	exit(2);
 }

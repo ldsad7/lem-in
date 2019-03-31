@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in_part_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/28 20:46:48 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/31 13:41:14 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,9 @@ static void	rooms_arr_setup(t_room ***room_arr, int **nr_ants_to_move_in_paths,
 	int			i;
 
 	if (!(*room_arr = (t_room **)malloc(sizeof(t_room *) * cnt_paths)))
-		exit(0);
+		perror_exit("malloc");
 	if (!(*nr_ants_to_move_in_paths = (int *)malloc(sizeof(int) * cnt_paths)))
-		exit(0);
+		perror_exit("malloc");
 	i = 0;
 	tmp = g_params->start_of_list_of_paths;
 	while (tmp)

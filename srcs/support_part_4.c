@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   support_part_4.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 22:42:34 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/31 04:30:12 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/31 13:49:31 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,24 +44,24 @@ void		recursive_print_and_free(t_list **input)
 static void	error_exit_additional_errors2(int value)
 {
 	if (value == e_room_starts_with_L)
-		ft_printf("ERROR at line №%d: room starts with \"L\"\n",
+		ft_fprintf(2, "ERROR at line №%d: room starts with \"L\"\n",
 		g_params->read_lines);
 	else if (value == e_invalid_coordinates)
-		ft_printf("ERROR at line №%d: a node has invalid coordinates\n",
+		ft_fprintf(2, "ERROR at line №%d: a node has invalid coordinates\n",
 		g_params->read_lines);
 	else if (value == e_invalid_link)
-		ft_printf("ERROR at line №%d: no or invalid first link in input file\n",
+		ft_fprintf(2, "ERROR at line №%d: no or invalid first link in input file\n",
 		g_params->read_lines);
 	else if (value == e_invalid_node)
-		ft_printf("ERROR at line №%d: invalid or no nodes in input file\n",
+		ft_fprintf(2, "ERROR at line №%d: invalid or no nodes in input file\n",
 		g_params->read_lines);
 	else if (value == e_no_possible_flow)
-		ft_printf("ERROR: No possible flow exists\n");
+		ft_fprintf(2, "ERROR: No possible flow exists\n");
 	else if (value == e_duplicate_node)
-		ft_printf("ERROR at line №%d: duplicate node in file\n",
+		ft_fprintf(2, "ERROR at line №%d: duplicate node in file\n",
 		g_params->read_lines);
 	else
-		ft_printf("ERROR at line №%d\n", g_params->read_lines);
+		ft_fprintf(2, "ERROR at line №%d\n", g_params->read_lines);
 	free_g_params();
 	exit(0);
 }
@@ -69,24 +69,24 @@ static void	error_exit_additional_errors2(int value)
 static void	error_exit_additional_errors1(int value)
 {
 	if (value == e_cannot_read_file)
-		ft_printf("ERROR at line №%d: cannot read from file\n",
+		ft_fprintf(2, "ERROR at line №%d: cannot read from file\n",
 		g_params->read_lines);
 	else if (value == e_two_nodes_have_the_same_coordinates)
-		ft_printf("ERROR at line №%d: two nodes have the same coordinates\n",
+		ft_fprintf(2, "ERROR at line №%d: two nodes have the same coordinates\n",
 		g_params->read_lines);
 	else if (value == e_repeating_start_node)
-		ft_printf(
+		ft_fprintf(2, 
 "ERROR at line №%d: ##start command is repeated at least twice/follows end\n",
 g_params->read_lines);
 	else if (value == e_repeating_end_node)
-		ft_printf(
+		ft_fprintf(2, 
 "ERROR at line №%d: ##end command is repeated at least twice/follows start\n",
 g_params->read_lines);
 	else if (value == e_invalid_start_node)
-		ft_printf("ERROR at line №%d: start node is invalid\n",
+		ft_fprintf(2, "ERROR at line №%d: start node is invalid\n",
 		g_params->read_lines);
 	else if (value == e_invalid_end_node)
-		ft_printf("ERROR at line №%d: end node is invalid\n",
+		ft_fprintf(2, "ERROR at line №%d: end node is invalid\n",
 		g_params->read_lines);
 	else
 		error_exit_additional_errors2(value);
@@ -100,22 +100,22 @@ void		error_exit(int value)
 
 	line = NULL;
 	if (value != e_no_possible_flow && get_next_line(0, &line) > 0)
-		ft_printf("WARNING: File wasn't read completely!\n");
+		ft_fprintf(2, "WARNING: File wasn't read completely!\n");
 	if (value == e_no_ants_value)
-		ft_printf("ERROR at line №%d: no ants value\n", g_params->read_lines);
+		ft_fprintf(2, "ERROR at line №%d: no ants value\n", g_params->read_lines);
 	else if (value == e_incorrect_ants_value)
-		ft_printf("ERROR at line №%d: ants' value is incorrect\n",
+		ft_fprintf(2, "ERROR at line №%d: ants' value is incorrect\n",
 		g_params->read_lines);
 	else if (value == e_ants_value_less_or_equal_than_zero)
-		ft_printf("ERROR at line №%d: ants' value less than or equal to zero\n",
+		ft_fprintf(2, "ERROR at line №%d: ants' value less than or equal to zero\n",
 		g_params->read_lines);
 	else if (value == e_ants_value_bigger_int)
-		ft_printf("ERROR at line №%d: ants' value bigger than int\n",
+		ft_fprintf(2, "ERROR at line №%d: ants' value bigger than int\n",
 		g_params->read_lines);
 	else if (value == e_no_start_node)
-		ft_printf("ERROR at line №%d: no start node\n", g_params->read_lines);
+		ft_fprintf(2, "ERROR at line №%d: no start node\n", g_params->read_lines);
 	else if (value == e_no_end_node)
-		ft_printf("ERROR at line №%d: no end node\n", g_params->read_lines);
+		ft_fprintf(2, "ERROR at line №%d: no end node\n", g_params->read_lines);
 	else
 		error_exit_additional_errors1(value);
 	free_g_params();

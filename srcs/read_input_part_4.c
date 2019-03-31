@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_input_part_4.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/31 02:24:05 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/31 15:03:45 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,20 @@ void		check_data_sufficiency(void)
 		error_exit(e_no_start_node);
 	else if (!(g_params->end))
 		error_exit(e_no_end_node);
+}
+
+void		add_to_lst(t_room *input, t_room *output)
+{
+	t_neighbour	*neighb;
+
+	if (!(neighb = (t_neighbour *)malloc(sizeof(*neighb))))
+		perror_exit("malloc");
+	neighb->room = input;
+	if (output->neighbours)
+		neighb->next = output->neighbours;
+	else
+		neighb->next = NULL;
+	output->neighbours = neighb;
 }
 
 static void	sort_list_to_arr_main_loop(int i, t_room *start_of_list)
@@ -54,7 +68,7 @@ void		sort_list_to_arr(void)
 
 	if (!(g_params->arr = (t_room **)malloc(sizeof(t_room *) *
 										(g_params->nr_rooms))))
-		exit(0);
+		perror_exit("malloc");
 	i = 0;
 	sort_list_to_arr_main_loop(i, g_params->start_of_list);
 }

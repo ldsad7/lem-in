@@ -6,15 +6,15 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 18:49:10 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/02/13 15:16:31 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/31 13:58:08 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	apply_text_edit2(char *format, int j, int ord)
+static void	apply_text_edit2(char *format, int j, int ord, int fd)
 {
-	write_ordinary_symbols(format, ord);
+	write_ordinary_symbols(format, ord, fd);
 	if (ft_strstr(ft_strsub(format, 0, j + 1), "{BOLD}"))
 		write(1, BC_BOLD, ft_strlen(BC_BOLD));
 	else if (ft_strstr(ft_strsub(format, 0, j + 1), "{N_BOLD}"))
@@ -33,7 +33,7 @@ static void	apply_text_edit2(char *format, int j, int ord)
 		write(1, BC_NBLINK, ft_strlen(BC_NBLINK));
 }
 
-int			apply_text_edit(char *format, int j, int ord)
+int			apply_text_edit(char *format, int j, int ord, int fd)
 {
 	if (ft_strstr(ft_strsub(format, 0, j + 1), "{BOLD}") ||
 	ft_strstr(ft_strsub(format, 0, j + 1), "{N_BOLD}") ||
@@ -44,20 +44,20 @@ int			apply_text_edit(char *format, int j, int ord)
 	ft_strstr(ft_strsub(format, 0, j + 1), "{BLINK}") ||
 	ft_strstr(ft_strsub(format, 0, j + 1), "{N_BLINK}"))
 	{
-		apply_text_edit2(format, j, ord);
+		apply_text_edit2(format, j, ord, fd);
 		return (1);
 	}
 	return (0);
 }
 
-char		*check_colors(char *format, int *i)
+char		*check_colors(char *format, int *i, int fd)
 {
 	char *format_ini;
 
 	if (*(format + *i) == '{')
 	{
 		format_ini = ft_strdup(format);
-		format = parse_colors(format, *i);
+		format = parse_colors(format, *i, fd);
 		if (ft_strcmp(format_ini, format))
 			*i = -1;
 		free(format_ini);
