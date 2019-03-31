@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   read_input_part_3.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 21:21:39 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/31 03:51:38 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-static void	add_to_lst(t_room *input, t_room *output)
+void		add_to_lst(t_room *input, t_room *output)
 {
 	t_neighbour	*neighb;
 
@@ -33,25 +33,25 @@ static int	link_writing_main_loop(char *line, char **line_split)
 	t_room	*tmps[2];
 	size_t	i;
 
-	i = 0;
-	while (i < ft_arrlen(line_split) - 1)
+	i = -1;
+	while (++i < ft_arrlen(line_split) - 1)
 	{
 		if (!(first_name = ft_strjoin_for_arr(line_split, i + 1)) ||
 			!(second_name = ft_strdup(line + ft_strlen(first_name) + 1)))
 			exit(0);
-		if (++i && (tmps[0] = find_leaf(first_name))
-				&& (tmps[1] = find_leaf(second_name)))
+		if ((tmps[0] = find_leaf(first_name))
+			&& (tmps[1] = find_leaf(second_name)))
 			break ;
 		free(first_name);
 		free(second_name);
 	}
 	free_2d_array(line_split);
-	if (!(tmps[0]) || !(tmps[1]) || !first_name || !second_name)
-		return (1);
-	add_to_lst(tmps[1], tmps[0]);
-	add_to_lst(tmps[0], tmps[1]);
+	if (!(tmps[0]) || !(tmps[1]) || !ft_strcmp(first_name, second_name))
+		return (free_and_return_one(first_name, second_name));
 	free(first_name);
 	free(second_name);
+	if (check_link(tmps))
+		return (1);
 	return (0);
 }
 
@@ -98,7 +98,7 @@ static int	read_input_loop_conditions(int *fls, char *line,
 		room = room_writing(line_split);
 		check_coordinates_and_name(room);
 	}
-	else if (ft_arrlen(line_split) == 1 && ft_strlen(line_split[0]))
+	else if (ft_arrlen(line_split) == 1 && fls[0] && fls[1])
 	{
 		if ((stop_reading = link_writing(&line)) == 0)
 			fls[2] = 1;
@@ -124,12 +124,15 @@ void		read_input(t_list **input)
 		stop_reading = read_input_loop_conditions(fls, line, line_split, input);
 		free_2d_array(line_split);
 	}
-	if (stop_reading)
-		ft_putstr("WARNING: File was read not completely!\n");
 	if (!fls[0] || !fls[1])
 		check_data_sufficiency();
 	if (!fls[2])
 		error_exit(e_invalid_link);
+	else if (stop_reading)
+	{
+		free_and_print_warning(line);
+		return ;
+	}
 	ft_lstadd(input, ft_lstnew(line, 0));
 	g_params->read_lines++;
 }

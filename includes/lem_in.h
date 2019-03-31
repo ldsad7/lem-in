@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 20:33:53 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/31 02:48:48 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,5 +151,10 @@ int							ft_min(int a, int b, int c);
 int							num_of_nghbrs(t_neighbour *neighbour);
 void						check_data_sufficiency(void);
 void						check_coordinates_and_name(t_room *room);
+int							free_and_return_one(char *first_name,
+												char *second_name);
+void						free_and_print_warning(char *line);
+void						add_to_lst(t_room *input, t_room *output);
+int							check_link(t_room *tmps[2]);
 
 #endif

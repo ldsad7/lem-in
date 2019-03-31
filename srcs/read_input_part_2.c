@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_input_part_2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 21:21:44 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/31 04:28:28 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,6 @@ void		check_coordinates_and_name(t_room *current_room)
 	t_room		*tmp;
 
 	tmp = g_params->start_of_list->next;
-
 	while (tmp)
 	{
 		if (!(ft_strcmp(tmp->name, current_room->name)))

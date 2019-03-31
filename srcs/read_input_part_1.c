@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_input_part_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 19:07:08 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/31 04:29:23 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void			get_nr_ants(char **line, t_list **input)
 	{
 		if ((num = ft_atoi_long(*line)) <= 2147483647 && num > 0)
 			g_params->nr_ants = num;
-		else if (num < 0)
+		else if (num <= 0)
 			error_exit(e_ants_value_less_or_equal_than_zero);
 		else
 			error_exit(e_ants_value_bigger_int);
@@ -40,7 +40,6 @@ void			get_nr_ants(char **line, t_list **input)
 	else
 		error_exit(e_incorrect_ants_value);
 	ft_lstadd(input, ft_lstnew(*line, 0));
-	//g_params->read_lines++;
 }
 
 static t_room	*tmp_room_setup(t_room *tmp, int num1, int num2)
@@ -60,9 +59,9 @@ static t_room	*tmp_room_setup(t_room *tmp, int num1, int num2)
 
 t_room			*room_writing(char **ln_split)
 {
-	t_room	*tmp;
-	int		num1;
-	int		num2;
+	t_room			*tmp;
+	long long int	num1;
+	long long int	num2;
 
 	num1 = 0;
 	num2 = 0;
@@ -105,6 +104,8 @@ void			start_end_writing(char **line, t_list **input)
 	if (start_or_end && g_params->end)
 		error_exit(e_repeating_end_node);
 	start_end_writing_input_saving(line, input);
+	ft_lstadd(input, ft_lstnew(*line, 0));
+	g_params->read_lines++;
 	if (ft_strequ(*line, "##start"))
 		error_exit(e_repeating_start_node);
 	if (ft_strequ(*line, "##end"))
@@ -114,10 +115,9 @@ void			start_end_writing(char **line, t_list **input)
 		error_exit((start_or_end == 0) * e_invalid_start_node
 					+ (start_or_end == 1) * e_invalid_end_node);
 	if (start_or_end == e_start)
-		g_params->start = room_writing(line_split);
+		check_coordinates_and_name((g_params->start =
+									room_writing(line_split)));
 	else
-		g_params->end = room_writing(line_split);
-	ft_lstadd(input, ft_lstnew(*line, 0));
-	g_params->read_lines++;
+		check_coordinates_and_name((g_params->end = room_writing(line_split)));
 	free_2d_array(line_split);
 }

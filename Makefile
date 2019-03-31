@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+         #
+#    By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/01 17:36:37 by bsprigga          #+#    #+#              #
-#    Updated: 2019/03/29 12:27:31 by bsprigga         ###   ########.fr        #
+#    Updated: 2019/03/31 02:07:47 by tsimonis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ SRCS =	lem_in_part_1.c \
 		support_part_2.c \
 		support_part_3.c \
 		support_part_4.c \
+		support_part_5.c \
 		algorithm_part_1.c \
 		algorithm_part_2.c \
 		algorithm_part_3.c \

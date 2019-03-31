@@ -6,9 +6,11 @@
 /*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/04 17:41:56 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/29 00:22:37 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/03/31 03:29:39 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include <stdio.h>
 
 long long	ft_atoi_long(const char *str)
 {
@@ -28,7 +30,8 @@ long long	ft_atoi_long(const char *str)
 	while (*str >= '0' && *str <= '9')
 	{
 		res = res * 10 + (*str - '0');
-		if (res > 2147483647)
+		if ((res > 2147483647 && is_negative > 0)
+			|| (res > 2147483648 && is_negative < 0))
 			break ;
 		str++;
 	}
