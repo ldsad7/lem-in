@@ -6,18 +6,11 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 02:05:57 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/31 13:38:23 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/31 15:26:50 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
-
-int			free_and_return_one(char *first_name, char *second_name)
-{
-	free(first_name);
-	free(second_name);
-	return (1);
-}
 
 void		free_and_print_warning(char *line)
 {

@@ -6,14 +6,13 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/31 15:13:43 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/03/31 15:27:08 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-static void	free_null_first_and_second_name(
-char *first_name, char *second_name)
+static void	free_null_first_and_second_name(char *first_name, char *second_name)
 {
 	free(first_name);
 	free(second_name);
