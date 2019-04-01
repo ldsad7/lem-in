@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/31 02:05:57 by tsimonis          #+#    #+#             */
-/*   Updated: 2019/03/31 15:26:50 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/04/02 00:03:45 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,11 @@ void		perror_exit(char *error_message)
 {
 	perror(error_message);
 	exit(2);
+}
+
+int			free_and_return_one(char *first_name, char *second_name)
+{
+	free(first_name);
+	free(second_name);
+	return (1);
 }

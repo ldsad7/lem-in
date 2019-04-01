@@ -23,7 +23,7 @@ valgrind ./lem-in < maps/$MAP 2>&1 | grep lost
 
 MAP=inv_input_in_room1.map
 printf "\n\t$YELLOW$MAP$NC\n"
-valgrind —-leak-check=full ./lem-in < maps/$MAP 2>&1 | grep lost
+valgrind ./lem-in < maps/$MAP 2>&1 | grep lost
 
 MAP=inv_no_rooms.map
 printf "\n\t$YELLOW$MAP$NC\n"
