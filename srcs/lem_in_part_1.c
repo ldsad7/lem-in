@@ -6,7 +6,7 @@
 /*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/31 02:38:22 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/04/03 14:38:35 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,6 @@ int			main(int argc, char **argv)
 	ft_printf("\n");
 	print_paths(nr_steps);
 	free_g_params();
+	visualize();
 	return (0);
 }

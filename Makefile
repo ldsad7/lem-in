@@ -6,7 +6,7 @@
 #    By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/01 17:36:37 by bsprigga          #+#    #+#              #
-#    Updated: 2019/03/31 02:07:47 by tsimonis         ###   ########.fr        #
+#    Updated: 2019/04/03 15:05:08 by tsimonis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 NAME = lem-in
 
-INCLUDES := ./includes ./libft/includes
+INCLUDES := ./includes ./libft/includes /Users/tsimonis/.brew/Cellar/sdl2/2.0.9_1/include/SDL2
 CC = clang
 FLAGS := -Wall -Werror -Wextra -g
 VPATH := . srcs
@@ -35,13 +35,14 @@ SRCS =	lem_in_part_1.c \
 		algorithm_part_3.c \
 		algorithm_part_4.c \
 		algorithm_part_5.c \
+		visualize.c
 
 OBJECTS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
 $(NAME): libft/libft.a $(OBJECTS)
-	gcc $(FLAGS) $(OBJECTS) $(addprefix -I,$(INCLUDES)) -lft -L./libft -o $@
+	gcc $(FLAGS) $(OBJECTS) $(addprefix -I,$(INCLUDES)) -L./libft -lft -L/Users/tsimonis/.brew/Cellar/sdl2/2.0.9_1/lib -lSDL2 -o $@
 
 libft/libft.a:
 	$(MAKE) -C libft
