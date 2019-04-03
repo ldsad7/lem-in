@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/03 15:33:33 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/04/03 17:34:28 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "libft.h"
 # include <stdio.h>
 # include <SDL.h>
+# include <SDL_image.h>
 # define SCREEN_WIDTH 640
 # define SCREEN_HEIGHT 480
 
@@ -161,6 +162,6 @@ void						free_and_print_warning(char *line);
 void						add_to_lst(t_room *input, t_room *output);
 int							check_link(t_room *tmps[2]);
 void						perror_exit(char *error_message);
-void						visualize(void);
+void						visualize(int argc, char **argv);
 
 #endif
