@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/03 17:34:28 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/04/04 14:53:41 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <SDL.h>
 # include <SDL_image.h>
+#include <SDL2_gfxPrimitives.h>
 # define SCREEN_WIDTH 640
 # define SCREEN_HEIGHT 480
 
@@ -84,6 +85,11 @@ typedef struct				s_cost_params
 	int						num_paths_in_curr_group;
 	int						min_cost;
 }							t_cost_params;
+
+// typedef struct				s_visualization
+// {
+// 	SDL_Rect 				*rect;
+// }							t_visualization
 
 t_params					*g_params;
 enum						e_start_end {e_start, e_end};

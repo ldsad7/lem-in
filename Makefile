@@ -6,7 +6,7 @@
 #    By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/01 17:36:37 by bsprigga          #+#    #+#              #
-#    Updated: 2019/04/03 19:04:49 by bsprigga         ###   ########.fr        #
+#    Updated: 2019/04/03 22:29:35 by bsprigga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ INCLUDES := ./includes \
 			./libft/includes \
 			/Users/$(USER)/.brew/Cellar/sdl2/2.0.9_1/include/SDL2 \
 			/Users/$(USER)/.brew/Cellar/sdl2_image/2.0.4/include/SDL2 \
-			/Users/$(USER)/.brew/Cellar/sdl_gfx/2.0.26/include/SDL 
+			/Users/$(USER)/.brew/Cellar/sdl2_gfx/1.0.4/include/SDL2 
 CC = clang
 FLAGS := -Wall -Werror -Wextra -g
 VPATH := . srcs
@@ -49,7 +49,7 @@ $(NAME): libft/libft.a $(OBJECTS)
 	gcc $(FLAGS) $(OBJECTS) $(addprefix -I,$(INCLUDES)) -L./libft -lft \
 	-L/Users/$(USER)/.brew/Cellar/sdl2/2.0.9_1/lib -lSDL2 \
 	-L/Users/$(USER)/.brew/Cellar/sdl2_image/2.0.4/lib -lSDL2_image \
-	-L/Users/$(USER)/.brew/Cellar/sdl_gfx/2.0.26/lib/ -lSDL_gfx -o $@
+	-L/Users/$(USER)/.brew/Cellar/sdl2_gfx/1.0.4/lib -lSDL2_gfx -o $@
 
 libft/libft.a:
 	$(MAKE) -C libft
