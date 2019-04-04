@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 13:54:47 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/04 17:35:03 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/04/04 18:08:25 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ SDL_Texture	*load_media_png(SDL_Renderer *renderer)
 //     SDL_Quit();
 // }
 
-void	draw_circle(SDL_Renderer *renderer, int x, int y)
+void	draw_node(SDL_Renderer *renderer, int x, int y)
 {
 	int				draw_circle_res;
 
@@ -127,17 +127,17 @@ void	draw_line(SDL_Renderer *renderer, int x0, int y0, int x1, int y1) //t_line_
 	lineRGBA(renderer, x0, y0, x1, y1, 0, 0, 255, 255);
 }
 
-// void	draw_graph(SDL_Renderer *renderer)
-// {
-// 	t_room *tmp;
+void	draw_graph(SDL_Renderer *renderer)
+{
+	t_room *tmp;
 
-// 	tmp = g_params->start;
-// 	while (tmp)
-// 	{
-// 		draw_line(renderer, );
-// 		tmp = tmp->next;
-// 	}
-// }
+	tmp = g_params->start; // shows nothing, and below falls in sega
+	while (tmp) // we need all rooms to draw nodes and pair of coordinates of nodes to draw vertices
+	{
+		draw_node(renderer, tmp->coord_x * 100, tmp->coord_y * 100);
+		tmp = tmp->next;
+	}
+}
 
 void	draw_all(SDL_Renderer *renderer)
 {
@@ -151,7 +151,8 @@ void	draw_all(SDL_Renderer *renderer)
 	r.w = 50;
 	r.h = 50;
 	texture = load_media_png(renderer);
-	draw_circle(renderer, 100, 100);
+	// draw_node(renderer, 100, 100);
+	draw_graph(renderer);
 	draw_line(renderer, 300, 300, 500, 300);
 	SDL_RenderCopy(renderer, texture, &r, &r);
 	SDL_RenderPresent(renderer);
@@ -167,7 +168,8 @@ void	draw_all(SDL_Renderer *renderer)
 				quit = 1;
 			else if (e.type == SDL_KEYUP)
 			{
-				draw_circle(renderer, 100, 100);
+				draw_graph(renderer);
+				// draw_node(renderer, 100, 100);
 				draw_line(renderer, 300, 300, 500, 300);
 				// fill rectangle with color
 				// SDL_RenderFillRect(renderer, &r);
