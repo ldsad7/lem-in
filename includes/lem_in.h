@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/04 14:53:41 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/04/04 17:35:20 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,14 @@ typedef struct				s_cost_params
 // {
 // 	SDL_Rect 				*rect;
 // }							t_visualization
+
+typedef struct				s_line_coords
+{
+	int						x0;
+	int						y0;
+	int						x1;
+	int						y1;
+}							t_line_coords;
 
 t_params					*g_params;
 enum						e_start_end {e_start, e_end};
