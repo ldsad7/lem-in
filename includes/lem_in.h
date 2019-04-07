@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/04 17:35:20 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/04/07 16:45:30 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,12 @@
 # include <SDL.h>
 # include <SDL_image.h>
 #include <SDL2_gfxPrimitives.h>
-# define SCREEN_WIDTH 640
-# define SCREEN_HEIGHT 480
+# define SCREEN_WIDTH 1600
+# define SCREEN_HEIGHT 1200
+# define KEY_EVENT 769
+# define ESC_KEY 27
+# define SPACE_KEY 32
+# define EXIT_CLICK 256
 
 typedef struct s_neighbour	t_neighbour;
 typedef struct s_room		t_room;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in_part_1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/03 16:05:14 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/04/07 15:13:43 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int			main(int argc, char **argv)
 	recursive_print_and_free(&input);
 	ft_printf("\n");
 	print_paths(nr_steps);
-	free_g_params();
 	visualize(argc, argv);
+	free_g_params();
 	return (0);
 }

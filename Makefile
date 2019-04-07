@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+         #
+#    By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/01 17:36:37 by bsprigga          #+#    #+#              #
-#    Updated: 2019/04/03 22:29:35 by bsprigga         ###   ########.fr        #
+#    Updated: 2019/04/07 15:16:54 by tsimonis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,7 @@ SRCS =	lem_in_part_1.c \
 		algorithm_part_3.c \
 		algorithm_part_4.c \
 		algorithm_part_5.c \
-		visualization.c 
+		visualization.c
 
 OBJECTS = $(SRCS:.c=.o)
 
