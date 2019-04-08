@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   visualization_part_1.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 13:54:47 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/08 17:39:12 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/04/08 18:10:34 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,21 @@
 
 SDL_Texture	*loadTexture(char *picture)
 {
-    //The final texture
-    SDL_Texture	*newTexture = NULL;
+	SDL_Texture		*newTexture;
+	SDL_Surface		*loadedSurface;
 
-    //Load image at specified path
-    SDL_Surface* loadedSurface = IMG_Load(picture);
-    if (loadedSurface == NULL)
-    {
-        printf("Unable to load image %s! SDL_image Error: %s\n", picture, IMG_GetError());
-    }
+	newTexture = NULL;
+	loadedSurface = IMG_Load(picture);
+	if (!loadedSurface)
+		ft_printf("Unable to load image %s! SDL_image Error: %s\n", picture, IMG_GetError());
     else
-    {
-        //Create texture from surface pixels
-        newTexture = SDL_CreateTextureFromSurface(g_params->renderer, loadedSurface);
-        if (newTexture == NULL)
-        {
-            printf("Unable to create texture from %s! SDL Error: %s\n", picture, SDL_GetError());
-        }
-
-        //Get rid of old loaded surface
-        SDL_FreeSurface(loadedSurface);
-    }
-
-    return newTexture;
+	{
+		newTexture = SDL_CreateTextureFromSurface(g_params->renderer, loadedSurface);
+		if (!newTexture)
+			ft_printf("Unable to create texture from %s! SDL Error: %s\n", picture, SDL_GetError());
+		SDL_FreeSurface(loadedSurface);
+	}
+	return newTexture;
 }
 
 SDL_Texture	*load_media_png()
@@ -60,7 +52,7 @@ void	close_viz(SDL_Window *window)
 	SDL_Quit();
 }
 
-void	init(void)
+void	init(int nr_steps)
 {
 	SDL_Window		*window;
 
@@ -81,17 +73,17 @@ void	init(void)
 	"SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError()));
 	g_params->texture = load_media_png();
 	SDL_RenderClear(g_params->renderer);
-	draw_all();
+	draw_all(nr_steps);
 	close_viz(window);
 }
 
-void	visualize(int argc, char **argv)
+void	visualize(int argc, char **argv, int nr_steps)
 {
 	if (argc > 1)
 		while (argc-- > 1)
 			if (!ft_strcmp(argv[argc], "-v"))
 			{
-				init();
+				init(nr_steps);
 				break ;
 			}
 }

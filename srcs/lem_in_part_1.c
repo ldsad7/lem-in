@@ -6,7 +6,7 @@
 /*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:40:41 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/07 15:13:43 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/04/08 18:10:42 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ int			main(int argc, char **argv)
 	int				nr_steps;
 	t_cost_params	*cost_params;
 	t_list			*input;
+	int				nr_ants_copy;
 
 	input = NULL;
 	read_input(&input);
@@ -66,8 +67,10 @@ int			main(int argc, char **argv)
 	correct_paths();
 	recursive_print_and_free(&input);
 	ft_printf("\n");
+	nr_ants_copy = g_params->nr_ants;
 	print_paths(nr_steps);
-	visualize(argc, argv);
+	g_params->nr_ants = nr_ants_copy;
+	visualize(argc, argv, nr_steps);
 	free_g_params();
 	return (0);
 }

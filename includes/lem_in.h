@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/08 17:39:33 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/04/08 18:24:18 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,9 @@ typedef struct				s_params
 	int						read_lines;
 	SDL_Renderer			*renderer;
 	SDL_Texture				*texture;
+	SDL_Rect				*r;
+	int						x_min_max[2];
+	int						y_min_max[2];
 }							t_params;
 
 typedef struct				s_queue
@@ -182,9 +185,11 @@ void						free_and_print_warning(char *line);
 void						add_to_lst(t_room *input, t_room *output);
 int							check_link(t_room *tmps[2]);
 void						perror_exit(char *error_message);
-void						visualize(int argc, char **argv);
-void						draw_all(void);
+void						visualize(int argc, char **argv, int nr_steps);
+void						draw_all(int nr_steps);
 void						draw_node(int x, int y, int fl);
 void						draw_line(int x0, int y0, int x1, int y1);
+void						print_paths_for_viz(int nr_steps);
+void						draw_graph(void);
 
 #endif
