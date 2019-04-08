@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   visualization_part_2.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 13:54:47 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/08 19:01:37 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/04/08 19:35:46 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,16 +84,8 @@ static void	draw_lines(int x_min_max[2], int y_min_max[2])
 
 void	draw_graph(void)
 {
-	int				x_min_max[2];
-	int				y_min_max[2];
-
-	arrays_filling(&x_min_max, &y_min_max);
-	draw_lines(x_min_max, y_min_max);
-	draw_nodes(x_min_max, y_min_max);
-	g_params->x_min_max[0] = x_min_max[0];
-	g_params->x_min_max[1] = x_min_max[1];
-	g_params->y_min_max[0] = y_min_max[0];
-	g_params->y_min_max[1] = y_min_max[1];
+	draw_lines(g_params->x_min_max, g_params->y_min_max);
+	draw_nodes(g_params->x_min_max, g_params->y_min_max);
 }
 
 void	draw_all(int nr_steps)
@@ -107,6 +99,7 @@ void	draw_all(int nr_steps)
 	r->w = 93;
 	r->h = 50;
 	g_params->r = r;
+	arrays_filling(&(g_params->x_min_max), &(g_params->y_min_max));	
 	print_paths_for_viz(nr_steps);
 	free(g_params->r);
 }
