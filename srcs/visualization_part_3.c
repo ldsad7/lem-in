@@ -6,7 +6,7 @@
 /*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 13:54:47 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/08 18:31:42 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/04/08 19:14:34 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,16 @@ void	draw_line(int x0, int y0, int x1, int y1)
 	aalineRGBA(g_params->renderer, x0, y0, x1, y1, 0, 0, 255, 255);
 }
 
+static void	print_ant(t_room *room)
+{
+	g_params->r->x = (int)(100 + (float)(room->coord_x - g_params->x_min_max[0]) /
+				(float)(g_params->x_min_max[1] - g_params->x_min_max[0]) * (SCREEN_WIDTH - 200)) - 46;
+	g_params->r->y = (int)(100 + (float)(room->coord_y - g_params->x_min_max[0]) /
+				(float)(g_params->x_min_max[1] - g_params->x_min_max[0]) * (SCREEN_WIDTH - 200));
+	ft_printf("%d,%d\n", g_params->r->x, g_params->r->y);
+	SDL_RenderCopy(g_params->renderer, g_params->texture, NULL, g_params->r);
+}
+
 static void	new_ants_move_in_path(int i, t_room *room,
 								int **nr_ants_to_move_in_paths)
 {
@@ -48,14 +58,7 @@ static void	new_ants_move_in_path(int i, t_room *room,
 		room->ant_nr = g_params->nr_ants;
 		g_params->nr_ants--;
 		if (room != g_params->start)
-		{
-			g_params->r->x = (int)(100 + (float)(room->coord_x - g_params->x_min_max[0]) /
-				(float)(g_params->x_min_max[1] - g_params->x_min_max[0]) * (SCREEN_WIDTH - 200));
-			g_params->r->y = (int)(100 + (float)(room->coord_y - g_params->x_min_max[0]) /
-				(float)(g_params->x_min_max[1] - g_params->x_min_max[0]) * (SCREEN_WIDTH - 200));
-			SDL_RenderCopy(g_params->renderer, g_params->texture, NULL, g_params->r);
-			// fl += ft_printf("L%i-%s", room->ant_nr, room->name);
-		}
+			print_ant(room);
 		(*nr_ants_to_move_in_paths)[i]--;
 	}
 }
@@ -64,12 +67,7 @@ static void	print_existing_ants_movement(t_room **room)
 {
 	if ((*room)->next_elem == g_params->end && (*room)->ant_nr)
 	{
-		g_params->r->x = (int)(100 + (float)(g_params->end->coord_x - g_params->x_min_max[0]) /
-				(float)(g_params->x_min_max[1] - g_params->x_min_max[0]) * (SCREEN_WIDTH - 200));
-		g_params->r->y = (int)(100 + (float)(g_params->end->coord_y - g_params->x_min_max[0]) /
-				(float)(g_params->x_min_max[1] - g_params->x_min_max[0]) * (SCREEN_WIDTH - 200));
-		SDL_RenderCopy(g_params->renderer, g_params->texture, NULL, g_params->r);
-		// ft_printf("L%i-%s", (*room)->ant_nr, (*room)->next_elem->name);
+		print_ant(g_params->end);
 		(*room)->ant_nr = 0;
 	}
 	while ((*room)->prev_path != g_params->start &&
@@ -77,12 +75,7 @@ static void	print_existing_ants_movement(t_room **room)
 	{
 		(*room)->ant_nr = (*room)->prev_path->ant_nr;
 		(*room)->prev_path->ant_nr = 0;
-		g_params->r->x = (int)(100 + (float)((*room)->coord_x - g_params->x_min_max[0]) /
-				(float)(g_params->x_min_max[1] - g_params->x_min_max[0]) * (SCREEN_WIDTH - 200));
-		g_params->r->y = (int)(100 + (float)((*room)->coord_y - g_params->x_min_max[0]) /
-				(float)(g_params->x_min_max[1] - g_params->x_min_max[0]) * (SCREEN_WIDTH - 200));
-		SDL_RenderCopy(g_params->renderer, g_params->texture, NULL, g_params->r);
-		// ft_printf("L%i-%s", (*room)->ant_nr, (*room)->name);
+		print_ant(*room);
 		(*room) = (*room)->prev_path;
 	}
 }
@@ -110,6 +103,7 @@ static void	iter_ants_move(int nr_steps, t_room **room_arr,
 			{
 				SDL_SetRenderDrawColor(g_params->renderer, 220, 250, 190, 110);
 				SDL_RenderClear(g_params->renderer);
+				draw_graph();
 				i = 0;
 				while (i < cnt_paths)
 				{
@@ -122,7 +116,6 @@ static void	iter_ants_move(int nr_steps, t_room **room_arr,
 						room_arr[i] = room_arr[i]->next_elem;
 					i++;
 				}
-				draw_graph();
 				SDL_RenderPresent(g_params->renderer);
 			}
 }
