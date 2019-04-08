@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 13:54:47 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/08 19:35:46 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/04/08 19:37:31 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	draw_graph(void)
 
 void	draw_all(int nr_steps)
 {
-	SDL_Rect		*r;
+	SDL_Rect	*r;
 
 	if (!(r = (SDL_Rect *)malloc(sizeof(*r))))
 		exit(0);

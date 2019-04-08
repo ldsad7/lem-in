@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   visualization_part_3.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 13:54:47 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/08 19:17:40 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/04/08 19:59:18 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ static void	print_ant(t_room *room)
 {
 	g_params->r->x = (int)(100 + (float)(room->coord_x - g_params->x_min_max[0]) /
 				(float)(g_params->x_min_max[1] - g_params->x_min_max[0]) * (SCREEN_WIDTH - 200)) - 46;
-	g_params->r->y = (int)(100 + (float)(room->coord_y - g_params->x_min_max[0]) /
-				(float)(g_params->x_min_max[1] - g_params->x_min_max[0]) * (SCREEN_WIDTH - 200)) - 25;
+	g_params->r->y = (int)(100 + (float)(room->coord_y - g_params->y_min_max[0]) /
+				(float)(g_params->y_min_max[1] - g_params->y_min_max[0]) * (SCREEN_HEIGHT - 200)) - 25;
 	ft_printf("%d,%d\n", g_params->r->x, g_params->r->y);
 	SDL_RenderCopy(g_params->renderer, g_params->texture, NULL, g_params->r);
 }
@@ -89,7 +89,7 @@ static void	iter_ants_move(int nr_steps, t_room **room_arr,
 	SDL_Event	e;
 
 	draw_graph();
-	SDL_RenderCopy(g_params->renderer, g_params->texture, NULL, g_params->r);
+	print_ant(g_params->start);
 	SDL_RenderPresent(g_params->renderer);
 	quit = 0;
 	while (!quit)
@@ -116,7 +116,10 @@ static void	iter_ants_move(int nr_steps, t_room **room_arr,
 						room_arr[i] = room_arr[i]->next_elem;
 					i++;
 				}
+				if (g_params->nr_ants > 0)
+					print_ant(g_params->start);
 				SDL_RenderPresent(g_params->renderer);
+				g_params->mult++;
 			}
 }
 

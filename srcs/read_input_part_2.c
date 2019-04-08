@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_input_part_2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/08 19:18:56 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/04/08 19:41:52 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void		g_params_init(int (*fls)[3], char **line)
 	g_params->texture = NULL;
 	g_params->renderer = NULL;
 	g_params->r = NULL;
+	g_params->mult = 1;
 	(*fls)[0] = 0;
 	(*fls)[1] = 0;
 	(*fls)[2] = 0;
