@@ -6,7 +6,7 @@
 /*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 13:54:47 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/08 19:14:34 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/04/08 19:17:40 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	print_ant(t_room *room)
 	g_params->r->x = (int)(100 + (float)(room->coord_x - g_params->x_min_max[0]) /
 				(float)(g_params->x_min_max[1] - g_params->x_min_max[0]) * (SCREEN_WIDTH - 200)) - 46;
 	g_params->r->y = (int)(100 + (float)(room->coord_y - g_params->x_min_max[0]) /
-				(float)(g_params->x_min_max[1] - g_params->x_min_max[0]) * (SCREEN_WIDTH - 200));
+				(float)(g_params->x_min_max[1] - g_params->x_min_max[0]) * (SCREEN_WIDTH - 200)) - 25;
 	ft_printf("%d,%d\n", g_params->r->x, g_params->r->y);
 	SDL_RenderCopy(g_params->renderer, g_params->texture, NULL, g_params->r);
 }

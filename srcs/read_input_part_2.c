@@ -6,7 +6,7 @@
 /*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/08 18:53:32 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/04/08 19:18:56 by tsimonis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,6 @@ void		g_params_init(int (*fls)[3], char **line)
 	g_params->texture = NULL;
 	g_params->renderer = NULL;
 	g_params->r = NULL;
-	g_params->x_min_max = NULL;
-	g_params->y_min_max = NULL;
 	(*fls)[0] = 0;
 	(*fls)[1] = 0;
 	(*fls)[2] = 0;
