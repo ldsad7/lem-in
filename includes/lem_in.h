@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/08 20:21:01 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/04/08 21:01:26 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,5 +189,11 @@ void						draw_node(int x, int y, int fl);
 void						draw_line(int x0, int y0, int x1, int y1);
 void						print_paths_for_viz(int nr_steps);
 void						draw_graph(void);
+void						print_existing_ants_movement(t_room **room);
+void						new_ants_move_in_path(int i, t_room *room,
+										int **nr_ants_to_move_in_paths);
+void						print_ant(t_room *room);
+void						draw_line(int x0, int y0, int x1, int y1);
+void						draw_node(int x, int y, int fl);
 
 #endif
