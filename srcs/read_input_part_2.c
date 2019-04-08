@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/02 10:41:48 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/03/31 13:42:08 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/04/08 17:33:50 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ void		g_params_init(int (*fls)[3], char **line)
 	g_params->start_of_list_of_paths = NULL;
 	g_params->arr = NULL;
 	g_params->read_lines = 1;
+	g_params->texture = NULL;
+	g_params->renderer = NULL;
 	(*fls)[0] = 0;
 	(*fls)[1] = 0;
 	(*fls)[2] = 0;

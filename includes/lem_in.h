@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lem_in.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsimonis <tsimonis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/07 16:45:30 by tsimonis         ###   ########.fr       */
+/*   Updated: 2019/04/08 17:39:33 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ typedef struct				s_params
 	t_path					*start_of_list_of_paths;
 	t_room					**arr;
 	int						read_lines;
+	SDL_Renderer			*renderer;
+	SDL_Texture				*texture;
 }							t_params;
 
 typedef struct				s_queue
@@ -181,5 +183,8 @@ void						add_to_lst(t_room *input, t_room *output);
 int							check_link(t_room *tmps[2]);
 void						perror_exit(char *error_message);
 void						visualize(int argc, char **argv);
+void						draw_all(void);
+void						draw_node(int x, int y, int fl);
+void						draw_line(int x0, int y0, int x1, int y1);
 
 #endif
