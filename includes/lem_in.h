@@ -6,7 +6,7 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 17:05:02 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/08 21:01:26 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/04/09 13:43:58 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdio.h>
 # include <SDL.h>
 # include <SDL_image.h>
-#include <SDL2_gfxPrimitives.h>
+# include <SDL2_gfxPrimitives.h>
 # define SCREEN_WIDTH 1600
 # define SCREEN_HEIGHT 1200
 # define KEY_EVENT 769
@@ -92,11 +92,6 @@ typedef struct				s_cost_params
 	int						num_paths_in_curr_group;
 	int						min_cost;
 }							t_cost_params;
-
-// typedef struct				s_visualization
-// {
-// 	SDL_Rect 				*rect;
-// }							t_visualization
 
 typedef struct				s_line_coords
 {
@@ -189,11 +184,13 @@ void						draw_node(int x, int y, int fl);
 void						draw_line(int x0, int y0, int x1, int y1);
 void						print_paths_for_viz(int nr_steps);
 void						draw_graph(void);
-void						print_existing_ants_movement(t_room **room);
-void						new_ants_move_in_path(int i, t_room *room,
+void						print_existing_ants_movement_viz(t_room **room);
+void						new_ants_move_in_path_viz(int i, t_room *room,
 										int **nr_ants_to_move_in_paths);
 void						print_ant(t_room *room);
 void						draw_line(int x0, int y0, int x1, int y1);
 void						draw_node(int x, int y, int fl);
+void						norminate_nodes_coords(int x_min_max[2],
+													int y_min_max[2]);
 
 #endif

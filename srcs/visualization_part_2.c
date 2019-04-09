@@ -6,36 +6,13 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 13:54:47 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/08 20:33:19 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/04/09 13:44:34 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-void	norminate_nodes_coords(int x_min_max[2], int y_min_max[2])
-{
-	t_room	*tmp;
-
-	tmp = g_params->start_of_list;
-	while (tmp)
-	{
-		if (x_min_max[0] == x_min_max[1])
-			tmp->coord_x = SCREEN_WIDTH / 2;
-		else
-			tmp->coord_x = (int)(100 + (float)(tmp->coord_x -
-			x_min_max[0]) / (float)(x_min_max[1] -
-			x_min_max[0]) * (SCREEN_WIDTH - 200));
-		if (y_min_max[0] == y_min_max[1])
-			tmp->coord_y = SCREEN_HEIGHT / 2;
-		else
-			tmp->coord_y = (int)(100 + (float)(tmp->coord_y -
-			y_min_max[0]) / (float)(y_min_max[1] -
-			y_min_max[0]) * (SCREEN_HEIGHT - 200));
-		tmp = tmp->next;
-	}
-}
-
-void	arrays_filling_and_norminate_coords()
+static void	arrays_filling_and_norminate_coords(void)
 {
 	int		x_min_max[2];
 	int		y_min_max[2];
@@ -99,13 +76,13 @@ static void	draw_lines(void)
 	}
 }
 
-void	draw_graph(void)
+void		draw_graph(void)
 {
 	draw_lines();
 	draw_nodes();
 }
 
-void	draw_all(int nr_steps)
+void		draw_all(int nr_steps)
 {
 	SDL_Rect	*r;
 
@@ -116,10 +93,7 @@ void	draw_all(int nr_steps)
 	r->w = 93;
 	r->h = 50;
 	g_params->r = r;
-	arrays_filling_and_norminate_coords();	
+	arrays_filling_and_norminate_coords();
 	print_paths_for_viz(nr_steps);
 	free(g_params->r);
 }
-
-// printf("The %s key was pressed!\n", SDL_GetKeyName(e.key.keysym.sym));
-// printf("%d, %d\n", e.key.keysym.sym, e.type);

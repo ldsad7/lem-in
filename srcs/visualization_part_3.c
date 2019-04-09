@@ -6,11 +6,34 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 13:54:47 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/08 21:09:22 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/04/09 13:43:28 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+void		norminate_nodes_coords(int x_min_max[2], int y_min_max[2])
+{
+	t_room	*tmp;
+
+	tmp = g_params->start_of_list;
+	while (tmp)
+	{
+		if (x_min_max[0] == x_min_max[1])
+			tmp->coord_x = SCREEN_WIDTH / 2;
+		else
+			tmp->coord_x = (int)(100 + (float)(tmp->coord_x -
+			x_min_max[0]) / (float)(x_min_max[1] -
+			x_min_max[0]) * (SCREEN_WIDTH - 200));
+		if (y_min_max[0] == y_min_max[1])
+			tmp->coord_y = SCREEN_HEIGHT / 2;
+		else
+			tmp->coord_y = (int)(100 + (float)(tmp->coord_y -
+			y_min_max[0]) / (float)(y_min_max[1] -
+			y_min_max[0]) * (SCREEN_HEIGHT - 200));
+		tmp = tmp->next;
+	}
+}
 
 static void	draw_ants_movement(t_room **room_arr, int cnt_paths,
 								int *nr_ants_to_move_in_paths)
@@ -27,8 +50,8 @@ static void	draw_ants_movement(t_room **room_arr, int cnt_paths,
 		tmp_room = room_arr[i];
 		if (tmp_room == g_params->start)
 			tmp_room->ant_nr = g_params->nr_ants;
-		print_existing_ants_movement(&tmp_room);
-		new_ants_move_in_path(i, tmp_room, &nr_ants_to_move_in_paths);
+		print_existing_ants_movement_viz(&tmp_room);
+		new_ants_move_in_path_viz(i, tmp_room, &nr_ants_to_move_in_paths);
 		if (room_arr[i]->next_elem != g_params->end)
 			room_arr[i] = room_arr[i]->next_elem;
 		i++;
@@ -38,10 +61,9 @@ static void	draw_ants_movement(t_room **room_arr, int cnt_paths,
 	SDL_RenderPresent(g_params->renderer);
 }
 
-static void	iter_ants_move(int nr_steps, t_room **room_arr,
+static void	iter_ants_move_viz(int nr_steps, t_room **room_arr,
 						int *nr_ants_to_move_in_paths, int cnt_paths)
 {
-
 	int			quit;
 	SDL_Event	e;
 
@@ -107,7 +129,8 @@ void		print_paths_for_viz(int nr_steps)
 		tmp = tmp->next;
 	}
 	rooms_arr_setup(&room_arr, &nr_ants_to_move_in_paths, cnt_paths, sum_paths);
-	iter_ants_move(nr_steps + 1, room_arr, nr_ants_to_move_in_paths, cnt_paths);
+	iter_ants_move_viz(nr_steps + 1, room_arr, nr_ants_to_move_in_paths,
+						cnt_paths);
 	free(nr_ants_to_move_in_paths);
 	free(room_arr);
 }

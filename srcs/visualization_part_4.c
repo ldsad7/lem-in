@@ -6,11 +6,15 @@
 /*   By: bsprigga <bsprigga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/03 13:54:47 by bsprigga          #+#    #+#             */
-/*   Updated: 2019/04/08 21:00:17 by bsprigga         ###   ########.fr       */
+/*   Updated: 2019/04/09 13:40:16 by bsprigga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
+
+/*
+**	fl - start or end node
+*/
 
 void	draw_node(int x, int y, int fl)
 {
@@ -21,7 +25,7 @@ void	draw_node(int x, int y, int fl)
 	r = 0;
 	g = 255;
 	b = 0;
-	if (fl == 1) // start or end node
+	if (fl == 1)
 	{
 		r = 255;
 		g = 0;
@@ -41,11 +45,10 @@ void	print_ant(t_room *room)
 {
 	g_params->r->x = room->coord_x - 46;
 	g_params->r->y = room->coord_y - 25;
-	ft_printf("%d,%d\n", g_params->r->x, g_params->r->y);
 	SDL_RenderCopy(g_params->renderer, g_params->texture, NULL, g_params->r);
 }
 
-void	new_ants_move_in_path(int i, t_room *room,
+void	new_ants_move_in_path_viz(int i, t_room *room,
 								int **nr_ants_to_move_in_paths)
 {
 	int		fl;
@@ -61,7 +64,7 @@ void	new_ants_move_in_path(int i, t_room *room,
 	}
 }
 
-void	print_existing_ants_movement(t_room **room)
+void	print_existing_ants_movement_viz(t_room **room)
 {
 	if ((*room)->next_elem == g_params->end && (*room)->ant_nr)
 	{
